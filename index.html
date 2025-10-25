@@ -1,749 +1,485 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sameer Pasha - Personal Website</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-.profile-section {
-    padding: 2rem 0;
-    background: linear-gradient(135deg, #3498db, #2c3e50);
-    color: white;
-    position: relative;
-    overflow: hidden;
-}
-
-.profile-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 2rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.profile-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    position: relative;
-    z-index: 2;
-}
-
-.profile-img-container {
-    position: relative;
-    margin-bottom: 1.5rem;
-}
-
-.profile-img {
-    width: 180px;
-    height: 180px;
-    border-radius: 50%;
-    overflow: hidden;
-    position: relative;
-    z-index: 3;
-    border: 5px solid rgba(255, 255, 255, 0.2);
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-}
-
-.img-placeholder {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 5rem;
-    color: rgba(255, 255, 255, 0.8);
-}
-
-.profile-img img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.profile-ring {
-    position: absolute;
-    border-radius: 50%;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    animation: rotate 20s linear infinite;
-}
-
-.ring-1 {
-    width: 220px;
-    height: 220px;
-    top: -20px;
-    left: -20px;
-    animation-duration: 25s;
-}
-
-.ring-2 {
-    width: 260px;
-    height: 260px;
-    top: -40px;
-    left: -40px;
-    animation-duration: 30s;
-    animation-direction: reverse;
-}
-
-.ring-3 {
-    width: 300px;
-    height: 300px;
-    top: -60px;
-    left: -60px;
-    animation-duration: 35s;
-}
-
-.floating-icons {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-}
-
-.icon {
-    position: absolute;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.9);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #3498db;
-    font-size: 1.2rem;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    animation: float 6s ease-in-out infinite;
-}
-
-.icon-1 {
-    top: 10px;
-    right: 20px;
-    animation-delay: 0s;
-}
-
-.icon-2 {
-    bottom: 20px;
-    right: 10px;
-    animation-delay: 1.5s;
-}
-
-.icon-3 {
-    bottom: 10px;
-    left: 20px;
-    animation-delay: 3s;
-}
-
-.icon-4 {
-    top: 20px;
-    left: 10px;
-    animation-delay: 4.5s;
-}
-
-.profile-content h1 {
-    font-size: 2.5rem;
-    margin-bottom: 0.5rem;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-}
-
-.tagline {
-    font-size: 1.2rem;
-    opacity: 0.9;
-    margin-bottom: 1rem;
-    max-width: 500px;
-}
-
-.status-indicator {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 1rem;
-    padding: 0.5rem 1rem;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 20px;
-    backdrop-filter: blur(5px);
-}
-
-.status-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: #2ecc71;
-    animation: pulse 2s infinite;
-}
-
-.status-text {
-    font-size: 0.9rem;
-}
-
-@keyframes rotate {
-    0% {
-        transform: rotate(0deg);
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sameer Pasha - Personal Website</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
-    100% {
-        transform: rotate(360deg);
-    }
-}
 
-@keyframes float {
-    0%, 100% {
-        transform: translateY(0);
+    :root {
+      --primary: #3498db;
+      --secondary: #2c3e50;
+      --accent: #e74c3c;
+      --light: #ecf0f1;
+      --dark: #2c3e50;
     }
-    50% {
-        transform: translateY(-10px);
-    }
-}
 
-@keyframes pulse {
-    0%, 100% {
-        opacity: 1;
+    body {
+      background-color: #f9f9f9;
+      color: #333;
+      line-height: 1.6;
     }
-    50% {
-        opacity: 0.5;
-    }
-}
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
+    /* ====== CREATIVE PROFILE SECTION ====== */
+    .profile-section {
+      padding: 4rem 0;
+      background: linear-gradient(135deg, #3498db, #2c3e50);
+      color: white;
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .profile-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      position: relative;
+      z-index: 2;
+    }
+
+    .profile-img-container {
+      position: relative;
+      margin-bottom: 1.5rem;
+    }
+
     .profile-img {
-        width: 150px;
-        height: 150px;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      overflow: hidden;
+      position: relative;
+      z-index: 3;
+      border: 5px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     }
-    
+
+    .profile-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .profile-ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      animation: rotate 20s linear infinite;
+    }
+
     .ring-1 {
-        width: 190px;
-        height: 190px;
+      width: 220px;
+      height: 220px;
+      top: -20px;
+      left: -20px;
+      animation-duration: 25s;
     }
-    
+
     .ring-2 {
-        width: 220px;
-        height: 220px;
+      width: 260px;
+      height: 260px;
+      top: -40px;
+      left: -40px;
+      animation-duration: 30s;
+      animation-direction: reverse;
     }
-    
+
     .ring-3 {
-        width: 250px;
-        height: 250px;
+      width: 300px;
+      height: 300px;
+      top: -60px;
+      left: -60px;
+      animation-duration: 35s;
     }
-    
+
+    .floating-icons {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+    }
+
+    .icon {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #3498db;
+      font-size: 1.2rem;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .icon-1 {
+      top: 10px;
+      right: 20px;
+      animation-delay: 0s;
+    }
+    .icon-2 {
+      bottom: 20px;
+      right: 10px;
+      animation-delay: 1.5s;
+    }
+    .icon-3 {
+      bottom: 10px;
+      left: 20px;
+      animation-delay: 3s;
+    }
+    .icon-4 {
+      top: 20px;
+      left: 10px;
+      animation-delay: 4.5s;
+    }
+
     .profile-content h1 {
-        font-size: 2rem;
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
     }
-    
+
     .tagline {
-        font-size: 1rem;
+      font-size: 1.2rem;
+      opacity: 0.9;
+      margin-bottom: 1rem;
+      max-width: 500px;
+      margin: 0 auto;
     }
-}
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
 
-        :root {
-            --primary: #3498db;
-            --secondary: #2c3e50;
-            --accent: #e74c3c;
-            --light: #ecf0f1;
-            --dark: #2c3e50;
-        }
+    .status-indicator {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      backdrop-filter: blur(5px);
+    }
 
-        body {
-            background-color: #f9f9f9;
-            color: #333;
-            line-height: 1.6;
-        }
+    .status-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #2ecc71;
+      animation: pulse 2s infinite;
+    }
 
-        header {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 2rem 0;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
+    @keyframes rotate {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
 
-        .header-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-            position: relative;
-            z-index: 1;
-        }
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+    }
 
-        .profile-img {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            border: 5px solid white;
-            margin: 0 auto 1rem;
-            background-color: var(--light);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 4rem;
-            color: var(--primary);
-        }
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.5;
+      }
+    }
 
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-        }
+    /* ====== CONTENT SECTIONS ====== */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
 
-        .tagline {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            margin-bottom: 1rem;
-        }
+    section {
+      background: white;
+      border-radius: 10px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, opacity 0.5s ease;
+    }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
+    section:hover {
+      transform: translateY(-5px);
+    }
 
-        section {
-            background: white;
-            border-radius: 10px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-        }
+    h2 {
+      color: var(--primary);
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--light);
+      display: flex;
+      align-items: center;
+    }
 
-        section:hover {
-            transform: translateY(-5px);
-        }
+    h2 i {
+      margin-right: 10px;
+    }
 
-        h2 {
-            color: var(--primary);
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid var(--light);
-            display: flex;
-            align-items: center;
-        }
+    .skills, .hobbies, .projects, .contact-info {
+      display: grid;
+      gap: 1.5rem;
+    }
 
-        h2 i {
-            margin-right: 10px;
-        }
+    .hobbies {
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
 
-        .about-content {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 2rem;
-            align-items: center;
-        }
+    .projects {
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    }
 
-        .about-text {
-            flex: 1;
-            min-width: 300px;
-        }
+    .hobby, .project {
+      text-align: center;
+      padding: 1.5rem;
+      border-radius: 10px;
+      background: var(--light);
+      transition: all 0.3s ease;
+    }
 
-        .skills {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
+    .hobby:hover, .project:hover {
+      background: var(--primary);
+      color: white;
+      transform: scale(1.05);
+    }
 
-        .skill {
-            background: var(--light);
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.9rem;
-        }
+    .hobby i, .project i {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: var(--primary);
+    }
 
-        .hobbies {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 1.5rem;
-        }
+    .hobby:hover i, .project:hover i {
+      color: white;
+    }
 
-        .hobby {
-            text-align: center;
-            padding: 1.5rem;
-            border-radius: 10px;
-            background: var(--light);
-            transition: all 0.3s ease;
-        }
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
 
-        .hobby:hover {
-            background: var(--primary);
-            color: white;
-            transform: scale(1.05);
-        }
+    .contact-item i {
+      font-size: 1.5rem;
+      color: var(--primary);
+      width: 40px;
+      height: 40px;
+      background: var(--light);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-        .hobby i {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            color: var(--primary);
-        }
+    footer {
+      background: var(--secondary);
+      color: white;
+      text-align: center;
+      padding: 2rem 0;
+      margin-top: 2rem;
+    }
 
-        .hobby:hover i {
-            color: white;
-        }
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin: 1rem 0;
+    }
 
-        .projects {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.5rem;
-        }
+    .social-links a {
+      color: white;
+      font-size: 1.5rem;
+      transition: color 0.3s ease;
+    }
 
-        .project {
-            border: 1px solid var(--light);
-            border-radius: 10px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .project:hover {
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .project-img {
-            height: 200px;
-            background: var(--light);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-            color: var(--primary);
-        }
-
-        .project-content {
-            padding: 1.5rem;
-        }
-
-        .project h3 {
-            margin-bottom: 0.5rem;
-            color: var(--secondary);
-        }
-
-        .contact-info {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .contact-item i {
-            font-size: 1.5rem;
-            color: var(--primary);
-            width: 40px;
-            height: 40px;
-            background: var(--light);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        footer {
-            background: var(--secondary);
-            color: white;
-            text-align: center;
-            padding: 2rem 0;
-            margin-top: 2rem;
-        }
-
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin: 1rem 0;
-        }
-
-        .social-links a {
-            color: white;
-            font-size: 1.5rem;
-            transition: color 0.3s ease;
-        }
-
-        .social-links a:hover {
-            color: var(--primary);
-        }
-
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2rem;
-            }
-            
-            .container {
-                padding: 1rem;
-            }
-            
-            section {
-                padding: 1.5rem;
-            }
-        }
-
-        .floating-shapes {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            z-index: 0;
-        }
-
-        .shape {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-        }
-
-        .shape:nth-child(1) {
-            width: 80px;
-            height: 80px;
-            top: 10%;
-            left: 10%;
-            animation: float 15s infinite linear;
-        }
-
-        .shape:nth-child(2) {
-            width: 120px;
-            height: 120px;
-            top: 60%;
-            left: 80%;
-            animation: float 20s infinite linear;
-        }
-
-        .shape:nth-child(3) {
-            width: 60px;
-            height: 60px;
-            top: 80%;
-            left: 20%;
-            animation: float 12s infinite linear;
-        }
-
-        @keyframes float {
-            0% {
-                transform: translate(0, 0) rotate(0deg);
-            }
-            100% {
-                transform: translate(100px, -100px) rotate(360deg);
-            }
-        }
-    </style>
+    .social-links a:hover {
+      color: var(--primary);
+    }
+  </style>
 </head>
 <body>
 
-
-
-    <header>
-        
-        <div class="floating-shapes">
-            <div class="shape"></div>
-            <div class="shape"></div>
-            <div class="shape"></div>
-        </div>
-        <div class="header-content">
-            <div class="profile-img">
-                <i class="fas fa-user"></i>
-            </div>
-    <!-- Creative Profile Photo Section -->
-<div class="profile-section">
+  <!-- ====== Header/Profile Section ====== -->
+  <div class="profile-section">
     <div class="profile-container">
-        <div class="profile-card">
-            <div class="profile-img-container">
-                <div class="profile-img">
-                    <img src="1.jpg" alt="Sameer Pasha">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <!-- Replace the div above with your actual image:
-                    <img src="your-photo.jpg" alt="Sameer Pasha">
-                    -->
-                </div>
-                <div class="profile-ring ring-1"></div>
-                <div class="profile-ring ring-2"></div>
-                <div class="profile-ring ring-3"></div>
-                <div class="floating-icons">
-                    <div class="icon icon-1"><i class="fas fa-flask"></i></div>
-                    <div class="icon icon-2"><i class="fas fa-keyboard"></i></div>
-                    <div class="icon icon-3"><i class="fas fa-running"></i></div>
-                    <div class="icon icon-4"><i class="fas fa-laptop-code"></i></div>
-                </div>
-            </div>
-            <div class="profile-content">
-                <h1>Sameer Pasha</h1>
-                <p class="tagline">10th Grade Student | Tech Enthusiast | Kabaddi Player</p>
-                <div class="status-indicator">
-                    <span class="status-dot"></span>
-                    <span class="status-text">Currently working on experiments</span>
-                </div>
-            </div>
+      <div class="profile-img-container">
+        <div class="profile-img">
+          <img src="1.jpg" alt="Sameer Pasha" />
         </div>
+        <div class="profile-ring ring-1"></div>
+        <div class="profile-ring ring-2"></div>
+        <div class="profile-ring ring-3"></div>
+        <div class="floating-icons">
+          <div class="icon icon-1"><i class="fas fa-flask"></i></div>
+          <div class="icon icon-2"><i class="fas fa-keyboard"></i></div>
+          <div class="icon icon-3"><i class="fas fa-running"></i></div>
+          <div class="icon icon-4"><i class="fas fa-laptop-code"></i></div>
+        </div>
+      </div>
+      <div class="profile-content">
+        <h1>Sameer Pasha</h1>
+        <p class="tagline">10th Grade Student | Tech Enthusiast | Kabaddi Player</p>
+        <div class="status-indicator">
+          <span class="status-dot"></span>
+          <span class="status-text">Currently working on experiments</span>
+        </div>
+      </div>
     </div>
-</div>
-            
-            <h1>Sameer Pasha</h1>
-            <p class="tagline">10th Grade Student | Tech Enthusiast | Kabaddi Player</p>
-            <p>Welcome to my personal website!</p>
+  </div>
+
+  <!-- ====== Main Content ====== -->
+  <div class="container">
+    <section id="about">
+      <h2><i class="fas fa-user"></i> About Me</h2>
+      <p>Hello! I'm Sameer Pasha, a 10th-grade student with a passion for technology, experiments, and sports. I enjoy exploring how things work and creating new projects.</p>
+      <p>When I'm not studying, you can find me working on my experiments, repairing keyboards, or playing kabaddi with my friends.</p>
+      <div class="skills">
+        <div class="skill">HTML</div>
+        <div class="skill">Experiments</div>
+        <div class="skill">Keyboard Repair</div>
+        <div class="skill">Kabaddi</div>
+      </div>
+    </section>
+
+    <section id="hobbies">
+      <h2><i class="fas fa-heart"></i> My Hobbies & Interests</h2>
+      <div class="hobbies">
+        <div class="hobby">
+          <i class="fas fa-flask"></i>
+          <h3>Experiments</h3>
+          <p>I love conducting scientific experiments, especially with my monkey gun project.</p>
         </div>
-    </header>
+        <div class="hobby">
+          <i class="fas fa-keyboard"></i>
+          <h3>Keyboard Repair</h3>
+          <p>I enjoy fixing and restoring keyboards to their original working condition.</p>
+        </div>
+        <div class="hobby">
+          <i class="fas fa-running"></i>
+          <h3>Kabaddi</h3>
+          <p>Kabaddi is my favorite sport. I play regularly and enjoy the strategy and physical challenge.</p>
+        </div>
+        <div class="hobby">
+          <i class="fas fa-laptop-code"></i>
+          <h3>Web Development</h3>
+          <p>I'm learning HTML and creating my own websites to showcase my interests.</p>
+        </div>
+      </div>
+    </section>
 
-    <div class="container">
-        <section id="about">
-            
-            <div class="about-content">
-                <div class="about-text">
-                    <p>Hello! I'm Sameer Pasha, a 10th-grade student with a passion for technology, experiments, and sports. I enjoy exploring how things work and creating new projects.</p>
-                    <p>When I'm not studying, you can find me working on my experiments, repairing keyboards, or playing kabaddi with my friends.</p>
-                    <div class="skills">
-                        <div class="skill">HTML</div>
-                        <div class="skill">Experiments</div>
-                        <div class="skill">Keyboard Repair</div>
-                        <div class="skill">Kabaddi</div>
-                    </div>
-                </div>
-            </div>
-        </section>
+    <section id="projects">
+      <h2><i class="fas fa-project-diagram"></i> My Projects</h2>
+      <div class="projects">
+        <div class="project">
+          <i class="fas fa-gun"></i>
+          <h3>Monkey Gun Experiment</h3>
+          <p>A fun physics experiment that demonstrates principles of motion and energy.</p>
+        </div>
+        <div class="project">
+          <i class="fas fa-keyboard"></i>
+          <h3>Keyboard Repair</h3>
+          <p>Restored multiple keyboards by fixing mechanical switches and cleaning circuits.</p>
+        </div>
+        <div class="project">
+          <i class="fas fa-globe"></i>
+          <h3>Personal Website</h3>
+          <p>Created this website using HTML to showcase my skills and interests.</p>
+        </div>
+      </div>
+    </section>
 
-        <section id="hobbies">
-            <h2><i class="fas fa-heart"></i> My Hobbies & Interests</h2>
-            <div class="hobbies">
-                <div class="hobby">
-                    <i class="fas fa-flask"></i>
-                    <h3>Experiments</h3>
-                    <p>I love conducting scientific experiments, especially with my monkey gun project.</p>
-                </div>
-                <div class="hobby">
-                    <i class="fas fa-keyboard"></i>
-                    <h3>Keyboard Repair</h3>
-                    <p>I enjoy fixing and restoring keyboards to their original working condition.</p>
-                </div>
-                <div class="hobby">
-                    <i class="fas fa-running"></i>
-                    <h3>Kabaddi</h3>
-                    <p>Kabaddi is my favorite sport. I play regularly and enjoy the strategy and physical challenge.</p>
-                </div>
-                <div class="hobby">
-                    <i class="fas fa-laptop-code"></i>
-                    <h3>Web Development</h3>
-                    <p>I'm learning HTML and creating my own websites to showcase my interests.</p>
-                </div>
-            </div>
-        </section>
+    <section id="contact">
+      <h2><i class="fas fa-envelope"></i> Contact Me</h2>
+      <div class="contact-info">
+        <div class="contact-item">
+          <i class="fas fa-school"></i>
+          <div>
+            <h3>Education</h3>
+            <p>10th Grade Student</p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <i class="fas fa-map-marker-alt"></i>
+          <div>
+            <h3>Location</h3>
+            <p>India</p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <i class="fas fa-envelope"></i>
+          <div>
+            <h3>Email</h3>
+            <p>sameer@example.com</p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <i class="fas fa-phone"></i>
+          <div>
+            <h3>Phone</h3>
+            <p>+91 XXXXX XXXXX</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
 
-        <section id="projects">
-            <h2><i class="fas fa-project-diagram"></i> My Projects</h2>
-            <div class="projects">
-                <div class="project">
-                    <div class="project-img">
-                        <i class="fas fa-gun"></i>
-                    </div>
-                    <div class="project-content">
-                        <h3>Monkey Gun Experiment</h3>
-                        <p>A fun physics experiment that demonstrates principles of motion and energy.</p>
-                    </div>
-                </div>
-                <div class="project">
-                    <div class="project-img">
-                        <i class="fas fa-keyboard"></i>
-                    </div>
-                    <div class="project-content">
-                        <h3>Keyboard Repair</h3>
-                        <p>Restored multiple keyboards by fixing mechanical switches and cleaning circuits.</p>
-                    </div>
-                </div>
-                <div class="project">
-                    <div class="project-img">
-                        <i class="fas fa-globe"></i>
-                    </div>
-                    <div class="project-content">
-                        <h3>Personal Website</h3>
-                        <p>Created this website using HTML to showcase my skills and interests.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="contact">
-            <h2><i class="fas fa-envelope"></i> Contact Me</h2>
-            <div class="contact-info">
-                <div class="contact-item">
-                    <i class="fas fa-school"></i>
-                    <div>
-                        <h3>Education</h3>
-                        <p>10th Grade Student</p>
-                    </div>
-                </div>
-                <div class="contact-item">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <div>
-                        <h3>Location</h3>
-                        <p>India</p>
-                    </div>
-                </div>
-                <div class="contact-item">
-                    <i class="fas fa-envelope"></i>
-                    <div>
-                        <h3>Email</h3>
-                        <p>sameer@example.com</p>
-                    </div>
-                </div>
-                <div class="contact-item">
-                    <i class="fas fa-phone"></i>
-                    <div>
-                        <h3>Phone</h3>
-                        <p>+91 XXXXX XXXXX</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+  <footer>
+    <div class="social-links">
+      <a href="#"><i class="fab fa-facebook"></i></a>
+      <a href="#"><i class="fab fa-twitter"></i></a>
+      <a href="#"><i class="fab fa-instagram"></i></a>
+      <a href="#"><i class="fab fa-github"></i></a>
     </div>
+    <p>&copy; 2023 Sameer Pasha. All rights reserved.</p>
+  </footer>
 
-    <footer>
-        <div class="social-links">
-            <a href="#"><i class="fab fa-facebook"></i></a>
-            <a href="#"><i class="fab fa-twitter"></i></a>
-            <a href="#"><i class="fab fa-instagram"></i></a>
-            <a href="#"><i class="fab fa-github"></i></a>
-        </div>
-        <p>&copy; 2023 Sameer Pasha. All rights reserved.</p>
-    </footer>
-
-    <script>
-        // Add some interactive elements
-        document.addEventListener('DOMContentLoaded', function() {
-            // Add animation to sections when they come into view
-            const sections = document.querySelectorAll('section');
-            
-            const observerOptions = {
-                threshold: 0.1,
-                rootMargin: '0px 0px -50px 0px'
-            };
-            
-            const observer = new IntersectionObserver(function(entries, observer) {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = 1;
-                        entry.target.style.transform = 'translateY(0)';
-                    }
-                });
-            }, observerOptions);
-            
-            sections.forEach(section => {
-                section.style.opacity = 0;
-                section.style.transform = 'translateY(20px)';
-                section.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-                observer.observe(section);
-            });
+  <script>
+    // Animate sections on scroll
+    document.addEventListener('DOMContentLoaded', function() {
+      const sections = document.querySelectorAll('section');
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = 1;
+            entry.target.style.transform = 'translateY(0)';
+          }
         });
-    </script>
+      }, { threshold: 0.1 });
+
+      sections.forEach(section => {
+        section.style.opacity = 0;
+        section.style.transform = 'translateY(20px)';
+        section.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+        observer.observe(section);
+      });
+    });
+  </script>
 </body>
 </html>
