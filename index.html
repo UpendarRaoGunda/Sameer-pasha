@@ -4,9 +4,15 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Sameer Pasha — Creative Portfolio</title>
+
+  <!-- Fonts & icons -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
   <style>
+    /* ---------------------------
+       THEME & RESET
+       --------------------------- */
     :root{
       --bg:#0f1724;
       --card:#0b1220cc;
@@ -16,11 +22,12 @@
       --muted:#94a3b8;
       --white: #f8fafc;
     }
-    *{box-sizing:border-box}
-    html,body{height:100%}
+
+    /* Basic reset - important for consistent mobile behavior */
+    *,*::before,*::after{box-sizing:border-box}
+    html,body{height:100%;margin:0;padding:0;overflow-x:hidden} /* prevent horizontal scroll */
     body{
-      margin:0;
-      font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, Arial;
       background: radial-gradient(1200px 600px at 10% 10%, rgba(123,97,255,0.08), transparent),
                   radial-gradient(800px 500px at 90% 90%, rgba(0,194,255,0.05), transparent),
                   var(--bg);
@@ -28,50 +35,94 @@
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
       padding-bottom:60px;
+      line-height:1.45;
     }
-    .wrap{max-width:1100px;margin:40px auto;padding:20px}
 
-    /* Header / Nav */
-    header{display:flex;align-items:center;justify-content:space-between;gap:16px}
-    .brand{display:flex;align-items:center;gap:14px}
-    .logo{
-      width:64px;height:64px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent),var(--accent-2));box-shadow:0 8px 30px rgba(123,97,255,0.12), inset 0 -6px 20px rgba(0,0,0,0.25);
-      font-weight:700;font-size:20px;color:#042638
+    /* container */
+    .wrap{
+      max-width:1100px;
+      margin:32px auto;
+      padding:20px;
+      width:calc(100% - 32px);
+      min-width:0; /* crucial to avoid overflow from flex/grid children */
     }
+
+    /* ---------------------------
+       HEADER / NAV
+       --------------------------- */
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+    }
+    .brand{display:flex;align-items:center;gap:14px;min-width:0}
+    .logo{
+      width:64px;height:64px;border-radius:14px;display:grid;place-items:center;
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      box-shadow:0 8px 30px rgba(123,97,255,0.12), inset 0 -6px 20px rgba(0,0,0,0.25);
+      font-weight:700;font-size:20px;color:#042638;flex:0 0 auto;
+    }
+    .brand .meta{min-width:0;overflow:hidden}
+    .brand .meta > div:first-child{font-weight:700;white-space:nowrap;text-overflow:ellipsis;overflow:hidden}
+    .brand .meta > div:last-child{font-size:13px;color:var(--muted);white-space:nowrap;text-overflow:ellipsis;overflow:hidden}
+
+    /* nav */
     nav{display:flex;gap:12px;align-items:center}
-    nav a{color:var(--muted);text-decoration:none;padding:8px 12px;border-radius:10px;font-weight:600}
+    nav a{color:var(--muted);text-decoration:none;padding:8px 12px;border-radius:10px;font-weight:600;white-space:nowrap}
     nav a:hover{color:var(--white);background:rgba(255,255,255,0.03)}
     .cta{background:linear-gradient(90deg,var(--accent),var(--accent-2));padding:9px 14px;border-radius:12px;color:#021427;font-weight:700;text-decoration:none}
 
-    /* Hero */
-    .hero{
-      display:grid;grid-template-columns:1fr 380px;gap:28px;align-items:center;margin-top:22px
+    /* mobile menu button */
+    .menu-toggle{
+      display:none;
+      background:transparent;border:0;color:var(--white);font-size:20px;padding:8px;border-radius:8px;
     }
-    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:18px;padding:22px;box-shadow:0 6px 30px rgba(2,6,23,0.6);backdrop-filter: blur(6px)}
-    .intro h1{font-size:34px;margin:0 0 8px 0}
-    .intro p{color:var(--muted);margin:0 0 14px}
+
+    /* ---------------------------
+       HERO
+       --------------------------- */
+    .hero{
+      display:grid;
+      grid-template-columns:1fr minmax(220px,360px); /* responsive second column */
+      gap:24px;
+      align-items:start;
+      margin-top:18px;
+      min-width:0;
+    }
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:18px;
+      padding:20px;
+      box-shadow:0 6px 30px rgba(2,6,23,0.6);
+      backdrop-filter: blur(6px);
+      overflow:hidden; /* prevents overflowing children */
+    }
+
+    .intro h1{font-size:30px;margin:0 0 8px 0}
+    .intro p{color:var(--muted);margin:0 0 14px;font-size:15px}
     .badges{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
     .badge{padding:6px 10px;background:var(--glass);border-radius:999px;color:var(--white);font-weight:600;font-size:13px}
-    .actions{display:flex;gap:10px;margin-top:10px}
-    .btn{padding:10px 14px;border-radius:12px;text-decoration:none;font-weight:700}
+
+    .actions{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap}
+    .btn{padding:10px 14px;border-radius:12px;text-decoration:none;font-weight:700;display:inline-flex;align-items:center;gap:8px}
     .btn-outline{border:1px solid rgba(255,255,255,0.06);background:transparent;color:var(--white)}
     .btn-primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#021427}
 
-    /* Profile card */
+    /* profile card */
     .profile-card{display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
-    .avatar{width:160px;height:160px;border-radius:50%;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,0.6);border:6px solid rgba(255,255,255,0.06)}
-    .avatar img{width:100%;height:100%;object-fit:cover}
+    .avatar{width:160px;height:160px;border-radius:50%;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,0.6);border:6px solid rgba(255,255,255,0.06);flex:0 0 auto}
+    .avatar img{width:100%;height:100%;object-fit:cover;display:block}
     .status{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:linear-gradient(90deg, rgba(0,194,255,0.08), rgba(123,97,255,0.06));color:var(--white);font-weight:600}
 
-    /* Quick stats */
-    .stats{display:flex;gap:12px;margin-top:12px}
-    .stat{background:rgba(255,255,255,0.02);padding:10px;border-radius:12px;min-width:90px}
+    .stats{display:flex;gap:12px;margin-top:12px;flex-wrap:wrap;justify-content:center}
+    .stat{background:rgba(255,255,255,0.02);padding:10px;border-radius:12px;min-width:80px;text-align:center}
     .stat strong{display:block;font-size:18px}
     .stat span{color:var(--muted);font-size:13px}
 
-    /* Sections */
+    /* sections & cards */
     section{margin-top:22px}
-    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
     .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
     .hobby, .project{padding:14px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));}
     .hobby i{font-size:22px;padding:10px;border-radius:10px;background:rgba(0,0,0,0.2);display:inline-block;margin-bottom:10px}
@@ -79,39 +130,67 @@
     .project h3{margin:0 0 8px}
     .project p{color:var(--muted);margin:0 0 12px}
 
-    /* Project card with details */
     .proj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
-    .project .meta{display:flex;gap:8px;align-items:center;color:var(--muted);font-size:13px}
-    .project .chip{padding:6px 8px;border-radius:999px;background:rgba(255,255,255,0.03);font-weight:700}
 
-    /* Contact */
+    /* contact layout - responsive */
+    .contact-grid{display:grid;grid-template-columns:1fr 320px;gap:12px;min-width:0}
+    .contact-grid .card{padding:16px}
+
+    /* form */
     form{display:grid;gap:10px}
-    input,textarea{padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--white);min-height:44px}
+    input,textarea,button{font-family:inherit}
+    input,textarea{padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--white);min-height:44px;outline:none}
     textarea{min-height:110px;resize:vertical}
     .muted{color:var(--muted);font-size:13px}
 
-    /* Footer */
     footer{margin-top:26px;text-align:center;color:var(--muted)}
 
-    /* Responsive */
-    @media (max-width:980px){
-      .hero{grid-template-columns:1fr}
-      .grid-3{grid-template-columns:repeat(2,1fr)}
-      nav{display:none}
-    }
-    @media (max-width:600px){
-      .grid-3{grid-template-columns:1fr}
-      .brand .logo{width:52px;height:52px}
-    }
-
-    /* micro animations */
+    /* small helpers */
     .float{animation:float 6s ease-in-out infinite}
     @keyframes float{0%{transform:translateY(0)}50%{transform:translateY(-8px)}100%{transform:translateY(0)}}
-
-    /* subtle entrance */
     .reveal{opacity:0;transform:translateY(12px);transition:all 600ms cubic-bezier(.2,.9,.3,1)}
     .reveal.show{opacity:1;transform:none}
 
+    /* accessible focus outlines */
+    :focus{outline:3px solid rgba(0,194,255,0.12);outline-offset:3px}
+
+    /* ---------------------------
+       RESPONSIVE BREAKPOINTS
+       --------------------------- */
+    @media (max-width:980px){
+      .hero{grid-template-columns:1fr} /* stack hero on narrower screens */
+      .grid-3{grid-template-columns:repeat(2,1fr)}
+      nav{display:none} /* hide desktop nav, show menu button */
+      .menu-toggle{display:inline-flex}
+      .contact-grid{grid-template-columns:1fr} /* stack contact form & aside */
+      .intro h1{font-size:26px}
+      .avatar{width:140px;height:140px}
+    }
+
+    @media (max-width:600px){
+      .grid-3{grid-template-columns:1fr}
+      .brand .logo{width:52px;height:52px}
+      .intro h1{font-size:22px}
+      .hero{gap:16px}
+      .avatar{width:120px;height:120px}
+    }
+
+    /* modal overlay & card - responsive */
+    #modal{
+      position:fixed;inset:0;display:none;align-items:center;justify-content:center;
+      background:linear-gradient(180deg,rgba(2,6,23,0.6),rgba(2,6,23,0.85));
+      z-index:1200;padding:20px;
+    }
+    #modalCard{
+      max-width:760px;width:100%;background:linear-gradient(180deg, #081022, #06101b);border-radius:12px;padding:18px;
+      box-shadow:0 20px 60px rgba(2,6,23,0.7);position:relative;max-height:85vh;overflow:auto;
+    }
+
+    /* avoid long word overflow in small cards */
+    .card, p, li, h1, h2, h3 {word-wrap:break-word;hyphens:auto}
+
+    /* reduce default anchor tap highlight on mobile */
+    a{-webkit-tap-highlight-color: rgba(255,255,255,0.06)}
   </style>
 </head>
 <body>
@@ -119,12 +198,19 @@
     <header>
       <div class="brand">
         <div class="logo" aria-hidden="true">SP</div>
-        <div>
-          <div style="font-weight:700">Sameer Pasha</div>
+        <div class="meta">
+          <div>Sameer Pasha</div>
           <div style="font-size:13px;color:var(--muted)">10th Grade • Tech Explorer • Kabaddi</div>
         </div>
       </div>
-      <nav aria-label="Primary">
+
+      <!-- mobile menu toggle -->
+      <button class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="mobileNav">
+        <i class="fas fa-bars"></i>
+      </button>
+
+      <!-- desktop nav -->
+      <nav aria-label="Primary" id="desktopNav">
         <a href="#about">About</a>
         <a href="#projects">Projects</a>
         <a href="#hobbies">Hobbies</a>
@@ -132,6 +218,17 @@
         <a class="cta" href="#contact">Collaborate</a>
       </nav>
     </header>
+
+    <!-- MOBILE NAV (hidden by default) -->
+    <nav id="mobileNav" style="display:none;margin-top:12px;gap:8px;flex-direction:column">
+      <div class="card" style="padding:10px;display:flex;flex-direction:column;gap:8px">
+        <a href="#about" onclick="toggleMobileNav(false)">About</a>
+        <a href="#projects" onclick="toggleMobileNav(false)">Projects</a>
+        <a href="#hobbies" onclick="toggleMobileNav(false)">Hobbies</a>
+        <a href="#contact" onclick="toggleMobileNav(false)">Contact</a>
+        <a class="cta" href="#contact" onclick="toggleMobileNav(false)">Collaborate</a>
+      </div>
+    </nav>
 
     <!-- HERO -->
     <div class="hero">
@@ -160,7 +257,7 @@
         </div>
         <div style="font-weight:700">Sameer Pasha</div>
         <div style="font-size:13px;color:var(--muted)">10th Grade Student • Young Maker</div>
-        <div class="status"><i class="fas fa-flask"></i> Experimenting</div>
+        <div class="status"><i class="fas fa-flask" aria-hidden="true"></i> Experimenting</div>
 
         <div class="stats" style="margin-top:12px">
           <div class="stat"><strong>12+</strong><span>Projects</span></div>
@@ -172,10 +269,10 @@
 
     <!-- ABOUT -->
     <section id="about" class="reveal">
-      <h2 style="color:var(--accent)"><i class="fas fa-user"></i> About Me</h2>
+      <h2 style="color:var(--accent)"><i class="fas fa-user" aria-hidden="true"></i> About Me</h2>
       <p class="muted">I enjoy learning by doing. I experiment with simple physics projects, repair keyboards and electronics, and build websites to share what I learn. I aim to make projects that teach others and spark curiosity.</p>
 
-      <div class="grid-2" style="margin-top:12px">
+      <div class="grid-2" style="margin-top:12px;min-width:0">
         <div class="card reveal">
           <h3>What I build</h3>
           <ul style="color:var(--muted);margin-top:8px;line-height:1.6">
@@ -198,34 +295,34 @@
 
     <!-- PROJECTS -->
     <section id="projects" class="reveal">
-      <h2 style="color:var(--accent)"><i class="fas fa-project-diagram"></i> Projects</h2>
+      <h2 style="color:var(--accent)"><i class="fas fa-project-diagram" aria-hidden="true"></i> Projects</h2>
       <div class="proj-grid" style="margin-top:12px">
 
         <article class="project card" tabindex="0" onclick="openProject(event, 'proj-monkey')">
-          <div class="meta"><span class="chip">Experiment</span><span class="muted">Physics</span></div>
+          <div class="meta"><span class="chip">Experiment</span><span class="muted" style="margin-left:8px">Physics</span></div>
           <h3>Monkey Gun — Motion Demo</h3>
           <p>A controlled physics demonstration showing projectile motion and energy transfer (safety first — supervised).</p>
-          <div style="display:flex;gap:8px;margin-top:12px">
+          <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
             <a class="btn btn-outline" href="#" onclick="event.stopPropagation();openProject(event,'proj-monkey')">View details</a>
             <a class="btn btn-outline" href="#" onclick="event.stopPropagation();alert('Safety guide: Always wear goggles and have an adult present.')">Safety</a>
           </div>
         </article>
 
         <article class="project card" tabindex="0" onclick="openProject(event,'proj-keyboard')">
-          <div class="meta"><span class="chip">Repair</span><span class="muted">Electronics</span></div>
+          <div class="meta"><span class="chip">Repair</span><span class="muted" style="margin-left:8px">Electronics</span></div>
           <h3>Keyboard Repair — Restoration</h3>
           <p>Disassembled and cleaned mechanical keyboards, replaced switches, and taught classmates simple troubleshooting tips.</p>
-          <div style="display:flex;gap:8px;margin-top:12px">
+          <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
             <a class="btn btn-outline" href="#" onclick="event.stopPropagation();openProject(event,'proj-keyboard')">Read notes</a>
             <a class="btn btn-outline" href="#" onclick="event.stopPropagation();alert('Tools: screwdriver set, contact cleaner, soft brush')">Tools</a>
           </div>
         </article>
 
         <article class="project card" tabindex="0" onclick="openProject(event,'proj-site')">
-          <div class="meta"><span class="chip">Web</span><span class="muted">Portfolio</span></div>
+          <div class="meta"><span class="chip">Web</span><span class="muted" style="margin-left:8px">Portfolio</span></div>
           <h3>Personal Website</h3>
           <p>Built a single-file website to share projects, hobbies and contact details. Continuous improvements planned.</p>
-          <div style="display:flex;gap:8px;margin-top:12px">
+          <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
             <a class="btn btn-outline" href="#" onclick="event.stopPropagation();openProject(event,'proj-site')">Source</a>
             <a class="btn btn-outline" href="#contact" onclick="event.stopPropagation();">Contact</a>
           </div>
@@ -236,25 +333,26 @@
 
     <!-- HOBBIES -->
     <section id="hobbies" class="reveal">
-      <h2 style="color:var(--accent)"><i class="fas fa-heart"></i> Hobbies & Interests</h2>
-      <div class="grid-3" style="margin-top:12px">
-        <div class="hobby card reveal"><i class="fas fa-flask"></i><h3>Experiments</h3><p class="muted">Hands-on demos to learn physics and chemistry concepts safely.</p></div>
-        <div class="hobby card reveal"><i class="fas fa-keyboard"></i><h3>Keyboard Repair</h3><p class="muted">Cleaning, swapping switches, and restoring old keyboards.</p></div>
-        <div class="hobby card reveal"><i class="fas fa-running"></i><h3>Kabaddi</h3><p class="muted">Team sport — I enjoy strategy and endurance training with my team.</p></div>
+      <h2 style="color:var(--accent)"><i class="fas fa-heart" aria-hidden="true"></i> Hobbies & Interests</h2>
+      <div class="grid-3" style="margin-top:12px;min-width:0">
+        <div class="hobby card reveal"><i class="fas fa-flask" aria-hidden="true"></i><h3>Experiments</h3><p class="muted">Hands-on demos to learn physics and chemistry concepts safely.</p></div>
+        <div class="hobby card reveal"><i class="fas fa-keyboard" aria-hidden="true"></i><h3>Keyboard Repair</h3><p class="muted">Cleaning, swapping switches, and restoring old keyboards.</p></div>
+        <div class="hobby card reveal"><i class="fas fa-running" aria-hidden="true"></i><h3>Kabaddi</h3><p class="muted">Team sport — I enjoy strategy and endurance training with my team.</p></div>
       </div>
     </section>
 
     <!-- CONTACT -->
     <section id="contact" class="reveal">
-      <h2 style="color:var(--accent)"><i class="fas fa-envelope"></i> Contact & Collaborate</h2>
-      <div style="display:grid;grid-template-columns:1fr 320px;gap:12px;margin-top:12px">
+      <h2 style="color:var(--accent)"><i class="fas fa-envelope" aria-hidden="true"></i> Contact & Collaborate</h2>
+
+      <div class="contact-grid" style="margin-top:12px;min-width:0">
         <div class="card">
           <form id="contactForm" onsubmit="submitContact(event)">
             <input id="name" type="text" placeholder="Your name" required />
             <input id="email" type="email" placeholder="Your email" required />
             <input id="subject" type="text" placeholder="Subject" />
             <textarea id="message" placeholder="Message" required></textarea>
-            <div style="display:flex;gap:8px">
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
               <button class="btn btn-primary" type="submit">Send message</button>
               <button class="btn btn-outline" type="button" onclick="downloadResume()">Download Resume</button>
             </div>
@@ -278,45 +376,102 @@
   </div>
 
   <!-- Project Modal (lightweight) -->
-  <div id="modal" style="position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:linear-gradient(180deg,rgba(2,6,23,0.6),rgba(2,6,23,0.85));z-index:1200;padding:20px">
-    <div id="modalCard" style="max-width:760px;width:100%;background:linear-gradient(180deg, #081022, #06101b);border-radius:12px;padding:18px;box-shadow:0 20px 60px rgba(2,6,23,0.7);position:relative">
+  <div id="modal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div id="modalCard" role="document">
       <button aria-label="close" onclick="closeModal()" style="position:absolute;right:12px;top:12px;border:0;background:transparent;color:var(--muted);font-size:18px"><i class="fas fa-times"></i></button>
-      <div id="modalContent"></div>
+      <div id="modalContent" style="padding-top:8px"></div>
     </div>
   </div>
 
   <script>
-    // Small helpers
-    function revealAll(){document.querySelectorAll('.reveal').forEach(el=>{setTimeout(()=>el.classList.add('show'),50)});}    
-    document.addEventListener('DOMContentLoaded',()=>{revealAll();document.getElementById('year').textContent=new Date().getFullYear();});
+    // small helpers
+    function revealAll(){
+      document.querySelectorAll('.reveal').forEach((el,idx)=>{
+        setTimeout(()=>el.classList.add('show'), 60 + idx*80);
+      });
+    }
+    document.addEventListener('DOMContentLoaded',()=>{
+      revealAll();
+      document.getElementById('year').textContent = new Date().getFullYear();
+    });
 
+    // PROJECT DATA
     function openProject(e, id){
+      if(e) e.preventDefault();
       const content = {
-        'proj-monkey': `<h2>Monkey Gun — Motion Demo</h2><p class=\"muted\">Description: A safe demonstration to explain projectile motion and energy transfer. Performed only under supervision. The goal was to observe how angle and force change range.</p><h4>What I learned</h4><ul class=\"muted\"><li>How initial angle affects distance</li><li>Importance of measurement and repeatability</li><li>Always build safety checks and shields</li></ul>`,
-        'proj-keyboard': `<h2>Keyboard Repair</h2><p class=\"muted\">I disassembled mechanical keyboards, cleaned contacts, and replaced broken switches. I documented problems and solutions to teach others.</p><h4>Tips</h4><ul class=\"muted\"><li>Take photos while disassembling</li><li>Use a soft brush and isopropyl alcohol</li><li>Label screws and springs</li></ul>`,
-        'proj-site': `<h2>Personal Website</h2><p class=\"muted\">This single-file project shows my skills. I keep improving layout, accessibility and content so others can learn from my process.</p><h4>Next steps</h4><ul class=\"muted\"><li>Make a documentation page for experiments</li><li>Publish safe step-by-step guides</li></ul>`
+        'proj-monkey': `<h2>Monkey Gun — Motion Demo</h2>
+          <p class="muted">A safe demonstration to explain projectile motion and energy transfer. Performed only under supervision. The goal was to observe how angle and force change range.</p>
+          <h4>What I learned</h4>
+          <ul class="muted"><li>How initial angle affects distance</li><li>Importance of measurement and repeatability</li><li>Always build safety checks and shields</li></ul>`,
+        'proj-keyboard': `<h2>Keyboard Repair</h2>
+          <p class="muted">I disassembled mechanical keyboards, cleaned contacts, and replaced broken switches. I documented problems and solutions to teach others.</p>
+          <h4>Tips</h4>
+          <ul class="muted"><li>Take photos while disassembling</li><li>Use a soft brush and isopropyl alcohol</li><li>Label screws and springs</li></ul>`,
+        'proj-site': `<h2>Personal Website</h2>
+          <p class="muted">This single-file project shows my skills. I keep improving layout, accessibility and content so others can learn from my process.</p>
+          <h4>Next steps</h4>
+          <ul class="muted"><li>Make a documentation page for experiments</li><li>Publish safe step-by-step guides</li></ul>`
       };
       document.getElementById('modalContent').innerHTML = content[id] || '<p class="muted">Details coming soon.</p>';
-      document.getElementById('modal').style.display = 'flex';
+      const modal = document.getElementById('modal');
+      modal.style.display = 'flex';
+      modal.setAttribute('aria-hidden','false');
+      // prevent body scroll while modal open
+      document.body.style.overflow = 'hidden';
+      // focus management - shift focus to close button
+      setTimeout(()=>{ const closeBtn = modal.querySelector('button[aria-label="close"]'); if(closeBtn) closeBtn.focus(); },50);
     }
-    function closeModal(){document.getElementById('modal').style.display='none'}
+    function closeModal(){
+      const modal = document.getElementById('modal');
+      modal.style.display = 'none';
+      modal.setAttribute('aria-hidden','true');
+      document.body.style.overflow = '';
+    }
 
-    // Contact form (local only) - simulate send
+    // contact form (local only)
     function submitContact(e){
       e.preventDefault();
       var name=document.getElementById('name').value.trim();
       var email=document.getElementById('email').value.trim();
       var msg=document.getElementById('message').value.trim();
-      if(!name||!email||!msg){document.getElementById('formMsg').textContent='Please fill required fields.';return}
+      if(!name||!email||!msg){
+        document.getElementById('formMsg').textContent='Please fill required fields.';
+        return;
+      }
       document.getElementById('formMsg').textContent='Message sent — thank you! (local demo)';
       document.getElementById('contactForm').reset();
       setTimeout(()=>document.getElementById('formMsg').textContent='',3000);
     }
-    function downloadResume(){alert('Resume download placeholder — add a real resume file named resume.pdf to enable.');}
-    function scrollToTop(){window.scrollTo({top:0,behavior:'smooth'})}
+    function downloadResume(){ alert('Resume download placeholder — add a real resume.pdf to enable.'); }
+    function scrollToTop(){ window.scrollTo({top:0,behavior:'smooth'}) }
 
-    // Accessibility: close modal with Esc
-    document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeModal();}});
+    // keyboard accessibility - close modal with Esc
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'Escape') closeModal();
+    });
+
+    /* -----------------------
+       MOBILE NAV TOGGLE
+       ----------------------- */
+    const menuToggle = document.getElementById('menuToggle');
+    const mobileNav = document.getElementById('mobileNav');
+    menuToggle && menuToggle.addEventListener('click', ()=>{
+      const isOpen = mobileNav.style.display === 'flex';
+      toggleMobileNav(!isOpen);
+    });
+    function toggleMobileNav(show){
+      mobileNav.style.display = show ? 'flex' : 'none';
+      menuToggle.setAttribute('aria-expanded', !!show);
+    }
+
+    // prevent potential layout shifts by ensuring images don't exceed container
+    window.addEventListener('load', ()=> {
+      document.querySelectorAll('img').forEach(img=>{
+        img.style.maxWidth = '100%';
+        img.style.height = 'auto';
+        img.style.display = 'block';
+      });
+    });
   </script>
 </body>
 </html>
