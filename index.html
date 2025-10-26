@@ -2,753 +2,1122 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Portfolio of Sameer Pasha, a 10th-grade student passionate about tech, experiments, and kabaddi." />
+  <meta name="theme-color" content="#0f1724" />
   <title>Sameer Pasha — Creative Portfolio</title>
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
   <!-- Fonts & icons -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
 
   <style>
-    /* ---------------------------
-       Theme variables & base (kept from your CSS, slight tweaks)
-       --------------------------- */
-:root{
-  --bg: #0f1724;
-  --bg-2: #081022;
-  --card: rgba(255,255,255,0.03);
-  --glass: rgba(255,255,255,0.06);
-  --accent: #00c2ff;
-  --accent-2: #7b61ff;
-  --muted: #94a3b8;
-  --text: #f8fafc;
-  --shadow: 0 10px 30px rgba(2,6,23,0.55);
-  --radius-lg: 18px;
-  --radius-md: 12px;
-  --max-width: 1100px;
-  --gap: 18px;
-  --card-padding: 20px;
-}
-
-/* Reset & base */
-*,
-*::before,
-*::after { box-sizing: border-box; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
-html,body { height:100%; margin:0; padding:0; }
-html, body { background: radial-gradient(1200px 600px at 10% 10%, rgba(123,97,255,0.06), transparent),
-                    radial-gradient(800px 500px at 90% 90%, rgba(0,194,255,0.03), transparent),
-                    var(--bg); color:var(--text); font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, Arial; }
-body { line-height:1.5; overflow-x:hidden; padding-bottom:60px; }
-
-.wrap {
-  max-width: var(--max-width);
-  margin: 32px auto;
-  padding: 22px;
-  width: calc(100% - 32px);
-  min-width: 0;
-  position:relative;
-}
-
-/* header */
-header {
-  display:flex; align-items:center; justify-content:space-between; gap:12px;
-  margin-bottom: 6px;
-}
-.brand { display:flex; align-items:center; gap:12px; min-width:0; }
-.logo {
-  width:64px; height:64px; border-radius:14px; display:grid; place-items:center;
-  background: linear-gradient(135deg, var(--accent), var(--accent-2));
-  box-shadow: 0 10px 30px rgba(123,97,255,0.12), inset 0 -6px 16px rgba(0,0,0,0.25);
-  font-weight:700; font-size:20px; color:#042638; flex:0 0 auto;
-}
-.brand .meta { min-width:0; overflow:hidden; }
-.brand .meta > div:first-child { font-weight:700; white-space:nowrap; text-overflow:ellipsis; overflow:hidden; }
-.brand .meta > div:last-child { font-size:13px; color:var(--muted); white-space:nowrap; text-overflow:ellipsis; overflow:hidden; }
-
-/* nav */
-nav#desktopNav { display:flex; gap:10px; align-items:center; }
-nav a {
-  color:var(--muted); text-decoration:none; padding:8px 12px; border-radius:10px; font-weight:600; transition: all .18s ease;
-}
-nav a:hover, nav a:focus { color:var(--text); background: rgba(255,255,255,0.03); transform: translateY(-1px); }
-a.cta { background: linear-gradient(90deg,var(--accent),var(--accent-2)); color:#021427; padding:9px 14px; border-radius:12px; font-weight:700; }
-
-/* mobile */
-.menu-toggle {
-  display:none; background:transparent; border:0; color:var(--text); font-size:20px; padding:8px; border-radius:10px;
-}
-.menu-toggle:focus { outline:3px solid rgba(0,194,255,0.12); outline-offset:3px }
-
-/* hero */
-.hero {
-  display:grid;
-  grid-template-columns: 1fr minmax(200px, 360px);
-  gap: var(--gap);
-  align-items:start;
-  margin-top: 18px;
-  min-width:0;
-}
-
-/* card */
-.card {
-  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-  border-radius: var(--radius-lg);
-  padding: var(--card-padding);
-  box-shadow: var(--shadow);
-  backdrop-filter: blur(6px);
-  overflow:hidden;
-}
-
-/* intro */
-.intro h1 { font-size: 30px; margin: 0 0 10px 0; letter-spacing: -0.2px; }
-.intro p { color:var(--muted); margin: 0 0 14px; font-size:15px; }
-.badges { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px; }
-.badge { padding:6px 10px; background:var(--glass); border-radius:999px; color:var(--text); font-weight:600; font-size:13px; }
-
-/* actions */
-.actions { display:flex; gap:10px; margin-top:8px; flex-wrap:wrap; }
-.btn { padding:10px 14px; border-radius:12px; text-decoration:none; font-weight:700; display:inline-flex; align-items:center; gap:8px; cursor:pointer; border:0; }
-.btn-primary { background: linear-gradient(90deg,var(--accent),var(--accent-2)); color:#021427; }
-.btn-outline { background:transparent; color:var(--text); border:1px solid rgba(255,255,255,0.06); }
-
-/* profile card */
-.profile-card { display:flex; flex-direction:column; align-items:center; gap:12px; text-align:center; }
-.avatar { width:160px; height:160px; border-radius:50%; overflow:hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.6); border:6px solid rgba(255,255,255,0.06); flex:0 0 auto; }
-.avatar img { width:100%; height:100%; object-fit:cover; display:block; }
-.status { display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius:999px; background:linear-gradient(90deg, rgba(0,194,255,0.06), rgba(123,97,255,0.04)); color:var(--text); font-weight:600; }
-
-/* stats */
-.stats { display:flex; gap:12px; margin-top:12px; flex-wrap:wrap; justify-content:center; }
-.stat { background: rgba(255,255,255,0.02); padding:10px; border-radius:12px; min-width:84px; text-align:center; }
-.stat strong { display:block; font-size:18px; }
-.stat span { color:var(--muted); font-size:13px; }
-
-/* lists and text */
-ul, ol { margin: 8px 0 0 18px; padding: 0; color:var(--muted); line-height:1.6; }
-li { margin-bottom:8px; }
-
-/* projects grid */
-.proj-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap:12px; }
-
-/* project/hobby card */
-.project .meta, .project .chip { display:flex; gap:8px; align-items:center; color:var(--muted); font-size:13px; }
-.project .chip { padding:6px 8px; border-radius:999px; background: rgba(255,255,255,0.03); font-weight:700; }
-
-/* contact */
-.contact-grid { display:grid; grid-template-columns: 1fr 320px; gap:12px; min-width:0; }
-
-/* form */
-form { display:grid; gap:10px; }
-input, textarea, button { font-family:inherit; }
-input, textarea {
-  padding:12px; border-radius:10px; border:1px solid rgba(255,255,255,0.04); background:transparent; color:var(--text);
-  min-height:44px; outline:none; transition: border-color .15s ease, box-shadow .15s ease;
-}
-input:focus, textarea:focus { border-color: rgba(0,194,255,0.28); box-shadow: 0 4px 18px rgba(0,194,255,0.06); }
-textarea { min-height:110px; resize:vertical; }
-
-/* footer */
-footer { margin-top:28px; text-align:center; color:var(--muted); font-size:14px; }
-
-/* micro-animations */
-.float { animation: float 6s ease-in-out infinite; }
-@keyframes float { 0%{transform:translateY(0)} 50%{transform:translateY(-8px)} 100%{transform:translateY(0)} }
-.reveal { opacity:0; transform:translateY(12px); transition: all 520ms cubic-bezier(.2,.9,.3,1); }
-.reveal.show { opacity:1; transform:none; }
-
-/* focus outlines */
-:focus { outline: 3px solid rgba(0,194,255,0.12); outline-offset:3px; }
-
-/* breakpoints */
-@media (max-width:980px) {
-  .hero { grid-template-columns: 1fr; }
-  .contact-grid { grid-template-columns: 1fr; }
-  nav#desktopNav { display:none; }
-  .menu-toggle { display:inline-flex; }
-  .intro h1 { font-size:26px; }
-  .avatar { width:140px; height:140px; }
-}
-@media (max-width:420px) {
-  .wrap { padding:14px; }
-  .logo { width:52px; height:52px; font-size:18px; }
-  .intro h1 { font-size:20px; }
-  .avatar { width:120px; height:120px; border-width:5px; }
-  .btn { padding:9px 12px; font-size:14px; }
-}
-
-/* modal */
-#modal {
-  position:fixed; inset:0; display:none; align-items:center; justify-content:center;
-  background: linear-gradient(180deg, rgba(2,6,23,0.6), rgba(2,6,23,0.85)); z-index:1200; padding:20px;
-}
-#modal[aria-hidden="false"]{ display:flex; }
-#modalCard {
-  max-width:760px; width:100%; background: linear-gradient(180deg, var(--bg-2), #06101b); border-radius:12px; padding:20px;
-  box-shadow: 0 30px 80px rgba(0,0,0,0.7); position:relative; max-height:85vh; overflow:auto;
-}
-
-/* particles */
-.particles {
-  position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden;
-}
-.particle {
-  position:absolute; width:4px; height:4px; border-radius:50%;
-  background:var(--accent); opacity:0.22; transform-origin:center;
-  animation:particleFloat 14s linear infinite;
-}
-@keyframes particleFloat {
-  0% { transform: translateY(100vh) scale(.2); opacity:0; }
-  30% { opacity:0.4; }
-  70% { opacity:0.2; }
-  100% { transform: translateY(-10vh) scale(0.1); opacity:0; }
-}
-
-/* small niceties */
-.card:hover { transform: translateY(-4px); transition: transform .22s ease; }
-.truncate { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-
-
-/* Experience section */
-    #experience {
-      margin-top: 28px;
+    :root {
+      --bg: #0f1724;
+      --bg-2: #081022;
+      --card: rgba(255, 255, 255, 0.03);
+      --glass: rgba(255, 255, 255, 0.06);
+      --accent: #00c2ff;
+      --accent-2: #7b61ff;
+      --muted: #94a3b8;
+      --text: #f8fafc;
+      --shadow: 0 10px 30px rgba(2, 6, 23, 0.55);
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --max-width: 1100px;
+      --gap: 18px;
+      --card-padding: 20px;
+      --transition: all 0.22s ease;
     }
-    #experience h2 {
-      color: var(--accent);
-      margin-bottom: 12px;
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
-    .exp-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+
+    html,
+    body {
+      height: 100%;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(123, 97, 255, 0.06), transparent),
+        radial-gradient(800px 500px at 90% 90%, rgba(0, 194, 255, 0.03), transparent), var(--bg);
+      color: var(--text);
+      font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    body {
+      padding-bottom: 60px;
+    }
+
+    .wrap {
+      max-width: var(--max-width);
+      margin: 32px auto;
+      padding: 22px;
+      width: calc(100% - 32px);
+      min-width: 0;
+      position: relative;
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       gap: 12px;
-      margin-top: 12px;
+      margin-bottom: 6px;
     }
-    .exp-card {
-      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .logo {
+      width: 64px;
+      height: 64px;
+      border-radius: var(--radius-md);
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      box-shadow: 0 10px 30px rgba(123, 97, 255, 0.12), inset 0 -6px 16px rgba(0, 0, 0, 0.25);
+      font-weight: 700;
+      font-size: 20px;
+      color: #042638;
+      flex: 0 0 auto;
+      transition: var(--transition);
+    }
+
+    .brand .meta {
+      min-width: 0;
+      overflow: hidden;
+    }
+
+    .brand .meta > div:first-child {
+      font-weight: 700;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+
+    .brand .meta > div:last-child {
+      font-size: 13px;
+      color: var(--muted);
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+
+    /* Navigation */
+    .nav {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .nav a {
+      color: var(--muted);
+      text-decoration: none;
+      padding: 8px 12px;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      transition: var(--transition);
+    }
+
+    .nav a:hover,
+    .nav a:focus {
+      color: var(--text);
+      background: var(--glass);
+      transform: translateY(-1px);
+    }
+
+    .cta {
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      color: #021427;
+      padding: 9px 14px;
+      border-radius: var(--radius-md);
+      font-weight: 700;
+    }
+
+    .menu-toggle {
+      display: none;
+      background: transparent;
+      border: 0;
+      color: var(--text);
+      font-size: 20px;
+      padding: 8px;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+    }
+
+    .menu-toggle:focus {
+      outline: 3px solid rgba(0, 194, 255, 0.12);
+      outline-offset: 3px;
+    }
+
+    /* Hero */
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr minmax(200px, 360px);
+      gap: var(--gap);
+      align-items: start;
+      margin-top: 18px;
+      min-width: 0;
+    }
+
+    /* Card */
+    .card {
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
       border-radius: var(--radius-lg);
       padding: var(--card-padding);
       box-shadow: var(--shadow);
       backdrop-filter: blur(6px);
       overflow: hidden;
+      transition: transform var(--transition);
     }
-    .exp-card h3 {
-      margin: 0 0 8px 0;
+
+    .card:hover {
+      transform: translateY(-4px);
     }
-    .exp-card p {
+
+    /* Intro */
+    .intro h1 {
+      font-size: 30px;
+      margin: 0 0 10px 0;
+      letter-spacing: -0.2px;
+    }
+
+    .intro p {
       color: var(--muted);
-      margin: 0;
+      margin: 0 0 14px;
+      font-size: 15px;
     }
-    
+
+    .badges {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .badge {
+      padding: 6px 10px;
+      background: var(--glass);
+      border-radius: 999px;
+      color: var(--text);
+      font-weight: 600;
+      font-size: 13px;
+    }
+
+    /* Actions */
+    .actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 10px 14px;
+      border-radius: var(--radius-md);
+      text-decoration: none;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      border: 0;
+      transition: var(--transition);
+    }
+
+    .btn-primary {
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      color: #021427;
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--glass);
+    }
+
+    .btn:hover,
+    .btn:focus {
+      filter: brightness(1.1);
+    }
+
+    /* Profile Card */
+    .profile-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      text-align: center;
+    }
+
+    .avatar {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+      border: 6px solid var(--glass);
+      flex: 0 0 auto;
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, rgba(0, 194, 255, 0.06), rgba(123, 97, 255, 0.04));
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    /* Stats */
+    .stats {
+      display: flex;
+      gap: 12px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .stat {
+      background: rgba(255, 255, 255, 0.02);
+      padding: 10px;
+      border-radius: var(--radius-md);
+      min-width: 84px;
+      text-align: center;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 18px;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* Lists and Text */
+    ul,
+    ol {
+      margin: 8px 0 0 18px;
+      padding: 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    li {
+      margin-bottom: 8px;
+    }
+
+    /* Grids */
+    .grid-2,
+    .grid-3,
+    .proj-grid,
+    .exp-grid {
+      display: grid;
+      gap: var(--gap);
+      margin-top: 12px;
+      min-width: 0;
+    }
+
+    .grid-2 {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .grid-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .proj-grid,
+    .exp-grid {
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    }
+
+    /* Project/Hobby Card */
+    .project .meta,
+    .project .chip {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .project .chip {
+      padding: 6px 8px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.03);
+      font-weight: 700;
+    }
+
+    /* Contact */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: var(--gap);
+      margin-top: 12px;
+      min-width: 0;
+    }
+
+    /* Form */
+    form {
+      display: grid;
+      gap: 10px;
+    }
+
+    input,
+    textarea,
+    button {
+      font-family: inherit;
+    }
+
+    input,
+    textarea {
+      padding: 12px;
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      background: transparent;
+      color: var(--text);
+      min-height: 44px;
+      outline: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    input:focus,
+    textarea:focus {
+      border-color: rgba(0, 194, 255, 0.28);
+      box-shadow: 0 4px 18px rgba(0, 194, 255, 0.06);
+    }
+
+    textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    /* Footer */
+    footer {
+      margin-top: 28px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    /* Animations */
+    .float {
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-8px);
+      }
+      100% {
+        transform: translateY(0);
+      }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(12px);
+      transition: all 520ms cubic-bezier(0.2, 0.9, 0.3, 1);
+    }
+
+    .reveal.show {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* Focus Outlines */
+    :focus {
+      outline: 3px solid rgba(0, 194, 255, 0.12);
+      outline-offset: 3px;
+    }
+
+    /* Breakpoints */
+    @media (max-width: 980px) {
+      .hero,
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
+      .nav#desktopNav {
+        display: none;
+      }
+      .menu-toggle {
+        display: inline-flex;
+      }
+      .intro h1 {
+        font-size: 26px;
+      }
+      .avatar {
+        width: 140px;
+        height: 140px;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .grid-2,
+      .grid-3 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .wrap {
+        padding: 14px;
+      }
+      .logo {
+        width: 52px;
+        height: 52px;
+        font-size: 18px;
+      }
+      .intro h1 {
+        font-size: 20px;
+      }
+      .avatar {
+        width: 120px;
+        height: 120px;
+        border-width: 5px;
+      }
+      .btn {
+        padding: 9px 12px;
+        font-size: 14px;
+      }
+    }
+
+    /* Modal */
+    #modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(180deg, rgba(2, 6, 23, 0.6), rgba(2, 6, 23, 0.85));
+      z-index: 1200;
+      padding: 20px;
+    }
+
+    #modal[aria-hidden="false"] {
+      display: flex;
+    }
+
+    #modalCard {
+      max-width: 760px;
+      width: 100%;
+      background: linear-gradient(180deg, var(--bg-2), #06101b);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7);
+      position: relative;
+      max-height: 85vh;
+      overflow: auto;
+    }
+
+    #modalClose {
+      position: absolute;
+      right: 12px;
+      top: 12px;
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      font-size: 18px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    #modalClose:hover {
+      color: var(--text);
+    }
+
+    /* Particles */
+    .particles {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--accent);
+      opacity: 0.22;
+      transform-origin: center;
+      animation: particleFloat 14s linear infinite;
+    }
+
+    @keyframes particleFloat {
+      0% {
+        transform: translateY(100vh) scale(0.2);
+        opacity: 0;
+      }
+      30% {
+        opacity: 0.4;
+      }
+      70% {
+        opacity: 0.2;
+      }
+      100% {
+        transform: translateY(-10vh) scale(0.1);
+        opacity: 0;
+      }
+    }
+
+    /* Loading Spinner */
+    .spinner {
+      border: 4px solid var(--glass);
+      border-top: 4px solid var(--accent);
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
   </style>
 </head>
 <body>
   <div class="particles" id="particles" aria-hidden="true"></div>
-
   <div class="wrap">
-
-
     <header>
       <div class="brand">
         <div class="logo" aria-hidden="true">SP</div>
-        <div class="meta" aria-hidden="false">
+        <div class="meta">
           <div>Sameer Pasha</div>
-          <div style="font-size:13px;color:var(--muted)">10th Grade • Tech Explorer • Kabaddi</div>
+          <div style="font-size: 13px; color: var(--muted)">10th Grade • Tech Explorer • Kabaddi</div>
         </div>
       </div>
-
       <button class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="mobileNav" aria-label="Toggle menu">
         <i class="fas fa-bars" aria-hidden="true"></i>
       </button>
-
-      <nav aria-label="Primary navigation" id="desktopNav">
-        <a href="#about">About</a>
-        <a href="#projects">Projects</a>
-        <a href="#experience">Experience</a> <!-- New Experience link -->
-        <a href="#hobbies">Hobbies</a>
-        <a href="#contact">Contact</a>
-        <a class="cta" href="#contact">Collaborate</a>
-      </nav>
+      <nav aria-label="Primary navigation" id="desktopNav" class="nav"></nav>
     </header>
-
-    
-
-    <!-- MOBILE NAV -->
-    <nav id="mobileNav" style="display:none;margin-top:12px;gap:8px;flex-direction:column" aria-hidden="true">
-      <div class="card" style="padding:10px;display:flex;flex-direction:column;gap:8px">
-        <a href="#about" onclick="toggleMobileNav(false)">About</a>
-        <a href="#projects" onclick="toggleMobileNav(false)">Projects</a>
-        <a href="#experience" onclick="toggleMobileNav(false)">Experience</a> <!-- New Experience link -->
-        <a href="#hobbies" onclick="toggleMobileNav(false)">Hobbies</a>
-        <a href="#contact" onclick="toggleMobileNav(false)">Contact</a>
-        <a class="cta" href="#contact" onclick="toggleMobileNav(false)">Collaborate</a>
-      </div>
+    <nav id="mobileNav" class="nav" style="display: none; margin-top: 12px; gap: 8px; flex-direction: column" aria-hidden="true">
+      <div class="card" style="padding: 10px; display: flex; flex-direction: column; gap: 8px"></div>
     </nav>
-
-    
-
-    <!-- HERO -->
-    <div class="hero">
-      <div class="card intro reveal" id="intro" tabindex="-1">
-        <h1>Hi — I'm Sameer. I build, tinker and play.</h1>
-        <p>10th grade student from India. I love experiments (safe and creative), repairing electronics, and building small web projects. I also play kabaddi — teamwork and strategy inspire my tinkering.</p>
-
-        <div class="badges" aria-hidden="true">
-          <span class="badge">HTML • Web Dev</span>
-          <span class="badge">Keyboard Repair</span>
-          <span class="badge">Science Experiments</span>
-          <span class="badge">Kabaddi Player</span>
-        </div>
-
-        <div class="actions">
-          <a class="btn btn-primary" href="#projects">See Projects</a>
-          <a class="btn btn-outline" href="#contact">Contact Me</a>
-        </div>
-
-        <div style="margin-top:16px;color:var(--muted);font-size:13px">Tip: Click any project to learn what you tried and what you learned — not just what worked.</div>
-      </div>
-
-      <aside class="card profile-card reveal" id="profile" aria-labelledby="profileName">
-        <div class="avatar" aria-hidden="false">
-          <img src="1.jpg" alt="Sameer Pasha smiling portrait" onerror="this.src='https://via.placeholder.com/300x300?text=Sameer'">
-        </div>
-        <div id="profileName" style="font-weight:700">Sameer Pasha</div>
-        <div style="font-size:13px;color:var(--muted)">10th Grade Student • Young Maker</div>
-        <div class="status" aria-hidden="true"><i class="fas fa-flask" aria-hidden="true"></i> Experimenting</div>
-
-        <div class="stats" style="margin-top:12px" aria-hidden="true">
-          <div class="stat"><strong>12+</strong><span>Projects</span></div>
-          <div class="stat"><strong>3</strong><span>Inventions</span></div>
-          <div class="stat"><strong>1k+</strong><span>Hours Tinkering</span></div>
-        </div>
-      </aside>
-    </div>
-
-    <!-- ABOUT -->
-    <section id="about" class="reveal" aria-labelledby="aboutHeading">
-      <h2 id="aboutHeading" style="color:var(--accent)"><i class="fas fa-user" aria-hidden="true"></i> About Me</h2>
-      <p style="color:var(--muted)">I enjoy learning by doing. I experiment with simple physics projects, repair keyboards and electronics, and build websites to share what I learn. I aim to make projects that teach others and spark curiosity.</p>
-
-      <div class="grid-2" style="margin-top:12px;min-width:0">
-        <div class="card reveal" data-accent="left">
-          <h3>What I build</h3>
-          <ul style="color:var(--muted);margin-top:8px;line-height:1.6">
-            <li>Simple physics demos (safe, supervised) — motion, energy, balance</li>
-            <li>Keyboard & small electronics repair</li>
-            <li>Personal websites and small web apps</li>
-            <li>Team strategy & leadership in kabaddi</li>
-          </ul>
-        </div>
-        <div class="card reveal">
-          <h3>Learning goals</h3>
-          <ol style="color:var(--muted);margin-top:8px;line-height:1.6">
-            <li>Make projects that teach others how things work</li>
-            <li>Improve web skills (HTML/CSS/JS)</li>
-            <li>Document experiments with safe steps and lessons learned</li>
-          </ol>
-        </div>
-      </div>
-    </section>
-
-
-    <!-- EXPERIENCE -->
-    <section id="experience" class="reveal" aria-labelledby="experienceHeading">
-      <h2 id="experienceHeading" style="color:var(--accent)"><i class="fas fa-briefcase" aria-hidden="true"></i> Experience</h2>
-      <div class="exp-grid" style="margin-top:12px">
-        <div class="exp-card">
-          <h3>Young Innovators Internship Program</h3>
-          <p>Participated in a paid internship with Nextona Edutech LLP, focusing on coding, app development, and STEM experiments during the learning phase, followed by assisting in marketing and promoting educational innovations.</p>
-        </div>
-        <!-- Add more experience cards as needed -->
-      </div>
-    </section>
-
-    <!-- PROJECTS -->
-    <section id="projects" class="reveal" aria-labelledby="projectsHeading">
-      <h2 id="projectsHeading" style="color:var(--accent)"><i class="fas fa-project-diagram" aria-hidden="true"></i> Projects</h2>
-      <div class="proj-grid" style="margin-top:12px">
-
-        <article class="project card" tabindex="0" onclick="openProject(event, 'proj-monkey')" onkeydown="if(event.key==='Enter') openProject(event,'proj-monkey')">
-          <div class="meta"><span class="chip">Experiment</span><span class="muted" style="margin-left:8px">Physics</span></div>
-          <h3>Monkey Gun — Motion Demo</h3>
-          <p>A controlled physics demonstration showing projectile motion and energy transfer (safety first — supervised).</p>
-          <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
-            <a class="btn btn-outline" href="#" onclick="event.stopPropagation();openProject(event,'proj-monkey')">View details</a>
-            <a class="btn btn-outline" href="#" onclick="event.stopPropagation();alert('Safety guide: Always wear goggles and have an adult present.')">Safety</a>
+    <main>
+      <div class="hero">
+        <div class="card intro reveal" id="intro" tabindex="-1">
+          <h1>Hi — I'm Sameer. I build, tinker and play.</h1>
+          <p>10th grade student from India. I love experiments (safe and creative), repairing electronics, and building small web projects. I also play kabaddi — teamwork and strategy inspire my tinkering.</p>
+          <div class="badges" aria-hidden="true">
+            <span class="badge">HTML • Web Dev</span>
+            <span class="badge">Keyboard Repair</span>
+            <span class="badge">Science Experiments</span>
+            <span class="badge">Kabaddi Player</span>
           </div>
-        </article>
-
-        <article class="project card" tabindex="0" onclick="openProject(event,'proj-keyboard')" onkeydown="if(event.key==='Enter') openProject(event,'proj-keyboard')">
-          <div class="meta"><span class="chip">Repair</span><span class="muted" style="margin-left:8px">Electronics</span></div>
-          <h3>Keyboard Repair — Restoration</h3>
-          <p>Disassembled and cleaned mechanical keyboards, replaced switches, and taught classmates simple troubleshooting tips.</p>
-          <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
-            <a class="btn btn-outline" href="#" onclick="event.stopPropagation();openProject(event,'proj-keyboard')">Read notes</a>
-            <a class="btn btn-outline" href="#" onclick="event.stopPropagation();alert('Tools: screwdriver set, contact cleaner, soft brush')">Tools</a>
+          <div class="actions">
+            <a class="btn btn-primary" href="#projects">See Projects</a>
+            <a class="btn btn-outline" href="#contact">Contact Me</a>
           </div>
-        </article>
-
-        <article class="project card" tabindex="0" onclick="openProject(event,'proj-site')" onkeydown="if(event.key==='Enter') openProject(event,'proj-site')">
-          <div class="meta"><span class="chip">Web</span><span class="muted" style="margin-left:8px">Portfolio</span></div>
-          <h3>Personal Website</h3>
-          <p>Built a single-file website to share projects, hobbies and contact details. Continuous improvements planned.</p>
-          <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
-            <a class="btn btn-outline" href="#" onclick="event.stopPropagation();openProject(event,'proj-site')">Source</a>
-            <a class="btn btn-outline" href="#contact" onclick="event.stopPropagation();">Contact</a>
-          </div>
-        </article>
-
-      </div>
-    </section>
-
-    <!-- HOBBIES -->
-    <section id="hobbies" class="reveal" aria-labelledby="hobbiesHeading">
-      <h2 id="hobbiesHeading" style="color:var(--accent)"><i class="fas fa-heart" aria-hidden="true"></i> Hobbies & Interests</h2>
-      <div class="grid-3" style="margin-top:12px;min-width:0">
-        <div class="hobby card reveal"><i class="fas fa-flask" aria-hidden="true"></i><h3>Experiments</h3><p style="color:var(--muted)">Hands-on demos to learn physics and chemistry concepts safely.</p></div>
-        <div class="hobby card reveal"><i class="fas fa-keyboard" aria-hidden="true"></i><h3>Keyboard Repair</h3><p style="color:var(--muted)">Cleaning, swapping switches, and restoring old keyboards.</p></div>
-        <div class="hobby card reveal"><i class="fas fa-running" aria-hidden="true"></i><h3>Kabaddi</h3><p style="color:var(--muted)">Team sport — I enjoy strategy and endurance training with my team.</p></div>
-      </div>
-    </section>
-
-    <!-- CONTACT -->
-    <section id="contact" class="reveal" aria-labelledby="contactHeading">
-      <h2 id="contactHeading" style="color:var(--accent)"><i class="fas fa-envelope" aria-hidden="true"></i> Contact & Collaborate</h2>
-
-      <div class="contact-grid" style="margin-top:12px;min-width:0">
-        <div class="card" aria-labelledby="contactFormLabel">
-          <form id="contactForm" onsubmit="submitContact(event)" novalidate>
-            <label for="cname" class="truncate" style="font-weight:700">Name</label>
-            <input id="cname" type="text" placeholder="Your name" required />
-            <label for="cemail" class="truncate" style="font-weight:700">Email</label>
-            <input id="cemail" type="email" placeholder="Your email" required />
-            <label for="csubject" class="truncate" style="font-weight:700">Subject</label>
-            <input id="csubject" type="text" placeholder="Subject" />
-            <label for="cmessage" class="truncate" style="font-weight:700">Message</label>
-            <textarea id="cmessage" placeholder="Message" required></textarea>
-
-            <div style="display:flex;gap:8px;flex-wrap:wrap">
-              <button class="btn btn-primary" type="submit">Send message</button>
-              <button class="btn btn-outline" type="button" onclick="downloadResume()">Download Resume</button>
-            </div>
-            <div id="formMsg" class="muted" style="margin-top:8px;color:var(--muted)"></div>
-          </form>
+          <div style="margin-top: 16px; color: var(--muted); font-size: 13px">Tip: Click any project to learn what you tried and what you learned — not just what worked.</div>
         </div>
-
-        <aside class="card" style="display:flex;flex-direction:column;gap:10px">
-          <div><strong>Location</strong><div class="muted">India</div></div>
-          <div><strong>School</strong><div class="muted">10th Grade Student</div></div>
-          <div><strong>Email</strong><div class="muted">sameer@example.com</div></div>
-          <div><strong>Phone</strong><div class="muted">+91 XXXXX XXXXX</div></div>
-          <div style="margin-top:auto"><button class="btn btn-outline" onclick="scrollToTop()">Back to top</button></div>
+        <aside class="card profile-card reveal" id="profile" aria-labelledby="profileName">
+          <div class="avatar" aria-hidden="false">
+            <img src="1.jpg" alt="Sameer Pasha smiling portrait" onerror="this.src='https://via.placeholder.com/300x300?text=Sameer'" />
+          </div>
+          <div id="profileName" style="font-weight: 700">Sameer Pasha</div>
+          <div style="font-size: 13px; color: var(--muted)">10th Grade Student • Young Maker</div>
+          <div class="status" aria-hidden="true"><i class="fas fa-flask" aria-hidden="true"></i> Experimenting</div>
+          <div class="stats" style="margin-top: 12px" aria-hidden="true">
+            <div class="stat"><strong>12+</strong><span>Projects</span></div>
+            <div class="stat"><strong>3</strong><span>Inventions</span></div>
+            <div class="stat"><strong>1k+</strong><span>Hours Tinkering</span></div>
+          </div>
         </aside>
       </div>
-    </section>
-
+      <section id="about" class="reveal" aria-labelledby="aboutHeading">
+        <h2 id="aboutHeading" style="color: var(--accent)"><i class="fas fa-user" aria-hidden="true"></i> About Me</h2>
+        <p style="color: var(--muted)">I enjoy learning by doing. I experiment with simple physics projects, repair keyboards and electronics, and build websites to share what I learn. I aim to make projects that teach others and spark curiosity.</p>
+        <div class="grid-2">
+          <div class="card reveal" data-accent="left">
+            <h3>What I build</h3>
+            <ul style="color: var(--muted); margin-top: 8px; line-height: 1.6">
+              <li>Simple physics demos (safe, supervised) — motion, energy, balance</li>
+              <li>Keyboard & small electronics repair</li>
+              <li>Personal websites and small web apps</li>
+              <li>Team strategy & leadership in kabaddi</li>
+            </ul>
+          </div>
+          <div class="card reveal">
+            <h3>Learning goals</h3>
+            <ol style="color: var(--muted); margin-top: 8px; line-height: 1.6">
+              <li>Make projects that teach others how things work</li>
+              <li>Improve web skills (HTML/CSS/JS)</li>
+              <li>Document experiments with safe steps and lessons learned</li>
+            </ol>
+          </div>
+        </div>
+      </section>
+      <section id="experience" class="reveal" aria-labelledby="experienceHeading">
+        <h2 id="experienceHeading" style="color: var(--accent)"><i class="fas fa-briefcase" aria-hidden="true"></i> Experience</h2>
+        <div class="exp-grid">
+          <div class="exp-card">
+            <h3>Young Innovators Internship Program</h3>
+            <p>Participated in a paid internship with Nextona Edutech LLP, focusing on coding, app development, and STEM experiments during the learning phase, followed by assisting in marketing and promoting educational innovations.</p>
+          </div>
+        </div>
+      </section>
+      <section id="projects" class="reveal" aria-labelledby="projectsHeading">
+        <h2 id="projectsHeading" style="color: var(--accent)"><i class="fas fa-project-diagram" aria-hidden="true"></i> Projects</h2>
+        <div class="proj-grid">
+          <article class="project card" tabindex="0" data-project="proj-monkey">
+            <div class="meta"><span class="chip">Experiment</span><span class="muted" style="margin-left: 8px">Physics</span></div>
+            <h3>Monkey Gun — Motion Demo</h3>
+            <p>A controlled physics demonstration showing projectile motion and energy transfer (safety first — supervised).</p>
+            <div style="display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap">
+              <a class="btn btn-outline" href="#" data-action="open">View details</a>
+              <a class="btn btn-outline" href="#" data-action="safety">Safety</a>
+            </div>
+          </article>
+          <article class="project card" tabindex="0" data-project="proj-keyboard">
+            <div class="meta"><span class="chip">Repair</span><span class="muted" style="margin-left: 8px">Electronics</span></div>
+            <h3>Keyboard Repair — Restoration</h3>
+            <p>Disassembled and cleaned mechanical keyboards, replaced switches, and taught classmates simple troubleshooting tips.</p>
+            <div style="display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap">
+              <a class="btn btn-outline" href="#" data-action="open">Read notes</a>
+              <a class="btn btn-outline" href="#" data-action="tools">Tools</a>
+            </div>
+          </article>
+          <article class="project card" tabindex="0" data-project="proj-site">
+            <div class="meta"><span class="chip">Web</span><span class="muted" style="margin-left: 8px">Portfolio</span></div>
+            <h3>Personal Website</h3>
+            <p>Built a single-file website to share projects, hobbies and contact details. Continuous improvements planned.</p>
+            <div style="display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap">
+              <a class="btn btn-outline" href="#" data-action="open">Source</a>
+              <a class="btn btn-outline" href="#contact" data-action="contact">Contact</a>
+            </div>
+          </article>
+        </div>
+      </section>
+      <section id="hobbies" class="reveal" aria-labelledby="hobbiesHeading">
+        <h2 id="hobbiesHeading" style="color: var(--accent)"><i class="fas fa-heart" aria-hidden="true"></i> Hobbies & Interests</h2>
+        <div class="grid-3">
+          <div class="hobby card reveal"><i class="fas fa-flask" aria-hidden="true"></i><h3>Experiments</h3><p style="color: var(--muted)">Hands-on demos to learn physics and chemistry concepts safely.</p></div>
+          <div class="hobby card reveal"><i class="fas fa-keyboard" aria-hidden="true"></i><h3>Keyboard Repair</h3><p style="color: var(--muted)">Cleaning, swapping switches, and restoring old keyboards.</p></div>
+          <div class="hobby card reveal"><i class="fas fa-running" aria-hidden="true"></i><h3>Kabaddi</h3><p style="color: var(--muted)">Team sport — I enjoy strategy and endurance training with my team.</p></div>
+        </div>
+      </section>
+      <section id="contact" class="reveal" aria-labelledby="contactHeading">
+        <h2 id="contactHeading" style="color: var(--accent)"><i class="fas fa-envelope" aria-hidden="true"></i> Contact & Collaborate</h2>
+        <div class="contact-grid">
+          <div class="card" aria-labelledby="contactFormLabel">
+            <form id="contactForm" novalidate>
+              <label for="cname" class="truncate" style="font-weight: 700">Name</label>
+              <input id="cname" type="text" placeholder="Your name" required aria-required="true" />
+              <label for="cemail" class="truncate" style="font-weight: 700">Email</label>
+              <input id="cemail" type="email" placeholder="Your email" required aria-required="true" />
+              <label for="csubject" class="truncate" style="font-weight: 700">Subject</label>
+              <input id="csubject" type="text" placeholder="Subject" />
+              <label for="cmessage" class="truncate" style="font-weight: 700">Message</label>
+              <textarea id="cmessage" placeholder="Message" required aria-required="true"></textarea>
+              <div style="display: flex; gap: 8px; flex-wrap: wrap">
+                <button class="btn btn-primary" type="submit">Send message</button>
+                <button class="btn btn-outline" type="button" id="downloadResume">Download Resume</button>
+              </div>
+              <div id="formMsg" class="muted" style="margin-top: 8px; color: var(--muted)"></div>
+              <div id="loading" class="spinner" style="display: none; margin-top: 10px"></div>
+            </form>
+          </div>
+          <aside class="card" style="display: flex; flex-direction: column; gap: 10px">
+            <div><strong>Location</strong><div class="muted">India</div></div>
+            <div><strong>School</strong><div class="muted">10th Grade Student</div></div>
+            <div><strong>Email</strong><div class="muted">sameer@example.com</div></div>
+            <div><strong>Phone</strong><div class="muted">+91 XXXXX XXXXX</div></div>
+            <div style="margin-top: auto"><button class="btn btn-outline" onclick="scrollToTop()">Back to top</button></div>
+          </aside>
+        </div>
+      </section>
+    </main>
     <footer>
-      <div style="margin-top:18px">Share your ideas — curiosity wins. • <span id="year"></span> • Built by Sameer</div>
+      <div style="margin-top: 18px">Share your ideas — curiosity wins. • <span id="year"></span> • Built by Sameer</div>
     </footer>
   </div>
-
-  <!-- Project Modal -->
   <div id="modal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="modalTitle">
     <div id="modalCard" role="document">
-      <button aria-label="close" id="modalClose" onclick="closeModal()" style="position:absolute;right:12px;top:12px;border:0;background:transparent;color:var(--muted);font-size:18px"><i class="fas fa-times"></i></button>
-      <div id="modalContent" style="padding-top:28px"></div>
+      <button id="modalClose" aria-label="Close modal">
+        <i class="fas fa-times" aria-hidden="true"></i>
+      </button>
+      <div id="modalContent" style="padding-top: 28px"></div>
     </div>
   </div>
 
- // Utility functions and constants
-const DOMContentLoaded = () => {
-  const setup = () => {
-    revealAll();
-    updateYear();
-    initParticles();
-  };
+  <script>
+    // Utility functions and constants
+    const DOMContentLoaded = () => {
+      const setup = () => {
+        revealAll();
+        updateYear();
+        initParticles();
+        setupNavigation();
+        setupProjectLinks();
+        handleImageLoad();
+      };
 
-  // Ensure DOM is fully loaded before initialization
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', setup);
-  } else {
-    setup();
-  }
-};
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', setup);
+      } else {
+        setup();
+      }
+    };
 
-const updateYear = () => {
-  const yearElement = document.getElementById('year');
-  if (yearElement) yearElement.textContent = new Date().getFullYear();
-};
+    const updateYear = () => {
+      const yearElement = document.getElementById('year');
+      if (yearElement) yearElement.textContent = new Date().getFullYear();
+    };
 
-// Animation and reveal
-const revealAll = () => {
-  const revealElements = document.querySelectorAll('.reveal');
-  revealElements.forEach((el, idx) => {
-    el.style.transitionDelay = `${80 + idx * 60}ms`; // Inline style for smoother transitions
-    setTimeout(() => el.classList.add('show'), 80 + idx * 60);
-  });
-};
+    // Animation and reveal
+    const revealAll = () => {
+      requestAnimationFrame(() => {
+        document.querySelectorAll('.reveal').forEach((el, idx) => {
+          el.style.transitionDelay = `${80 + idx * 60}ms`;
+          requestAnimationFrame(() => el.classList.add('show'));
+        });
+      });
+    };
 
-/* -----------------------
-   PARTICLES (lightweight)
-   ----------------------- */
-const initParticles = () => {
-  const container = document.getElementById('particles');
-  if (!container) return;
+    // Particles
+    const initParticles = () => {
+      const container = document.getElementById('particles');
+      if (!container) return;
 
-  const particleCount = Math.max(Math.floor(window.innerWidth / 40), 18);
-  const createParticle = () => {
-    const el = document.createElement('div');
-    el.className = 'particle';
-    const size = 2 + Math.random() * 5;
-    Object.assign(el.style, {
-      width: `${size}px`,
-      height: `${size}px`,
-      left: `${Math.random() * 100}%`,
-      top: `${Math.random() * 100}%`,
-      opacity: (0.05 + Math.random() * 0.25).toString(),
-      animationDuration: `${10 + Math.random() * 10}s`,
-      animationDelay: `${Math.random() * -20}s`,
-    });
-    return el;
-  };
+      const particleCount = Math.max(Math.floor(window.innerWidth / 40), 18);
+      const createParticle = () => {
+        const el = document.createElement('div');
+        el.className = 'particle';
+        const size = 2 + Math.random() * 5;
+        Object.assign(el.style, {
+          width: `${size}px`,
+          height: `${size}px`,
+          left: `${Math.random() * 100}%`,
+          top: `${Math.random() * 100}%`,
+          opacity: (0.05 + Math.random() * 0.25).toString(),
+          animationDuration: `${10 + Math.random() * 10}s`,
+          animationDelay: `${Math.random() * -20}s`,
+        });
+        return el;
+      };
 
-  for (let i = 0; i < particleCount; i++) {
-    container.appendChild(createParticle());
-  }
+      for (let i = 0; i < particleCount; i++) {
+        container.appendChild(createParticle());
+      }
 
-  // Debounced resize handler
-  let resizeTimeout;
-  const handleResize = () => {
-    clearTimeout(resizeTimeout);
-    resizeTimeout = setTimeout(() => {
-      while (container.firstChild) container.removeChild(container.firstChild);
-      initParticles();
-    }, 300);
-  };
+      let resizeTimeout;
+      const handleResize = () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+          while (container.firstChild) container.removeChild(container.firstChild);
+          initParticles();
+        }, 300);
+      };
 
-  window.addEventListener('resize', handleResize);
-};
+      window.addEventListener('resize', handleResize);
+    };
 
-/* -----------------------
-   PROJECT DATA + MODAL
-   ----------------------- */
-const PROJECTS = {
-  'proj-monkey': {
-    title: 'Monkey Gun — Motion Demo',
-    body: `<p style="color:var(--muted)">A safe demonstration to explain projectile motion and energy transfer. Performed only under supervision. The goal was to observe how angle and force change range.</p>
-           <h4>What I learned</h4>
-           <ul style="color:var(--muted)"><li>How initial angle affects distance</li><li>Importance of measurement and repeatability</li><li>Always build safety checks and shields</li></ul>`,
-  },
-  'proj-keyboard': {
-    title: 'Keyboard Repair',
-    body: `<p style="color:var(--muted)">I disassembled mechanical keyboards, cleaned contacts, and replaced broken switches. I documented problems and solutions to teach others.</p>
-           <h4>Tips</h4>
-           <ul style="color:var(--muted)"><li>Take photos while disassembling</li><li>Use a soft brush and isopropyl alcohol</li><li>Label screws and springs</li></ul>`,
-  },
-  'proj-site': {
-    title: 'Personal Website',
-    body: `<p style="color:var(--muted)">This single-file project shows my skills. I keep improving layout, accessibility and content so others can learn from my process.</p>
-           <h4>Next steps</h4>
-           <ul style="color:var(--muted)"><li>Make a documentation page for experiments</li><li>Publish safe step-by-step guides</li></ul>`,
-  },
-};
+    // Project Data and Modal
+    const PROJECTS = {
+      'proj-monkey': {
+        title: 'Monkey Gun — Motion Demo',
+        body: `<p style="color: var(--muted)">A safe demonstration to explain projectile motion and energy transfer. Performed only under supervision. The goal was to observe how angle and force change range.</p>
+               <h4>What I learned</h4>
+               <ul style="color: var(--muted)"><li>How initial angle affects distance</li><li>Importance of measurement and repeatability</li><li>Always build safety checks and shields</li></ul>`,
+        safety: 'Always wear goggles and have an adult present.',
+      },
+      'proj-keyboard': {
+        title: 'Keyboard Repair',
+        body: `<p style="color: var(--muted)">I disassembled mechanical keyboards, cleaned contacts, and replaced broken switches. I documented problems and solutions to teach others.</p>
+               <h4>Tips</h4>
+               <ul style="color: var(--muted)"><li>Take photos while disassembling</li><li>Use a soft brush and isopropyl alcohol</li><li>Label screws and springs</li></ul>`,
+        tools: 'Tools: screwdriver set, contact cleaner, soft brush',
+      },
+      'proj-site': {
+        title: 'Personal Website',
+        body: `<p style="color: var(--muted)">This single-file project shows my skills. I keep improving layout, accessibility and content so others can learn from my process.</p>
+               <h4>Next steps</h4>
+               <ul style="color: var(--muted)"><li>Make a documentation page for experiments</li><li>Publish safe step-by-step guides</li></ul>`,
+      },
+    };
 
-const openProject = (e, id) => {
-  e?.preventDefault();
-  const data = PROJECTS[id] || { title: 'Details coming soon', body: '<p style="color:var(--muted)">More info soon.</p>' };
-  const modal = document.getElementById('modal');
-  const modalContent = document.getElementById('modalContent');
+    const openProject = (e, id) => {
+      e?.preventDefault();
+      const data = PROJECTS[id] || { title: 'Details coming soon', body: '<p style="color: var(--muted)">More info soon.</p>' };
+      const modal = document.getElementById('modal');
+      const modalContent = document.getElementById('modalContent');
 
-  if (!modal || !modalContent) return;
+      if (!modal || !modalContent) return;
 
-  modalContent.innerHTML = `<h2 id="modalTitle">${data.title}</h2>${data.body}`;
-  modal.setAttribute('aria-hidden', 'false');
-  modal.style.display = 'flex';
-  document.body.style.overflow = 'hidden';
+      modalContent.innerHTML = `<h2 id="modalTitle">${data.title}</h2>${data.body || ''}`;
+      modal.setAttribute('aria-hidden', 'false');
+      modal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
 
-  setTimeout(() => {
-    const closeButton = document.getElementById('modalClose');
-    if (closeButton) closeButton.focus();
-  }, 50);
+      setTimeout(() => {
+        const closeButton = document.getElementById('modalClose');
+        if (closeButton) closeButton.focus();
+      }, 50);
 
-  trapFocus(modal);
-};
+      trapFocus(modal);
+    };
 
-const closeModal = () => {
-  const modal = document.getElementById('modal');
-  if (!modal) return;
+    const closeModal = () => {
+      const modal = document.getElementById('modal');
+      if (!modal) return;
 
-  modal.setAttribute('aria-hidden', 'true');
-  modal.style.display = 'none';
-  document.body.style.overflow = '';
-  releaseFocusTrap();
-};
+      modal.setAttribute('aria-hidden', 'true');
+      modal.style.display = 'none';
+      document.body.style.overflow = '';
+      releaseFocusTrap();
+    };
 
-// Keyboard accessibility
-const handleKeyDown = (e) => {
-  if (e.key === 'Escape') {
-    const modal = document.getElementById('modal');
-    if (modal && modal.getAttribute('aria-hidden') === 'false') closeModal();
-  }
-};
-document.addEventListener('keydown', handleKeyDown);
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        const modal = document.getElementById('modal');
+        if (modal && modal.getAttribute('aria-hidden') === 'false') closeModal();
+      }
+    };
+    document.addEventListener('keydown', handleKeyDown);
 
-/* Basic focus trap (lightweight) */
-let focusTrapListener = null;
+    let focusTrapListener = null;
 
-const trapFocus = (modal) => {
-  const focusables = modal.querySelectorAll('a,button,input,textarea,[tabindex]:not([tabindex="-1"])');
-  const nodes = Array.from(focusables);
+    const trapFocus = (modal) => {
+      const focusables = modal.querySelectorAll('a, button, input, textarea, [tabindex]:not([tabindex="-1"])');
+      const nodes = Array.from(focusables);
 
-  if (nodes.length === 0) return;
+      if (nodes.length === 0) return;
 
-  const first = nodes[0];
-  const last = nodes[nodes.length - 1];
+      const first = nodes[0];
+      const last = nodes[nodes.length - 1];
 
-  focusTrapListener = (e) => {
-    if (e.key !== 'Tab') return;
-    if (e.shiftKey && document.activeElement === first) {
+      focusTrapListener = (e) => {
+        if (e.key !== 'Tab') return;
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      };
+
+      document.addEventListener('keydown', focusTrapListener);
+    };
+
+    const releaseFocusTrap = () => {
+      if (focusTrapListener) {
+        document.removeEventListener('keydown', focusTrapListener);
+        focusTrapListener = null;
+      }
+    };
+
+    // Contact Form
+    const submitContact = (e) => {
       e.preventDefault();
-      last.focus();
-    } else if (!e.shiftKey && document.activeElement === last) {
-      e.preventDefault();
-      first.focus();
-    }
-  };
+      const form = document.getElementById('contactForm');
+      const name = document.getElementById('cname')?.value.trim();
+      const email = document.getElementById('cemail')?.value.trim();
+      const message = document.getElementById('cmessage')?.value.trim();
+      const statusEl = document.getElementById('formMsg');
+      const loadingEl = document.getElementById('loading');
 
-  document.addEventListener('keydown', focusTrapListener);
-};
+      if (!form || !statusEl || !loadingEl) return;
 
-const releaseFocusTrap = () => {
-  if (focusTrapListener) {
-    document.removeEventListener('keydown', focusTrapListener);
-    focusTrapListener = null;
-  }
-};
+      loadingEl.style.display = 'block';
+      statusEl.textContent = '';
 
-/* -----------------------
-   CONTACT FORM (simple validation)
-   ----------------------- */
-const submitContact = (e) => {
-  e.preventDefault();
-  const name = document.getElementById('cname')?.value.trim();
-  const email = document.getElementById('cemail')?.value.trim();
-  const message = document.getElementById('cmessage')?.value.trim();
-  const statusEl = document.getElementById('formMsg');
+      setTimeout(() => {
+        if (!name || !email || !message) {
+          statusEl.style.color = 'orange';
+          statusEl.textContent = 'Please fill required fields.';
+          loadingEl.style.display = 'none';
+          return;
+        }
 
-  if (!name || !email || !message) {
-    if (statusEl) {
-      statusEl.style.color = 'orange';
-      statusEl.textContent = 'Please fill required fields.';
-    }
-    return;
-  }
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailPattern.test(email)) {
+          statusEl.style.color = 'orange';
+          statusEl.textContent = 'Please provide a valid email.';
+          loadingEl.style.display = 'none';
+          return;
+        }
 
-  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailPattern.test(email)) {
-    if (statusEl) {
-      statusEl.style.color = 'orange';
-      statusEl.textContent = 'Please provide a valid email.';
-    }
-    return;
-  }
+        statusEl.style.color = 'var(--accent)';
+        statusEl.textContent = 'Message sent — thank you! (local demo)';
+        form.reset();
+        loadingEl.style.display = 'none';
+        setTimeout(() => (statusEl.textContent = ''), 3500);
+      }, 1000); // Simulate API call
+    };
 
-  if (statusEl) {
-    statusEl.style.color = 'var(--accent)';
-    statusEl.textContent = 'Message sent — thank you! (local demo)';
-    document.getElementById('contactForm')?.reset();
-    setTimeout(() => (statusEl.textContent = ''), 3500);
-  }
-};
+    // Download Resume
+    const downloadResume = () => {
+      const name = 'Sameer Pasha';
+      const title = '10th Grade Student • Young Maker';
+      const email = 'sameer@example.com';
+      const phone = '+91 XXXXX XXXXX';
+      const summary = 'I enjoy learning by doing — experiments, keyboard repair, and building small web projects. I share what I learn and focus on safety and teaching others.';
 
-/* -----------------------
-   DOWNLOAD RESUME (client-side .txt)
-   ----------------------- */
-const downloadResume = () => {
-  const name = 'Sameer Pasha';
-  const title = '10th Grade Student • Young Maker';
-  const email = 'sameer@example.com';
-  const phone = '+91 XXXXX XXXXX';
-  const summary = 'I enjoy learning by doing — experiments, keyboard repair, and building small web projects. I share what I learn and focus on safety and teaching others.';
+      const projects = [
+        'Monkey Gun — Motion Demo (physics experiment, supervised)',
+        'Keyboard Repair — disassembly, cleaning, switch replacement',
+        'Personal Website — single-file site & documentation',
+      ];
 
-  const projects = [
-    'Monkey Gun — Motion Demo (physics experiment, supervised)',
-    'Keyboard Repair — disassembly, cleaning, switch replacement',
-    'Personal Website — single-file site & documentation',
-  ];
+      const content = [
+        name,
+        title,
+        '',
+        `Contact: ${email} | ${phone}`,
+        '',
+        'Summary:',
+        summary,
+        '',
+        'Key Projects:',
+        ...projects.map((p) => '- ' + p),
+        '',
+        'Skills:',
+        '- Basic electronics & repair',
+        '- HTML, CSS, JavaScript',
+        '- Project documentation & teaching',
+        '',
+        'Notes: Available for workshops and safe demos. (Local demo resume)',
+      ].join('\n');
 
-  const content = [
-    name,
-    title,
-    '',
-    `Contact: ${email} | ${phone}`,
-    '',
-    'Summary:',
-    summary,
-    '',
-    'Key Projects:',
-    ...projects.map((p) => '- ' + p),
-    '',
-    'Skills:',
-    '- Basic electronics & repair',
-    '- HTML, CSS, JavaScript',
-    '- Project documentation & teaching',
-    '',
-    'Notes: Available for workshops and safe demos. (Local demo resume)',
-  ].join('\n');
+      const blob = new Blob([content], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = name.replace(/\s+/g, '_') + '_Resume.txt';
+      document.body.appendChild(a);
+      a.click();
+      URL.revokeObjectURL(url);
+      a.remove();
+    };
 
-  const blob = new Blob([content], { type: 'text/plain' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = name.replace(/\s+/g, '_') + '_Resume.txt';
-  document.body.appendChild(a);
-  a.click();
-  URL.revokeObjectURL(url);
-  a.remove();
-};
+    // Navigation
+    const setupNavigation = () => {
+      const menuToggle = document.getElementById('menuToggle');
+      const mobileNav = document.getElementById('mobileNav');
+      const desktopNav = document.getElementById('desktopNav');
 
-/* -----------------------
-   NAV & mobile toggle
-   ----------------------- */
-const setupNavigation = () => {
-  const menuToggle = document.getElementById('menuToggle');
-  const mobileNav = document.getElementById('mobileNav');
+      if (!menuToggle || !mobileNav || !desktopNav) return;
 
-  if (!menuToggle || !mobileNav) return;
+      const navLinks = [
+        { href: '#about', text: 'About' },
+        { href: '#projects', text: 'Projects' },
+        { href: '#experience', text: 'Experience' },
+        { href: '#hobbies', text: 'Hobbies' },
+        { href: '#contact', text: 'Contact' },
+        { href: '#contact', text: 'Collaborate', class: 'cta' },
+      ];
 
-  menuToggle.addEventListener('click', () => {
-    const isOpen = mobileNav.style.display === 'flex';
-    toggleMobileNav(!isOpen);
-  });
-};
+      navLinks.forEach((link) => {
+        const a = document.createElement('a');
+        a.href = link.href;
+        a.textContent = link.text;
+        if (link.class) a.classList.add(link.class);
+        a.addEventListener('click', (e) => {
+          e.preventDefault();
+          document.querySelector(link.href).scrollIntoView({ behavior: 'smooth' });
+          if (mobileNav.style.display === 'flex') toggleMobileNav(false);
+        });
+        desktopNav.appendChild(a.cloneNode(true));
+        mobileNav.querySelector('.card').appendChild(a);
+      });
 
-const toggleMobileNav = (show) => {
-  const mobileNav = document.getElementById('mobileNav');
-  const menuToggle = document.getElementById('menuToggle');
-  if (!mobileNav || !menuToggle) return;
+      menuToggle.addEventListener('click', () => {
+        const isOpen = mobileNav.style.display === 'flex';
+        toggleMobileNav(!isOpen);
+      });
+    };
 
-  mobileNav.style.display = show ? 'flex' : 'none';
-  mobileNav.setAttribute('aria-hidden', show ? 'false' : 'true');
-  menuToggle.setAttribute('aria-expanded', !!show);
-};
+    const toggleMobileNav = (show) => {
+      const mobileNav = document.getElementById('mobileNav');
+      const menuToggle = document.getElementById('menuToggle');
+      if (!mobileNav || !menuToggle) return;
 
-// Scroll to top helper
-const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+      mobileNav.style.display = show ? 'flex' : 'none';
+      mobileNav.setAttribute('aria-hidden', show ? 'false' : 'true');
+      menuToggle.setAttribute('aria-expanded', show);
+    };
 
-// Image handling
-const handleImageLoad = () => {
-  document.querySelectorAll('img').forEach((img) => {
-    Object.assign(img.style, {
-      maxWidth: '100%',
-      height: 'auto',
-      display: 'block',
-    });
-  });
-};
+    // Project Links
+    const setupProjectLinks = () => {
+      document.querySelectorAll('.project').forEach((project) => {
+        project.addEventListener('click', (e) => {
+          const id = project.dataset.project;
+          openProject(e, id);
+        });
+        project.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') openProject(e, id);
+        });
 
-window.addEventListener('load', handleImageLoad);
+        project.querySelectorAll('[data-action]').forEach((action) => {
+          action.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const id = project.dataset.project;
+            const actionType = action.dataset.action;
+            if (actionType === 'safety' || actionType === 'tools') {
+              alert(PROJECTS[id][actionType] || 'No additional info available.');
+            } else if (actionType === 'contact') {
+              document.querySelector('#contact').scrollIntoView({ behavior: 'smooth' });
+            }
+          });
+        });
+      });
+    };
 
-// Initialize all modules
-DOMContentLoaded();
-setupNavigation();
+    // Scroll to Top
+    const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // Image Handling
+    const handleImageLoad = () => {
+      document.querySelectorAll('img').forEach((img) => {
+        Object.assign(img.style, {
+          maxWidth: '100%',
+          height: 'auto',
+          display: 'block',
+        });
+      });
+    };
+
+    // Event Listeners
+    document.getElementById('contactForm')?.addEventListener('submit', submitContact);
+    document.getElementById('downloadResume')?.addEventListener('click', downloadResume);
+    document.getElementById('modalClose')?.addEventListener('click', closeModal);
+
+    // Initialize
+    DOMContentLoaded();
+  </script>
 </body>
 </html>
