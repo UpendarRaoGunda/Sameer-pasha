@@ -662,6 +662,19 @@ footer { margin-top:28px; text-align:center; color:var(--muted); font-size:14px;
       a.remove();
     }
 
+// [Existing JavaScript remains unchanged, with a minor update to reveal the Experience section]
+    document.addEventListener('DOMContentLoaded', () => {
+      revealAll();
+      document.getElementById('year').textContent = new Date().getFullYear();
+      initParticles();
+    });
+
+    function revealAll(){
+      document.querySelectorAll('.reveal').forEach((el, idx) => {
+        setTimeout(() => el.classList.add('show'), 80 + idx * 60);
+      });
+    }
+    
     /* -----------------------
        NAV & mobile toggle
        ----------------------- */
