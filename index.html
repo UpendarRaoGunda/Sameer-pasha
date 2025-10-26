@@ -456,251 +456,299 @@ footer { margin-top:28px; text-align:center; color:var(--muted); font-size:14px;
     </div>
   </div>
 
-  <script>
-    // On load: reveal, set year
-    document.addEventListener('DOMContentLoaded', () => {
-      revealAll();
-      document.getElementById('year').textContent = new Date().getFullYear();
+ // Utility functions and constants
+const DOMContentLoaded = () => {
+  const setup = () => {
+    revealAll();
+    updateYear();
+    initParticles();
+  };
+
+  // Ensure DOM is fully loaded before initialization
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setup);
+  } else {
+    setup();
+  }
+};
+
+const updateYear = () => {
+  const yearElement = document.getElementById('year');
+  if (yearElement) yearElement.textContent = new Date().getFullYear();
+};
+
+// Animation and reveal
+const revealAll = () => {
+  const revealElements = document.querySelectorAll('.reveal');
+  revealElements.forEach((el, idx) => {
+    el.style.transitionDelay = `${80 + idx * 60}ms`; // Inline style for smoother transitions
+    setTimeout(() => el.classList.add('show'), 80 + idx * 60);
+  });
+};
+
+/* -----------------------
+   PARTICLES (lightweight)
+   ----------------------- */
+const initParticles = () => {
+  const container = document.getElementById('particles');
+  if (!container) return;
+
+  const particleCount = Math.max(Math.floor(window.innerWidth / 40), 18);
+  const createParticle = () => {
+    const el = document.createElement('div');
+    el.className = 'particle';
+    const size = 2 + Math.random() * 5;
+    Object.assign(el.style, {
+      width: `${size}px`,
+      height: `${size}px`,
+      left: `${Math.random() * 100}%`,
+      top: `${Math.random() * 100}%`,
+      opacity: (0.05 + Math.random() * 0.25).toString(),
+      animationDuration: `${10 + Math.random() * 10}s`,
+      animationDelay: `${Math.random() * -20}s`,
+    });
+    return el;
+  };
+
+  for (let i = 0; i < particleCount; i++) {
+    container.appendChild(createParticle());
+  }
+
+  // Debounced resize handler
+  let resizeTimeout;
+  const handleResize = () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+      while (container.firstChild) container.removeChild(container.firstChild);
       initParticles();
-    });
+    }, 300);
+  };
 
-    function revealAll(){
-      document.querySelectorAll('.reveal').forEach((el, idx) => {
-        setTimeout(()=> el.classList.add('show'), 80 + idx * 60);
-      });
-    }
+  window.addEventListener('resize', handleResize);
+};
 
-    /* -----------------------
-       PARTICLES (lightweight)
-       ----------------------- */
-    function initParticles(){
-      const container = document.getElementById('particles');
-      const count = Math.max(Math.floor(window.innerWidth / 40), 18);
-      for(let i=0;i<count;i++){
-        const el = document.createElement('div');
-        el.className = 'particle';
-        const size = 2 + Math.random()*5;
-        el.style.width = size + 'px';
-        el.style.height = size + 'px';
-        el.style.left = (Math.random()*100) + '%';
-        el.style.top = (Math.random()*100) + '%';
-        el.style.opacity = (0.05 + Math.random()*0.25).toString();
-        el.style.animationDuration = (10 + Math.random()*10) + 's';
-        el.style.animationDelay = (Math.random()* -20) + 's';
-        container.appendChild(el);
-      }
-      // regenerate on resize (throttled)
-      let t;
-      window.addEventListener('resize', ()=> {
-        clearTimeout(t);
-        t = setTimeout(()=> {
-          while(container.firstChild) container.removeChild(container.firstChild);
-          initParticles();
-        }, 300);
-      });
-    }
+/* -----------------------
+   PROJECT DATA + MODAL
+   ----------------------- */
+const PROJECTS = {
+  'proj-monkey': {
+    title: 'Monkey Gun — Motion Demo',
+    body: `<p style="color:var(--muted)">A safe demonstration to explain projectile motion and energy transfer. Performed only under supervision. The goal was to observe how angle and force change range.</p>
+           <h4>What I learned</h4>
+           <ul style="color:var(--muted)"><li>How initial angle affects distance</li><li>Importance of measurement and repeatability</li><li>Always build safety checks and shields</li></ul>`,
+  },
+  'proj-keyboard': {
+    title: 'Keyboard Repair',
+    body: `<p style="color:var(--muted)">I disassembled mechanical keyboards, cleaned contacts, and replaced broken switches. I documented problems and solutions to teach others.</p>
+           <h4>Tips</h4>
+           <ul style="color:var(--muted)"><li>Take photos while disassembling</li><li>Use a soft brush and isopropyl alcohol</li><li>Label screws and springs</li></ul>`,
+  },
+  'proj-site': {
+    title: 'Personal Website',
+    body: `<p style="color:var(--muted)">This single-file project shows my skills. I keep improving layout, accessibility and content so others can learn from my process.</p>
+           <h4>Next steps</h4>
+           <ul style="color:var(--muted)"><li>Make a documentation page for experiments</li><li>Publish safe step-by-step guides</li></ul>`,
+  },
+};
 
-    /* -----------------------
-       PROJECT DATA + MODAL
-       ----------------------- */
-    const PROJECTS = {
-      'proj-monkey': {
-        title: 'Monkey Gun — Motion Demo',
-        body: `<p style="color:var(--muted)">A safe demonstration to explain projectile motion and energy transfer. Performed only under supervision. The goal was to observe how angle and force change range.</p>
-               <h4>What I learned</h4>
-               <ul style="color:var(--muted)"><li>How initial angle affects distance</li><li>Importance of measurement and repeatability</li><li>Always build safety checks and shields</li></ul>`
-      },
-      'proj-keyboard': {
-        title: 'Keyboard Repair',
-        body: `<p style="color:var(--muted)">I disassembled mechanical keyboards, cleaned contacts, and replaced broken switches. I documented problems and solutions to teach others.</p>
-               <h4>Tips</h4>
-               <ul style="color:var(--muted)"><li>Take photos while disassembling</li><li>Use a soft brush and isopropyl alcohol</li><li>Label screws and springs</li></ul>`
-      },
-      'proj-site': {
-        title: 'Personal Website',
-        body: `<p style="color:var(--muted)">This single-file project shows my skills. I keep improving layout, accessibility and content so others can learn from my process.</p>
-               <h4>Next steps</h4>
-               <ul style="color:var(--muted)"><li>Make a documentation page for experiments</li><li>Publish safe step-by-step guides</li></ul>`
-      }
-    };
+const openProject = (e, id) => {
+  e?.preventDefault();
+  const data = PROJECTS[id] || { title: 'Details coming soon', body: '<p style="color:var(--muted)">More info soon.</p>' };
+  const modal = document.getElementById('modal');
+  const modalContent = document.getElementById('modalContent');
 
-    function openProject(e, id){
-      if(e) e.preventDefault();
-      const data = PROJECTS[id] || { title: 'Details coming soon', body: '<p style="color:var(--muted)">More info soon.</p>' };
-      const modal = document.getElementById('modal');
-      document.getElementById('modalContent').innerHTML = `<h2 id="modalTitle">${data.title}</h2>${data.body}`;
-      modal.setAttribute('aria-hidden','false');
-      // display
-      modal.style.display = 'flex';
-      // lock scroll
-      document.body.style.overflow = 'hidden';
-      // focus on close
-      setTimeout(()=> document.getElementById('modalClose').focus(), 50);
+  if (!modal || !modalContent) return;
 
-      // trap focus inside modal (basic)
-      trapFocus(modal);
-    }
+  modalContent.innerHTML = `<h2 id="modalTitle">${data.title}</h2>${data.body}`;
+  modal.setAttribute('aria-hidden', 'false');
+  modal.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
 
-    function closeModal(){
-      const modal = document.getElementById('modal');
-      modal.setAttribute('aria-hidden','true');
-      modal.style.display = 'none';
-      document.body.style.overflow = '';
-      // remove trap listener
-      releaseFocusTrap();
-    }
+  setTimeout(() => {
+    const closeButton = document.getElementById('modalClose');
+    if (closeButton) closeButton.focus();
+  }, 50);
 
-    // keyboard: Esc to close
-    document.addEventListener('keydown', (e) => {
-      if(e.key === 'Escape'){
-        const modal = document.getElementById('modal');
-        if(modal && modal.getAttribute('aria-hidden') === 'false') closeModal();
-      }
-    });
+  trapFocus(modal);
+};
 
-    /* Basic focus trap (lightweight) */
-    let focusTrapListener = null;
-    function trapFocus(modal){
-      const focusables = modal.querySelectorAll('a,button,input,textarea,[tabindex]:not([tabindex="-1"])');
-      const nodes = Array.from(focusables);
-      if(nodes.length === 0) return;
-      const first = nodes[0];
-      const last = nodes[nodes.length-1];
-      focusTrapListener = function(e){
-        if(e.key !== 'Tab') return;
-        if(e.shiftKey && document.activeElement === first){
-          e.preventDefault();
-          last.focus();
-        } else if(!e.shiftKey && document.activeElement === last){
-          e.preventDefault();
-          first.focus();
-        }
-      };
-      document.addEventListener('keydown', focusTrapListener);
-    }
-    function releaseFocusTrap(){
-      if(focusTrapListener) {
-        document.removeEventListener('keydown', focusTrapListener);
-        focusTrapListener = null;
-      }
-    }
+const closeModal = () => {
+  const modal = document.getElementById('modal');
+  if (!modal) return;
 
-    /* -----------------------
-       CONTACT FORM (simple validation)
-       ----------------------- */
-    function submitContact(e){
+  modal.setAttribute('aria-hidden', 'true');
+  modal.style.display = 'none';
+  document.body.style.overflow = '';
+  releaseFocusTrap();
+};
+
+// Keyboard accessibility
+const handleKeyDown = (e) => {
+  if (e.key === 'Escape') {
+    const modal = document.getElementById('modal');
+    if (modal && modal.getAttribute('aria-hidden') === 'false') closeModal();
+  }
+};
+document.addEventListener('keydown', handleKeyDown);
+
+/* Basic focus trap (lightweight) */
+let focusTrapListener = null;
+
+const trapFocus = (modal) => {
+  const focusables = modal.querySelectorAll('a,button,input,textarea,[tabindex]:not([tabindex="-1"])');
+  const nodes = Array.from(focusables);
+
+  if (nodes.length === 0) return;
+
+  const first = nodes[0];
+  const last = nodes[nodes.length - 1];
+
+  focusTrapListener = (e) => {
+    if (e.key !== 'Tab') return;
+    if (e.shiftKey && document.activeElement === first) {
       e.preventDefault();
-      const name = document.getElementById('cname').value.trim();
-      const email = document.getElementById('cemail').value.trim();
-      const message = document.getElementById('cmessage').value.trim();
-      const statusEl = document.getElementById('formMsg');
-
-      if(!name || !email || !message){
-        statusEl.style.color = 'orange';
-        statusEl.textContent = 'Please fill required fields.';
-        return;
-      }
-      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if(!emailPattern.test(email)){
-        statusEl.style.color = 'orange';
-        statusEl.textContent = 'Please provide a valid email.';
-        return;
-      }
-
-      // local demo: show success and clear
-      statusEl.style.color = 'var(--accent)';
-      statusEl.textContent = 'Message sent — thank you! (local demo)';
-      document.getElementById('contactForm').reset();
-      setTimeout(()=> statusEl.textContent = '', 3500);
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
     }
+  };
 
-    /* -----------------------
-       DOWNLOAD RESUME (client-side .txt)
-       ----------------------- */
-    function downloadResume(){
-      // compose resume text from visible content
-      const name = 'Sameer Pasha';
-      const title = '10th Grade Student • Young Maker';
-      const email = 'sameer@example.com';
-      const phone = '+91 XXXXX XXXXX';
-      const summary = 'I enjoy learning by doing — experiments, keyboard repair, and building small web projects. I share what I learn and focus on safety and teaching others.';
+  document.addEventListener('keydown', focusTrapListener);
+};
 
-      const projects = [
-        'Monkey Gun — Motion Demo (physics experiment, supervised)',
-        'Keyboard Repair — disassembly, cleaning, switch replacement',
-        'Personal Website — single-file site & documentation'
-      ];
+const releaseFocusTrap = () => {
+  if (focusTrapListener) {
+    document.removeEventListener('keydown', focusTrapListener);
+    focusTrapListener = null;
+  }
+};
 
-      const content = [
-        name,
-        title,
-        '',
-        `Contact: ${email} | ${phone}`,
-        '',
-        'Summary:',
-        summary,
-        '',
-        'Key Projects:',
-        ...projects.map(p => '- ' + p),
-        '',
-        'Skills:',
-        '- Basic electronics & repair',
-        '- HTML, CSS, JavaScript',
-        '- Project documentation & teaching',
-        '',
-        'Notes: Available for workshops and safe demos. (Local demo resume)'
-      ].join('\\n');
+/* -----------------------
+   CONTACT FORM (simple validation)
+   ----------------------- */
+const submitContact = (e) => {
+  e.preventDefault();
+  const name = document.getElementById('cname')?.value.trim();
+  const email = document.getElementById('cemail')?.value.trim();
+  const message = document.getElementById('cmessage')?.value.trim();
+  const statusEl = document.getElementById('formMsg');
 
-      const blob = new Blob([content], { type: 'text/plain' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = name.replace(/\s+/g,'_') + '_Resume.txt';
-      document.body.appendChild(a);
-      a.click();
-      URL.revokeObjectURL(url);
-      a.remove();
+  if (!name || !email || !message) {
+    if (statusEl) {
+      statusEl.style.color = 'orange';
+      statusEl.textContent = 'Please fill required fields.';
     }
+    return;
+  }
 
-// [Existing JavaScript remains unchanged, with a minor update to reveal the Experience section]
-    document.addEventListener('DOMContentLoaded', () => {
-      revealAll();
-      document.getElementById('year').textContent = new Date().getFullYear();
-      initParticles();
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailPattern.test(email)) {
+    if (statusEl) {
+      statusEl.style.color = 'orange';
+      statusEl.textContent = 'Please provide a valid email.';
+    }
+    return;
+  }
+
+  if (statusEl) {
+    statusEl.style.color = 'var(--accent)';
+    statusEl.textContent = 'Message sent — thank you! (local demo)';
+    document.getElementById('contactForm')?.reset();
+    setTimeout(() => (statusEl.textContent = ''), 3500);
+  }
+};
+
+/* -----------------------
+   DOWNLOAD RESUME (client-side .txt)
+   ----------------------- */
+const downloadResume = () => {
+  const name = 'Sameer Pasha';
+  const title = '10th Grade Student • Young Maker';
+  const email = 'sameer@example.com';
+  const phone = '+91 XXXXX XXXXX';
+  const summary = 'I enjoy learning by doing — experiments, keyboard repair, and building small web projects. I share what I learn and focus on safety and teaching others.';
+
+  const projects = [
+    'Monkey Gun — Motion Demo (physics experiment, supervised)',
+    'Keyboard Repair — disassembly, cleaning, switch replacement',
+    'Personal Website — single-file site & documentation',
+  ];
+
+  const content = [
+    name,
+    title,
+    '',
+    `Contact: ${email} | ${phone}`,
+    '',
+    'Summary:',
+    summary,
+    '',
+    'Key Projects:',
+    ...projects.map((p) => '- ' + p),
+    '',
+    'Skills:',
+    '- Basic electronics & repair',
+    '- HTML, CSS, JavaScript',
+    '- Project documentation & teaching',
+    '',
+    'Notes: Available for workshops and safe demos. (Local demo resume)',
+  ].join('\n');
+
+  const blob = new Blob([content], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = name.replace(/\s+/g, '_') + '_Resume.txt';
+  document.body.appendChild(a);
+  a.click();
+  URL.revokeObjectURL(url);
+  a.remove();
+};
+
+/* -----------------------
+   NAV & mobile toggle
+   ----------------------- */
+const setupNavigation = () => {
+  const menuToggle = document.getElementById('menuToggle');
+  const mobileNav = document.getElementById('mobileNav');
+
+  if (!menuToggle || !mobileNav) return;
+
+  menuToggle.addEventListener('click', () => {
+    const isOpen = mobileNav.style.display === 'flex';
+    toggleMobileNav(!isOpen);
+  });
+};
+
+const toggleMobileNav = (show) => {
+  const mobileNav = document.getElementById('mobileNav');
+  const menuToggle = document.getElementById('menuToggle');
+  if (!mobileNav || !menuToggle) return;
+
+  mobileNav.style.display = show ? 'flex' : 'none';
+  mobileNav.setAttribute('aria-hidden', show ? 'false' : 'true');
+  menuToggle.setAttribute('aria-expanded', !!show);
+};
+
+// Scroll to top helper
+const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+
+// Image handling
+const handleImageLoad = () => {
+  document.querySelectorAll('img').forEach((img) => {
+    Object.assign(img.style, {
+      maxWidth: '100%',
+      height: 'auto',
+      display: 'block',
     });
+  });
+};
 
-    function revealAll(){
-      document.querySelectorAll('.reveal').forEach((el, idx) => {
-        setTimeout(() => el.classList.add('show'), 80 + idx * 60);
-      });
-    }
-    
-    /* -----------------------
-       NAV & mobile toggle
-       ----------------------- */
-    const menuToggle = document.getElementById('menuToggle');
-    const mobileNav = document.getElementById('mobileNav');
-    menuToggle && menuToggle.addEventListener('click', ()=> {
-      const isOpen = mobileNav.style.display === 'flex';
-      toggleMobileNav(!isOpen);
-    });
-    function toggleMobileNav(show){
-      mobileNav.style.display = show ? 'flex' : 'none';
-      mobileNav.setAttribute('aria-hidden', show ? 'false' : 'true');
-      menuToggle.setAttribute('aria-expanded', !!show);
-    }
+window.addEventListener('load', handleImageLoad);
 
-    // scroll to top helper
-    function scrollToTop(){ window.scrollTo({top:0,behavior:'smooth'}); }
-
-    // ensure images don't overflow
-    window.addEventListener('load', ()=> {
-      document.querySelectorAll('img').forEach(img=>{
-        img.style.maxWidth = '100%';
-        img.style.height = 'auto';
-        img.style.display = 'block';
-      });
-    });
-  </script>
+// Initialize all modules
+DOMContentLoaded();
+setupNavigation();
 </body>
 </html>
