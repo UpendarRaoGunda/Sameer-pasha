@@ -206,12 +206,46 @@ footer { margin-top:28px; text-align:center; color:var(--muted); font-size:14px;
 /* small niceties */
 .card:hover { transform: translateY(-4px); transition: transform .22s ease; }
 .truncate { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+
+
+/* Experience section */
+    #experience {
+      margin-top: 28px;
+    }
+    #experience h2 {
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+    .exp-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+    .exp-card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius: var(--radius-lg);
+      padding: var(--card-padding);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(6px);
+      overflow: hidden;
+    }
+    .exp-card h3 {
+      margin: 0 0 8px 0;
+    }
+    .exp-card p {
+      color: var(--muted);
+      margin: 0;
+    }
+    
   </style>
 </head>
 <body>
   <div class="particles" id="particles" aria-hidden="true"></div>
 
   <div class="wrap">
+
+
     <header>
       <div class="brand">
         <div class="logo" aria-hidden="true">SP</div>
@@ -228,22 +262,28 @@ footer { margin-top:28px; text-align:center; color:var(--muted); font-size:14px;
       <nav aria-label="Primary navigation" id="desktopNav">
         <a href="#about">About</a>
         <a href="#projects">Projects</a>
+        <a href="#experience">Experience</a> <!-- New Experience link -->
         <a href="#hobbies">Hobbies</a>
         <a href="#contact">Contact</a>
         <a class="cta" href="#contact">Collaborate</a>
       </nav>
     </header>
 
+    
+
     <!-- MOBILE NAV -->
     <nav id="mobileNav" style="display:none;margin-top:12px;gap:8px;flex-direction:column" aria-hidden="true">
       <div class="card" style="padding:10px;display:flex;flex-direction:column;gap:8px">
         <a href="#about" onclick="toggleMobileNav(false)">About</a>
         <a href="#projects" onclick="toggleMobileNav(false)">Projects</a>
+        <a href="#experience" onclick="toggleMobileNav(false)">Experience</a> <!-- New Experience link -->
         <a href="#hobbies" onclick="toggleMobileNav(false)">Hobbies</a>
         <a href="#contact" onclick="toggleMobileNav(false)">Contact</a>
         <a class="cta" href="#contact" onclick="toggleMobileNav(false)">Collaborate</a>
       </div>
     </nav>
+
+    
 
     <!-- HERO -->
     <div class="hero">
@@ -305,6 +345,19 @@ footer { margin-top:28px; text-align:center; color:var(--muted); font-size:14px;
             <li>Document experiments with safe steps and lessons learned</li>
           </ol>
         </div>
+      </div>
+    </section>
+
+
+    <!-- EXPERIENCE -->
+    <section id="experience" class="reveal" aria-labelledby="experienceHeading">
+      <h2 id="experienceHeading" style="color:var(--accent)"><i class="fas fa-briefcase" aria-hidden="true"></i> Experience</h2>
+      <div class="exp-grid" style="margin-top:12px">
+        <div class="exp-card">
+          <h3>Young Innovators Internship Program</h3>
+          <p>Participated in a paid internship with Nextona Edutech LLP, focusing on coding, app development, and STEM experiments during the learning phase, followed by assisting in marketing and promoting educational innovations.</p>
+        </div>
+        <!-- Add more experience cards as needed -->
       </div>
     </section>
 
