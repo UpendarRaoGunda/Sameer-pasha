@@ -3,430 +3,549 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Raghava Consultancy — Ad Generator</title>
+  <title>Raghava Consultancy — Premium Ad Generator</title>
 
-  <!-- Google fonts: Noto Sans Telugu for Telugu, Poppins for English -->
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Telugu:wght@400;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <!-- Fonts: Noto Sans Telugu + Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Telugu:wght@400;700&family=Poppins:wght@300;500;700;900&display=swap" rel="stylesheet">
 
   <style>
     :root{
-      --canvas-w:1080px;
-      --canvas-h:1920px;
-      --bg-dark:#071733;
-      --gold:#f5b042;
-      --accent:#0f4b6b;
+      --w:1080; --h:1920;
+      --bg1: #041226;
+      --blue-600: #0b5f8a;
+      --gold: #f5b041;
+      --muted: rgba(255,255,255,0.85);
+      --glass: rgba(255,255,255,0.06);
+      --card-bg: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.10));
+      --radius: 16px;
     }
-    body {
+
+    *{box-sizing: border-box}
+    body{
       margin:0;
-      font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, Arial;
-      background: linear-gradient(180deg,#071733 0%, #0d2f4a 60%, #061626 100%);
-      color: #fff;
       min-height:100vh;
+      font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      background: radial-gradient(1200px 700px at 10% 10%, rgba(11,95,138,0.12), transparent 10%),
+                  linear-gradient(180deg,#052238 0%, #07172a 100%);
+      color:#e6eef7;
       display:flex;
       gap:20px;
+      padding:28px;
       align-items:flex-start;
       justify-content:center;
-      padding:28px;
-      box-sizing:border-box;
     }
 
-    .panel {
+    .sidebar{
+      width: 380px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 10px 30px rgba(2,10,20,0.6);
+      border: 1px solid rgba(255,255,255,0.03);
+    }
+    .sidebar h1{
+      font-size:18px;margin:0 0 12px 0;
+    }
+    label{display:block;font-size:13px;color:#bcd6eb;margin-top:10px}
+    input[type="text"], textarea, select{
+      width:100%; padding:10px 12px; margin-top:6px; border-radius:8px;
+      border:1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.02); color:var(--muted);
+      outline:none; font-size:14px;
+    }
+    textarea{min-height:70px; resize:vertical}
+    .row{display:flex; gap:8px}
+    .small{flex:1}
+    .btn{
+      display:inline-block; width:100%; padding:12px; margin-top:12px; border-radius:10px;
+      border:none; cursor:pointer; font-weight:700; font-size:14px;
+      color: #061226; background: linear-gradient(90deg,var(--gold), #e4a13b);
+      box-shadow: 0 8px 24px rgba(245,180,66,0.16);
+    }
+    .btn.secondary{
+      background: linear-gradient(90deg,#2b9ed7,#2688c8); color:white;
+      box-shadow: 0 8px 24px rgba(34,120,180,0.12);
+    }
+    .controls{
+      display:flex; gap:8px; margin-top:8px;
+    }
+    .previewWrap{
       width: 420px;
-      background: rgba(255,255,255,0.03);
-      border-radius:12px;
-      padding:18px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-      backdrop-filter: blur(6px);
+      display:flex; flex-direction:column; align-items:center; gap:10px;
     }
-
-    .panel h2{
-      margin:0 0 8px 0;
-      font-size:18px;
-      letter-spacing:0.2px;
-    }
-    label{display:block;margin-top:10px;font-size:13px;color:#cbd5e1}
-    input[type="text"]{
-      width:100%;
-      padding:8px 10px;
-      margin-top:6px;
-      border-radius:8px;
-      border:1px solid rgba(255,255,255,0.08);
-      background: rgba(255,255,255,0.02);
-      color:#fff;
-      outline:none;
-      box-sizing:border-box;
-    }
-    button{
-      margin-top:12px;
-      width:100%;
-      padding:12px;
-      background: linear-gradient(90deg,var(--gold),#e08e2f);
-      color:#061626;
-      border:none;
-      border-radius:10px;
-      font-weight:700;
-      cursor:pointer;
-      box-shadow:0 6px 18px rgba(240,180,80,0.22);
-    }
-    #preview {
-      width: calc(var(--canvas-w) * 0.25);
-      height: calc(var(--canvas-h) * 0.25);
-      background: #000;
-      border-radius:8px;
-      overflow:hidden;
-      display:block;
-      margin-top:14px;
-      border:1px solid rgba(255,255,255,0.06);
-    }
-    .hint {
-      margin-top:12px;
-      font-size:12px;
-      color:#9fb3c8;
-    }
-
-    /* canvas container */
-    .canvas-area{
-      width: calc(var(--canvas-w) * 0.45);
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      align-items:center;
-    }
-    canvas{
-      width:360px; /* scaled preview on page */
-      height:640px;
-      border-radius:10px;
-      box-shadow:0 12px 40px rgba(0,0,0,0.6);
-      background: #000;
-    }
-
-    footer {
-      font-size:12px;
-      color:#9fb3c8;
-      margin-top:8px;
-    }
-
-    /* Responsive */
-    @media (max-width:1100px){
-      body{flex-direction:column;align-items:center}
-      .canvas-area{order: -1}
-    }
+    canvas{ width:360px; height:640px; border-radius:14px; box-shadow: 0 20px 60px rgba(3,12,28,0.6); background:white;}
+    .meta{color:#9ec6e3; font-size:13px; text-align:center}
+    .templateList{display:flex; gap:8px; margin-top:8px}
+    .templateItem{flex:1; padding:8px; text-align:center; border-radius:10px; cursor:pointer; font-weight:600}
+    .templateItem.active{background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.04)}
+    input[type="file"]{color:#9ec6e3}
+    .footerNote{font-size:12px; color:#9ec6e3; margin-top:8px}
   </style>
 </head>
 <body>
 
-  <div class="panel">
-    <h2>Raghava Consultancy — Ad generator (WhatsApp vertical)</h2>
+  <aside class="sidebar" aria-label="controls">
+    <h1>Raghava Consultancy — Premium Ad Maker</h1>
 
-    <label>Telugu Headline (auto-filled)</label>
+    <label>Template</label>
+    <div class="templateList" role="tablist">
+      <div class="templateItem active" data-template="classic">Classic</div>
+      <div class="templateItem" data-template="modern">Modern</div>
+      <div class="templateItem" data-template="luxe">Luxe</div>
+    </div>
+
+    <label>Telugu Headline</label>
     <input id="headlineTel" type="text" value="రాఘవ కన్సల్టెన్సీ — హోమ్ లోన్స్ & మార్ట్గేజ్ లోన్స్">
 
     <label>Telugu Subheading</label>
     <input id="subTel" type="text" value="మీ కలల ఇల్లు ఇప్పుడు మీ చేతుల్లోనే!">
 
-    <label>Phone</label>
-    <input id="phone" type="text" value="90148 33945">
+    <label>Bullets (comma-separated)</label>
+    <input id="bullets" type="text" value="₹5 లక్షల నుండి ₹1 కోటి వరకు లోన్, తక్కువ వడ్డీ రేట్లు & వేగవంతమైన మంజూరు, డోర్‌స్టెప్ డాక్యుమెంటేషన్">
 
-    <label>Website</label>
-    <input id="site" type="text" value="www.raghavaConsultency.com">
+    <div class="row">
+      <div class="small">
+        <label>Phone</label>
+        <input id="phone" type="text" value="90148 33945">
+      </div>
+      <div class="small">
+        <label>Website</label>
+        <input id="site" type="text" value="www.raghavaconsultency.com">
+      </div>
+    </div>
 
-    <label>Loan bullets (Telugu, comma separated)</label>
-    <input id="bullets" type="text" value="₹5 లక్షల నుండి ₹1 కోటి వరకు లోన్, తక్కువ వడ్డలు & వేగవంతమైన మంజూరు, డోర్‌స్టెప్ డాక్యుమెంటేషన్">
+    <label>Upload Photo (optional)</label>
+    <input id="photoFile" type="file" accept="image/*">
 
-    <button id="renderBtn">Render Image</button>
-    <button id="downloadBtn" style="background:linear-gradient(90deg,#3498db,#2aa3ff);">Download PNG</button>
+    <label>Upload Logo (optional)</label>
+    <input id="logoFile" type="file" accept="image/*">
 
-    <div class="hint">Preview (scaled). Use Render Image to refresh preview — then Download PNG to save full 1080×1920.</div>
-    <div id="preview"></div>
-    <footer>Tip: Edit phone/website then click Render → Download.</footer>
-  </div>
+    <div style="display:flex; gap:8px;">
+      <button id="renderBtn" class="btn">Render</button>
+      <button id="downloadBtn" class="btn secondary">Download PNG</button>
+    </div>
 
-  <div class="canvas-area">
-    <canvas id="adCanvas" width="1080" height="1920" aria-label="Ad canvas"></canvas>
-    <div style="color:#cfe8ff;font-size:13px;text-align:center;">1080 × 1920 (WhatsApp Status)</div>
-  </div>
+    <div style="display:flex; gap:8px;">
+      <button id="downloadPoster" class="btn" style="background:linear-gradient(90deg,#6f4bd7,#9b6cf2)">Download Poster (2000×3000)</button>
+      <button id="downloadSet" class="btn" style="background:linear-gradient(90deg,#3dd6a5,#18b686)">Download All Sizes</button>
+    </div>
+
+    <div class="footerNote">Tip: Upload a clear headshot for personal trust. Choose "Luxe" for premium feel.</div>
+  </aside>
+
+  <main class="previewWrap" aria-live="polite">
+    <canvas id="adCanvas" width="1080" height="1920" role="img" aria-label="Ad preview"></canvas>
+    <div class="meta">Preview (scaled). Click Render then Download. Templates: Classic / Modern / Luxe</div>
+  </main>
 
 <script>
-  // References
-  const canvas = document.getElementById('adCanvas');
-  const ctx = canvas.getContext('2d', {alpha:false});
-  const renderBtn = document.getElementById('renderBtn');
-  const downloadBtn = document.getElementById('downloadBtn');
-  const preview = document.getElementById('preview');
+/* Improved Ad Generator
+   - Uses canvas to render high-quality 1080x1920 artwork
+   - Accepts photo/logo uploads and three templates
+   - Downloads PNG at requested sizes
+   - Waits for fonts to load to ensure consistent rendering
+*/
 
-  // Inputs
-  const headlineTelInput = document.getElementById('headlineTel');
-  const subTelInput = document.getElementById('subTel');
-  const phoneInput = document.getElementById('phone');
-  const siteInput = document.getElementById('site');
-  const bulletsInput = document.getElementById('bullets');
+// DOM refs
+const canvas = document.getElementById('adCanvas');
+const ctx = canvas.getContext('2d', { alpha: false });
+const renderBtn = document.getElementById('renderBtn');
+const downloadBtn = document.getElementById('downloadBtn');
+const downloadPoster = document.getElementById('downloadPoster');
+const downloadSet = document.getElementById('downloadSet');
 
-  // Default values
-  const defaultData = {
-    headlineTel: headlineTelInput.value,
-    subTel: subTelInput.value,
-    phone: phoneInput.value,
-    site: siteInput.value,
-    bullets: bulletsInput.value
-  };
+const headlineTelInput = document.getElementById('headlineTel');
+const subTelInput = document.getElementById('subTel');
+const bulletsInput = document.getElementById('bullets');
+const phoneInput = document.getElementById('phone');
+const siteInput = document.getElementById('site');
+const photoFile = document.getElementById('photoFile');
+const logoFile = document.getElementById('logoFile');
 
-  // Helper: draw rounded rect
-  function roundRect(ctx, x, y, w, h, r) {
-    ctx.beginPath();
-    ctx.moveTo(x+r, y);
-    ctx.arcTo(x+w, y, x+w, y+h, r);
-    ctx.arcTo(x+w, y+h, x, y+h, r);
-    ctx.arcTo(x, y+h, x, y, r);
-    ctx.arcTo(x, y, x+w, y, r);
-    ctx.closePath();
-  }
+const templateItems = Array.from(document.querySelectorAll('.templateItem'));
+let activeTemplate = 'classic';
 
-  // Draw function (main)
-  function drawAd(data) {
-    // Clear
-    ctx.clearRect(0,0,canvas.width,canvas.height);
+// state for user images
+let uploadedPhoto = null;
+let uploadedLogo = null;
 
-    // Background gradient (royal blue -> deep teal -> dark)
-    const g = ctx.createLinearGradient(0,0,0,canvas.height);
-    g.addColorStop(0, '#0b3762');
-    g.addColorStop(0.45, '#06334f');
-    g.addColorStop(1, '#041423');
+photoFile.addEventListener('change', (e)=>{
+  const f = e.target.files[0];
+  if(!f) return;
+  const url = URL.createObjectURL(f);
+  loadImage(url).then(img => { uploadedPhoto = img; URL.revokeObjectURL(url); });
+});
+logoFile.addEventListener('change', (e)=>{
+  const f = e.target.files[0];
+  if(!f) return;
+  const url = URL.createObjectURL(f);
+  loadImage(url).then(img => { uploadedLogo = img; URL.revokeObjectURL(url); });
+});
+
+// template switcher
+templateItems.forEach(it=>{
+  it.addEventListener('click', ()=>{
+    templateItems.forEach(i=>i.classList.remove('active'));
+    it.classList.add('active');
+    activeTemplate = it.dataset.template;
+  });
+});
+
+// helper to load image as HTMLImageElement
+function loadImage(src){
+  return new Promise((res, rej)=>{
+    const img = new Image();
+    img.onload = ()=>res(img);
+    img.onerror = (e)=>rej(e);
+    img.src = src;
+  });
+}
+
+// wait for fonts
+async function fontsReady(){ await document.fonts.ready; }
+
+// rounding utility
+function roundRectPath(ctx,x,y,w,h,r){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y);
+  ctx.arcTo(x+w,y,x+w,y+h,r);
+  ctx.arcTo(x+w,y+h,x,y+h,r);
+  ctx.arcTo(x,y+h,x,y,r);
+  ctx.arcTo(x,y,x+w,y,r);
+  ctx.closePath();
+}
+
+// draw icon: small house
+function drawHouseIcon(ctx,x,y,size,fill){
+  ctx.save();
+  ctx.translate(x,y);
+  ctx.beginPath();
+  ctx.moveTo(0,-size*0.4);
+  ctx.lineTo(-size*0.45,0);
+  ctx.lineTo(-size*0.45,size*0.4);
+  ctx.lineTo(size*0.45,size*0.4);
+  ctx.lineTo(size*0.45,0);
+  ctx.closePath();
+  ctx.fillStyle = fill;
+  ctx.fill();
+  // door
+  ctx.fillStyle = 'rgba(0,0,0,0.12)';
+  ctx.fillRect(-size*0.12,size*0.05,size*0.24,size*0.25);
+  ctx.restore();
+}
+
+// main draw function
+async function draw(data, width=1080, height=1920){
+  await fontsReady();
+  // scale canvas to resolution
+  canvas.width = width;
+  canvas.height = height;
+
+  // base gradient background depends on template
+  if(activeTemplate === 'classic'){
+    const g = ctx.createLinearGradient(0,0,0,height);
+    g.addColorStop(0,'#07243a');
+    g.addColorStop(0.45,'#06334f');
+    g.addColorStop(1,'#041226');
     ctx.fillStyle = g;
-    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.fillRect(0,0,width,height);
+  } else if(activeTemplate === 'modern'){
+    const g = ctx.createLinearGradient(0,0,width,height);
+    g.addColorStop(0,'#06293a');
+    g.addColorStop(1,'#0b4b6b');
+    ctx.fillStyle = g;
+    ctx.fillRect(0,0,width,height);
+  } else if(activeTemplate === 'luxe'){
+    const g = ctx.createLinearGradient(0,0,0,height);
+    g.addColorStop(0,'#081224');
+    g.addColorStop(0.6,'#0d2540');
+    g.addColorStop(1,'#0b1220');
+    ctx.fillStyle = g;
+    ctx.fillRect(0,0,width,height);
+    // subtle gold vignette
+    const vign = ctx.createRadialGradient(width*0.5, height*0.4, 200, width*0.5, height*0.4, Math.max(width,height));
+    vign.addColorStop(0,'rgba(245,180,66,0.08)');
+    vign.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle = vign;
+    ctx.fillRect(0,0,width,height);
+  }
 
-    // Soft golden glow behind main house area
-    const glowX = canvas.width/2;
-    const glowY = canvas.height * 0.42;
-    const glow = ctx.createRadialGradient(glowX, glowY, 10, glowX, glowY, 900);
-    glow.addColorStop(0, 'rgba(245,180,66,0.95)');
-    glow.addColorStop(0.12, 'rgba(245,180,66,0.65)');
-    glow.addColorStop(0.25, 'rgba(245,180,66,0.18)');
-    glow.addColorStop(1, 'rgba(4,20,35,0)');
-    ctx.fillStyle = glow;
-    ctx.fillRect(0,0,canvas.width,canvas.height);
+  // big soft glow at center-top for warmth
+  const glow = ctx.createRadialGradient(width/2, height*0.36, 10, width/2, height*0.36, 900);
+  glow.addColorStop(0, 'rgba(245,180,66,0.95)');
+  glow.addColorStop(0.15, 'rgba(245,180,66,0.28)');
+  glow.addColorStop(0.35, 'rgba(0,0,0,0.02)');
+  glow.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.fillStyle = glow;
+  ctx.fillRect(0,0,width,height);
 
-    // subtle skyline silhouettes
+  // subtle city silhouette for depth
+  ctx.save();
+  ctx.globalAlpha = 0.06;
+  ctx.fillStyle = '#000';
+  for(let i=0;i<12;i++){
+    const wRect = 80 + (i%4)*30;
+    const hRect = 140 + (i%5)*60;
+    const x = i * 90;
+    const y = height*0.58 - hRect;
+    ctx.fillRect(x, y, wRect, hRect);
+  }
+  ctx.restore();
+
+  // draw central house with glow
+  const houseW = Math.round(width * 0.5);
+  const houseH = Math.round(height * 0.21);
+  const houseX = Math.round(width*0.06);
+  const houseY = Math.round(height*0.48);
+
+  // modern house base (rounded rectangle)
+  roundRectPath(ctx, houseX, houseY, houseW, houseH, 24);
+  ctx.fillStyle = 'rgba(255,255,255,0.04)';
+  ctx.fill();
+
+  // windows glow
+  ctx.fillStyle = '#ffdca2';
+  ctx.fillRect(houseX + 60, houseY + 40, 140, 90);
+  ctx.fillRect(houseX + 240, houseY + 40, 120, 90);
+  ctx.fillRect(houseX + 420, houseY + 40, 80, 90);
+
+  // roof triangle
+  ctx.beginPath();
+  ctx.moveTo(houseX-20, houseY+10);
+  ctx.lineTo(houseX + houseW/2, houseY - 110);
+  ctx.lineTo(houseX + houseW + 20, houseY + 10);
+  ctx.closePath();
+  ctx.fillStyle = 'rgba(0,0,0,0.12)';
+  ctx.fill();
+
+  // House outline highlight
+  ctx.strokeStyle = 'rgba(245,180,66,0.08)';
+  ctx.lineWidth = 4;
+  ctx.stroke();
+
+  // place user photo (circle) if available
+  if(uploadedPhoto){
+    const pSize = Math.round(width * 0.22);
+    const px = Math.round(width * 0.74);
+    const py = Math.round(height * 0.50);
+    // circle clip and drop shadow
     ctx.save();
-    ctx.globalAlpha = 0.06;
-    ctx.fillStyle = '#000000';
-    // simple rectangles as city blocks
-    for(let i=0;i<12;i++){
-      const w = 60 + i*8;
-      const h = 60 + (i%6)*40 + 80;
-      const x = (i*90) % canvas.width;
-      const y = canvas.height*0.55 - h;
-      ctx.fillRect(x, y, w, h);
-    }
-    ctx.restore();
-
-    // Draw house (stylized) in center-left
-    const houseW = 640;
-    const houseH = 380;
-    const houseX = canvas.width*0.12;
-    const houseY = canvas.height*0.45;
-
-    // base
-    roundRect(ctx, houseX, houseY, houseW, houseH, 20);
-    ctx.fillStyle = 'rgba(8,19,40,0.65)';
-    ctx.fill();
-
-    // roof triangle
+    // drop shadow
+    ctx.shadowColor = 'rgba(0,0,0,0.6)';
+    ctx.shadowBlur = 40;
     ctx.beginPath();
-    ctx.moveTo(houseX-20, houseY+30);
-    ctx.lineTo(houseX + houseW/2, houseY - 120);
-    ctx.lineTo(houseX + houseW + 20, houseY + 30);
+    ctx.arc(px, py - 20, pSize/2 + 8, 0, Math.PI*2);
+    ctx.fillStyle = 'rgba(0,0,0,0.16)';
+    ctx.fill();
+    ctx.shadowBlur = 0;
+    // draw photo clipped
+    ctx.beginPath();
+    ctx.arc(px, py - 20, pSize/2, 0, Math.PI*2);
     ctx.closePath();
-    ctx.fillStyle = '#2c6aa6';
-    ctx.fill();
-
-    // windows (glowing)
-    ctx.fillStyle = '#ffdca2';
-    ctx.fillRect(houseX + 60, houseY + 80, 120, 100);
-    ctx.fillRect(houseX + 220, houseY + 80, 120, 100);
-
-    // door
-    roundRect(ctx, houseX + 420, houseY + 200, 80, 150, 10);
-    ctx.fillStyle = '#ffdca2';
-    ctx.fill();
-
-    // roof highlight
-    const roofGrad = ctx.createLinearGradient(houseX, houseY-120, houseX + houseW, houseY+30);
-    roofGrad.addColorStop(0, 'rgba(255,230,180,0.24)');
-    roofGrad.addColorStop(1, 'rgba(255,255,255,0.02)');
-    ctx.fillStyle = roofGrad;
-    ctx.fill();
-
-    // small icon row above house: bank, handshake, document
-    const iconY = houseY - 40;
-    const iconSize = 44;
-    ctx.fillStyle = '#ffdca2';
-    // globe-like bank (circle + pillars)
+    ctx.clip();
+    // draw image covering the circle
+    const img = uploadedPhoto;
+    // compute cover cropping
+    let sx = 0, sy = 0, sw = img.width, sh = img.height;
+    const imgRatio = img.width / img.height;
+    const targetRatio = 1;
+    if(imgRatio > targetRatio){
+      // wider -> crop sides
+      sw = img.height * targetRatio;
+      sx = (img.width - sw)/2;
+    } else {
+      // taller -> crop top/bottom
+      sh = img.width / targetRatio;
+      sy = (img.height - sh)/2;
+    }
+    ctx.drawImage(img, sx, sy, sw, sh, px - pSize/2, py - 20 - pSize/2, pSize, pSize);
+    ctx.restore();
+  } else {
+    // placeholder circular avatar with initials
+    const pSize = Math.round(width * 0.22);
+    const px = Math.round(width * 0.74);
+    const py = Math.round(height * 0.50);
+    ctx.save();
     ctx.beginPath();
-    ctx.arc(houseX + 80, iconY, iconSize/2, 0, Math.PI*2);
+    ctx.arc(px, py - 20, pSize/2, 0, Math.PI*2);
+    ctx.fillStyle = 'rgba(255,255,255,0.06)';
     ctx.fill();
-    // handshake simplified rectangle
-    ctx.fillRect(houseX + 80 + 120, iconY - iconSize/2, iconSize, iconSize/2);
-    // doc (paper)
-    roundRect(ctx, houseX + 80 + 240, iconY - iconSize/2, iconSize*0.7, iconSize, 6);
+    ctx.font = `700 ${Math.round(pSize*0.28)}px Poppins, sans-serif`;
+    ctx.fillStyle = '#ffdca2';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('HP', px, py - 20);
+    ctx.restore();
+  }
+
+  // draw logo if provided top-left
+  if(uploadedLogo){
+    const lW = Math.round(width * 0.18);
+    const lH = Math.round(width * 0.06);
+    const lx = Math.round(width * 0.06);
+    const ly = Math.round(height * 0.06);
+    roundRectPath(ctx, lx - 8, ly - 8, lW + 16, lH + 16, 12);
+    ctx.fillStyle = 'rgba(0,0,0,0.16)';
     ctx.fill();
-
-    // main Telugu headline (Top)
-    ctx.fillStyle = '#fff7e9';
-    ctx.textAlign = 'center';
-    // Telugu font
-    const telugofont = '700 64px "Noto Sans Telugu", "Poppins", sans-serif';
-    ctx.font = telugofont;
-    wrapText(ctx, data.headlineTel, canvas.width/2, canvas.height*0.12, canvas.width - 80, 72);
-
-    // subheading Telugu (center)
-    ctx.fillStyle = 'rgba(255,255,255,0.92)';
-    ctx.font = '600 36px "Noto Sans Telugu", "Poppins", sans-serif';
-    ctx.textAlign = 'center';
-    wrapText(ctx, data.subTel, canvas.width/2, canvas.height*0.18 + 10, canvas.width - 120, 46);
-
-    // Middle bullet points (Telugu) - render as three bullets
+    // draw logo image centered in the box
+    const img = uploadedLogo;
+    // preserve aspect, fit inside lW x lH
+    const ratio = Math.min(lW / img.width, lH / img.height);
+    const drawW = img.width * ratio;
+    const drawH = img.height * ratio;
+    const drawX = lx + (lW - drawW)/2;
+    const drawY = ly + (lH - drawH)/2;
+    ctx.drawImage(img, drawX, drawY, drawW, drawH);
+  } else {
+    // draw simple text logo
+    ctx.font = '700 32px Poppins, sans-serif';
+    ctx.fillStyle = '#ffdca2';
     ctx.textAlign = 'left';
-    ctx.font = '500 34px "Noto Sans Telugu", "Poppins", sans-serif';
-    ctx.fillStyle = '#fff';
-    const bullets = data.bullets.split(',').map(s => s.trim()).slice(0,5);
-    let by = canvas.height*0.52;
-    const bx = canvas.width*0.62;
-    bullets.forEach((b, i) => {
-      // circle bullet
-      ctx.beginPath();
-      ctx.fillStyle = '#ffdca2';
-      ctx.arc(bx - 36, by + i*58 + 8, 10, 0, Math.PI*2);
-      ctx.fill();
+    ctx.fillText('RaghavaConsult', width*0.06, height*0.09);
+  }
 
-      // text
-      ctx.fillStyle = '#fff';
-      wrapText(ctx, '•  ' + b, bx - 6, by + i*58 + 8, canvas.width - bx - 60, 40);
-    });
+  // headings: Telugu headline top center
+  ctx.font = `700 ${Math.round(width*0.055)}px "Noto Sans Telugu", Poppins, sans-serif`;
+  ctx.fillStyle = '#fffaf0';
+  ctx.textAlign = 'center';
+  // multi-line wrap
+  wrapText(ctx, data.headlineTel, width/2, height*0.14, width - 120, Math.round(width*0.07));
 
-    // Right side: portrait simplified (rounded rectangle w/ face tone)
-    const faceX = canvas.width * 0.68;
-    const faceY = canvas.height * 0.65;
-    const faceW = 320;
-    const faceH = 520;
-    roundRect(ctx, faceX - 40, faceY - 330, faceW, faceH, 28);
-    ctx.fillStyle = '#0f3b57';
-    ctx.fill();
+  // subheading
+  ctx.font = `600 ${Math.round(width*0.035)}px "Noto Sans Telugu", Poppins, sans-serif`;
+  ctx.fillStyle = 'rgba(255,255,255,0.92)';
+  wrapText(ctx, data.subTel, width/2, height*0.205, width - 160, Math.round(width*0.044));
 
-    // simple smiling face oval
+  // bullet list
+  ctx.font = `500 ${Math.round(width*0.034)}px "Noto Sans Telugu", Poppins, sans-serif`;
+  ctx.fillStyle = 'rgba(255,255,255,0.96)';
+  const bullets = data.bullets.split(',').map(s => s.trim()).filter(Boolean).slice(0,6);
+  const bx = Math.round(width*0.58);
+  let by = Math.round(height*0.58);
+  bullets.forEach((b, i)=>{
+    // icon circle
     ctx.beginPath();
-    ctx.fillStyle = '#ffd9b2';
-    ctx.ellipse(faceX + faceW/2 - 40, faceY - 120, 86, 116, 0, 0, Math.PI*2);
+    ctx.arc(bx - 70, by + i*70 + 6, 22, 0, Math.PI*2);
+    ctx.fillStyle = '#ffdca2';
     ctx.fill();
-    // suit area
-    ctx.fillStyle = '#08304a';
-    roundRect(ctx, faceX - 10, faceY + 40, faceW - 40, 240, 20);
-    ctx.fill();
+    // small house icon inside circle
+    ctx.save();
+    ctx.fillStyle = '#0b2740';
+    drawHouseIcon(ctx, bx - 77, by + i*70 - 6, 26, '#0b2740');
+    ctx.restore();
+    // text
+    wrapText(ctx, b, bx - 20, by + i*70 + 6, width - bx - 80, Math.round(width*0.048));
+  });
 
-    // Contact lines (center bottom)
-    ctx.textAlign = 'center';
-    ctx.fillStyle = '#fff';
-    ctx.font = '700 40px "Poppins", sans-serif';
-    ctx.fillText(data.phone, canvas.width/2, canvas.height*0.78);
+  // contact block bottom center
+  // box
+  const cH = Math.round(height*0.14);
+  const cW = Math.round(width*0.86);
+  const cX = Math.round((width - cW)/2);
+  const cY = Math.round(height*0.74);
+  roundRectPath(ctx, cX, cY, cW, cH, 18);
+  ctx.fillStyle = 'rgba(0,0,0,0.22)';
+  ctx.fill();
 
-    ctx.font = '500 30px "Poppins", sans-serif';
-    ctx.fillStyle = 'rgba(255,255,255,0.9)';
-    ctx.fillText(data.site, canvas.width/2, canvas.height*0.815);
+  // phone large
+  ctx.font = `800 ${Math.round(width*0.055)}px Poppins, sans-serif`;
+  ctx.fillStyle = '#fff';
+  ctx.textAlign = 'center';
+  ctx.fillText(data.phone, width/2, cY + (cH*0.45));
 
-    // Big brand name near bottom
-    ctx.font = '800 64px "Poppins", sans-serif';
-    ctx.fillStyle = 'rgba(245,180,66,1)';
-    ctx.fillText('RAGHAVA CONSULTANCY', canvas.width/2, canvas.height*0.9);
+  // website smaller
+  ctx.font = `500 ${Math.round(width*0.032)}px Poppins, sans-serif`;
+  ctx.fillStyle = 'rgba(255,255,255,0.84)';
+  ctx.fillText(data.site, width/2, cY + (cH*0.75));
 
-    // Tagline
-    ctx.font = '500 30px "Poppins", sans-serif';
-    ctx.fillStyle = 'rgba(255,255,255,0.9)';
-    ctx.fillText('Transforming Dreams into Homes.', canvas.width/2, canvas.height*0.94);
+  // brand name footer
+  ctx.font = `900 ${Math.round(width*0.05)}px Poppins, sans-serif`;
+  ctx.fillStyle = '#ffdca2';
+  ctx.fillText('RAGHAVA CONSULTANCY', width/2, height*0.925);
 
-    // subtle footer
-    ctx.font = '400 20px "Poppins", sans-serif';
-    ctx.fillStyle = 'rgba(255,255,255,0.12)';
-    ctx.fillText('Associated with major Banks & NBFCs', canvas.width/2, canvas.height*0.975);
-  }
+  // tagline
+  ctx.font = `500 ${Math.round(width*0.03)}px Poppins, sans-serif`;
+  ctx.fillStyle = 'rgba(255,255,255,0.9)';
+  ctx.fillText('Transforming Dreams into Homes.', width/2, height*0.96);
 
-  // Wrap text helper for canvas
-  function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
-    const words = text.split(' ');
-    let line = '';
-    let testLine = '';
-    let lineArray = [];
-    for(let n=0;n<words.length;n++){
-      testLine = line + words[n] + ' ';
-      const metrics = ctx.measureText(testLine);
-      if(metrics.width > maxWidth && n > 0){
-        lineArray.push(line.trim());
-        line = words[n] + ' ';
-      } else {
-        line = testLine;
-      }
+  // small footer note
+  ctx.font = `400 ${Math.round(width*0.02)}px Poppins, sans-serif`;
+  ctx.fillStyle = 'rgba(255,255,255,0.12)';
+  ctx.fillText('Associated with major Banks & NBFCs', width/2, height*0.986);
+}
+
+// text wrapping helper for canvas
+function wrapText(ctx, text, x, y, maxWidth, lineHeight){
+  const words = text.split(' ');
+  let line = '';
+  const lines = [];
+  for(let n = 0; n < words.length; n++){
+    const testLine = line + words[n] + ' ';
+    const metrics = ctx.measureText(testLine);
+    if(metrics.width > maxWidth && n > 0){
+      lines.push(line.trim());
+      line = words[n] + ' ';
+    } else {
+      line = testLine;
     }
-    lineArray.push(line.trim());
-    // Draw lines centered by default behavior: ctx.textAlign should be set before calling this
-    for(let i=0;i<lineArray.length;i++){
-      ctx.fillText(lineArray[i], x, y + (i * lineHeight));
-    }
   }
-
-  // initial render
-  function renderFromInputs(){
-    const data = {
-      headlineTel: headlineTelInput.value || defaultData.headlineTel,
-      subTel: subTelInput.value || defaultData.subTel,
-      phone: phoneInput.value || defaultData.phone,
-      site: siteInput.value || defaultData.site,
-      bullets: bulletsInput.value || defaultData.bullets
-    };
-    drawAd(data);
-    // update preview (small scaled PNG)
-    updatePreview();
+  lines.push(line.trim());
+  // draw
+  for(let i = 0; i < lines.length; i++){
+    ctx.fillText(lines[i], x, y + (i * lineHeight));
   }
+}
 
-  function updatePreview(){
-    // make a small dataURL and set as background in preview div for crisp scaled preview
-    const scale = 0.25; // 1080x1920 -> 270x480
-    const tmpCanvas = document.createElement('canvas');
-    tmpCanvas.width = canvas.width * scale;
-    tmpCanvas.height = canvas.height * scale;
-    const tctx = tmpCanvas.getContext('2d');
-    // draw scaled
-    tctx.drawImage(canvas, 0, 0, tmpCanvas.width, tmpCanvas.height);
-    preview.style.backgroundImage = `url(${tmpCanvas.toDataURL('image/png')})`;
-    preview.style.backgroundSize = 'cover';
-    preview.style.backgroundPosition = 'center';
-  }
+// collect data and render
+async function renderAd(width=1080, height=1920){
+  const data = {
+    headlineTel: headlineTelInput.value.trim() || 'రాఘవ కన్సల్టెన్సీ',
+    subTel: subTelInput.value.trim() || 'మీ కలల ఇల్లు ఇప్పుడు మీ చేతుల్లోనే!',
+    bullets: bulletsInput.value.trim() || '₹5 లక్షల నుండి ₹1 కోటి వరకు లోన్, తక్కువ వడ్డీ రేట్లు, డోర్‌స్టెప్ డాక్యుమెంటేషన్',
+    phone: phoneInput.value.trim() || '90148 33945',
+    site: siteInput.value.trim() || 'www.raghavaconsultency.com'
+  };
+  await draw(data, width, height);
+}
 
-  // download as PNG
-  function downloadPNG(){
-    // Convert canvas to data URL
+// download function
+function downloadCanvas(filename, width=1080, height=1920){
+  // render at requested size first (to ensure sharpness)
+  return new Promise(async (resolve)=>{
+    await renderAd(width, height);
+    // toDataURL then create link
     const dataURL = canvas.toDataURL('image/png');
     const link = document.createElement('a');
     link.href = dataURL;
-    const now = new Date();
-    const ts = now.getFullYear().toString() + (now.getMonth()+1).toString().padStart(2,'0') + now.getDate().toString().padStart(2,'0');
-    link.download = `raghava_ad_${ts}.png`;
+    link.download = filename;
     document.body.appendChild(link);
     link.click();
     link.remove();
-  }
-
-  // Attach events
-  renderBtn.addEventListener('click', renderFromInputs);
-  downloadBtn.addEventListener('click', ()=> {
-    // ensure the latest render
-    renderFromInputs();
-    // small delay to ensure drawing done
-    setTimeout(downloadPNG, 120);
+    resolve();
   });
+}
 
-  // initial call
-  window.addEventListener('load', ()=> {
-    // a little delay to let fonts load
-    setTimeout(renderFromInputs, 220);
-  });
+// Attach events
+renderBtn.addEventListener('click', ()=> renderAd());
+downloadBtn.addEventListener('click', async ()=>{
+  await downloadCanvas('raghava_ad_1080x1920.png', 1080, 1920);
+});
+downloadPoster.addEventListener('click', async ()=>{
+  await downloadCanvas('raghava_poster_2000x3000.png', 2000, 3000);
+});
+downloadSet.addEventListener('click', async ()=>{
+  // downloads multiple sizes
+  await downloadCanvas('raghava_ad_1080x1920.png', 1080, 1920);
+  await new Promise(r=>setTimeout(r,200));
+  await downloadCanvas('raghava_story_1080x1920.png', 1080, 1920);
+  await new Promise(r=>setTimeout(r,200));
+  await downloadCanvas('raghava_poster_2000x3000.png', 2000, 3000);
+});
+
+// initial render on load (after fonts ready)
+window.addEventListener('load', ()=> {
+  // small delay so fonts finish loading
+  setTimeout(()=>renderAd(), 240);
+});
 </script>
 
 </body>
