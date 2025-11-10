@@ -341,77 +341,310 @@
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+
     <script>
-        // Add sparkle effect on hover
-        document.querySelectorAll('.leader-portrait').forEach(portrait => {
-            portrait.addEventListener('mouseenter', function() {
-                this.style.transform = 'scale(1.05)';
-                this.style.transition = 'transform 0.3s ease';
-            });
-            
-            portrait.addEventListener('mouseleave', function() {
-                this.style.transform = 'scale(1)';
-            });
-        });
 
-        // Create floating particles
-        function createParticle() {
-            const particle = document.createElement('div');
-            particle.style.position = 'absolute';
-            particle.style.width = '3px';
-            particle.style.height = '3px';
-            particle.style.background = 'rgba(255, 215, 0, 0.6)';
-            particle.style.borderRadius = '50%';
-            particle.style.left = Math.random() * 100 + '%';
-            particle.style.top = '100%';
-            particle.style.pointerEvents = 'none';
-            particle.style.zIndex = '1';
-            
-            document.querySelector('.poster').appendChild(particle);
-            
-            const duration = 3000 + Math.random() * 2000;
-            const drift = (Math.random() - 0.5) * 100;
-            
-            particle.animate([
-                { transform: 'translateY(0) translateX(0)', opacity: 0 },
-                { transform: `translateY(-${window.innerHeight}px) translateX(${drift}px)`, opacity: 1 }
-            ], {
-                duration: duration,
-                easing: 'ease-out'
-            }).onfinish = () => particle.remove();
+/* complete-poster-export.js
+ *
+ * Usage:
+ *  - Include this file after html2canvas script and after poster DOM markup
+ *  - Ensure your <img> tags are inside .poster container
+ *  - The script will enable the "Download" button when everything is ready
+ *
+ * Notes about CORS:
+ *  - For cross-origin images to be included in the canvas, the image host MUST send:
+ *      Access-Control-Allow-Origin: *
+ *    OR Access-Control-Allow-Origin: <your-domain>
+ *  - If that's impossible, convert images to data-URLs (base64) or host them locally.
+ */
+
+(() => {
+  const DOWNLOAD_BTN_ID = 'downloadBtn';
+  const POSTER_SELECTOR = '.poster';
+  const WAIT_TIMEOUT_MS = 10000; // how long to wait for each image (ms)
+  const GLOBAL_WAIT_MS = 2000;   // short delay after images loaded to ensure reflow
+
+  // Utility: log and show console warning
+  const debug = {
+    log: (...args) => console.log('[poster-export]', ...args),
+    warn: (...args) => console.warn('[poster-export]', ...args),
+    error: (...args) => console.error('[poster-export]', ...args),
+  };
+
+  // Get poster and button
+  const poster = document.querySelector(POSTER_SELECTOR);
+  const button = document.getElementById(DOWNLOAD_BTN_ID);
+
+  if (!poster) {
+    debug.error(`Poster element not found: selector "${POSTER_SELECTOR}"`);
+    return;
+  }
+  if (!button) {
+    debug.warn(`Download button not found with id "${DOWNLOAD_BTN_ID}". Script will still work if you call downloadPoster() manually.`);
+  }
+
+  // Wait for DOM/images to be ready, then enable button
+  document.addEventListener('DOMContentLoaded', init);
+  if (document.readyState === 'complete' || document.readyState === 'interactive') init();
+
+  async function init() {
+    // optionally disable button until ready
+    if (button) {
+      button.disabled = true;
+      button.title = 'Preparing images...';
+    }
+
+    debug.log('Scanning images inside poster...');
+    const imgs = Array.from(poster.querySelectorAll('img'));
+
+    // Attempt to reload cross-origin images with crossorigin attribute if required
+    await tryAddCrossOrigin(imgs);
+
+    // Wait for images to be decoded/loaded
+    const results = await waitForImages(imgs, WAIT_TIMEOUT_MS);
+
+    // Summarize results
+    const failed = results.filter(r => !r.ok);
+    if (failed.length > 0) {
+      debug.warn('Some images did not load correctly:', failed);
+      // Show helpful alert but still let user try to export
+      alert(
+        'Some poster images failed to load before capture. This usually causes blank areas in the exported PNG.\n\n' +
+        'Open console (F12) for details. Common fixes:\n' +
+        '- Ensure image paths are correct (no 404).\n' +
+        '- If images are loaded from another domain, that server must send CORS header: Access-Control-Allow-Origin: *\n' +
+        '- Or use data-URLs (base64) for local/offline usage.\n\n' +
+        'You can still try to generate the image — click the Download button again.'
+      );
+    } else {
+      debug.log('All images loaded successfully.');
+    }
+
+    // tiny pause to ensure layout settled
+    await new Promise(r => setTimeout(r, GLOBAL_WAIT_MS));
+
+    // enable button and attach handler
+    if (button) {
+      button.disabled = false;
+      button.title = 'Download poster as PNG';
+      button.removeEventListener('click', onDownloadClick);
+      button.addEventListener('click', onDownloadClick);
+    }
+  }
+
+  // Try to set crossorigin="anonymous" for cross-origin images, and reload them
+  // This helps html2canvas read images when the remote server permits it.
+  async function tryAddCrossOrigin(imgs) {
+    for (const img of imgs) {
+      try {
+        const src = img.getAttribute('src') || '';
+        if (!src) continue;
+
+        // If src is data URL or same-origin, skip
+        if (isDataURL(src)) continue;
+        const srcOrigin = (new URL(src, location.href)).origin;
+        const pageOrigin = location.origin;
+
+        if (srcOrigin !== pageOrigin) {
+          // Only set crossorigin if not already set
+          if (img.crossOrigin !== 'anonymous') {
+            debug.log(`Setting crossorigin="anonymous" and reloading: ${src}`);
+            const orig = src;
+            img.crossOrigin = 'anonymous';
+
+            // Force reload by changing src temporarily (cache-friendly)
+            // Using a timestamp parameter to ensure reload if needed
+            const separator = orig.includes('?') ? '&' : '?';
+            const cacheBust = `__cb=${Date.now()}`;
+            img.src = orig + separator + cacheBust;
+            // Wait a tick for the browser to start fetching
+            await new Promise(r => setTimeout(r, 50));
+          } else {
+            debug.log(`Image already has crossorigin="anonymous": ${src}`);
+          }
         }
+      } catch (err) {
+        debug.warn('tryAddCrossOrigin error for image', img, err);
+      }
+    }
+  }
 
-        setInterval(createParticle, 300);
+  // Wait for all images to load/ decode with timeout
+  async function waitForImages(imgs, timeoutMs = 5000) {
+    const checks = imgs.map(img => waitForSingleImage(img, timeoutMs));
+    return Promise.all(checks);
+  }
 
-        // Download poster as PNG
-        function downloadPoster() {
-            const button = document.getElementById('downloadBtn');
-            button.textContent = 'Generating...';
-            button.disabled = true;
+  function waitForSingleImage(img, timeoutMs) {
+    return new Promise(resolve => {
+      const result = { img, ok: false, reason: null, src: img.currentSrc || img.src };
 
-            const poster = document.querySelector('.poster');
-            
-            html2canvas(poster, {
-                scale: 3, // Higher quality (3x resolution)
-                backgroundColor: null,
-                logging: false,
-                useCORS: true,
-                width: poster.offsetWidth,
-                height: poster.offsetHeight
-            }).then(canvas => {
-                const link = document.createElement('a');
-                link.download = 'revolutionary-leaders-poster.png';
-                link.href = canvas.toDataURL('image/png');
-                link.click();
-                
-                button.textContent = '📥 Download PNG Image';
-                button.disabled = false;
-            }).catch(err => {
-                console.error('Error generating image:', err);
-                button.textContent = '❌ Error - Try Again';
-                button.disabled = false;
-            });
+      // If it's a data URL or already loaded with naturalWidth > 0, resolve
+      if (isDataURL(img.src) || (img.complete && img.naturalWidth > 0)) {
+        result.ok = true;
+        debug.log('Image already loaded:', result.src, 'naturalWidth=', img.naturalWidth);
+        return resolve(result);
+      }
+
+      // Modern browsers support decode()
+      let settled = false;
+      const timer = setTimeout(() => {
+        if (!settled) {
+          settled = true;
+          result.ok = (img.naturalWidth && img.naturalWidth > 0);
+          result.reason = 'timeout';
+          debug.warn('Image decode timed out:', result.src, 'naturalWidth=', img.naturalWidth);
+          return resolve(result);
         }
+      }, timeoutMs);
+
+      if (img.decode) {
+        img.decode()
+          .then(() => {
+            if (!settled) {
+              settled = true;
+              clearTimeout(timer);
+              result.ok = img.naturalWidth && img.naturalWidth > 0;
+              result.reason = result.ok ? null : 'decoded-but-zero-width';
+              debug.log('Image decode succeeded:', result.src, 'naturalWidth=', img.naturalWidth);
+              resolve(result);
+            }
+          })
+          .catch(err => {
+            if (!settled) {
+              settled = true;
+              clearTimeout(timer);
+              result.ok = img.naturalWidth && img.naturalWidth > 0;
+              result.reason = 'decode-error';
+              debug.warn('Image decode failed:', result.src, err);
+              resolve(result);
+            }
+          });
+      } else {
+        // Fallback for older browsers: listen load/error
+        const onLoad = () => {
+          if (settled) return;
+          settled = true;
+          clearTimeout(timer);
+          result.ok = img.naturalWidth && img.naturalWidth > 0;
+          result.reason = result.ok ? null : 'loaded-zero-width';
+          debug.log('Image loaded via event:', result.src, 'naturalWidth=', img.naturalWidth);
+          cleanup();
+          resolve(result);
+        };
+        const onError = (ev) => {
+          if (settled) return;
+          settled = true;
+          clearTimeout(timer);
+          result.ok = false;
+          result.reason = 'error';
+          debug.warn('Image load error event:', result.src, ev);
+          cleanup();
+          resolve(result);
+        };
+        const cleanup = () => {
+          img.removeEventListener('load', onLoad);
+          img.removeEventListener('error', onError);
+        };
+        img.addEventListener('load', onLoad);
+        img.addEventListener('error', onError);
+      }
+    });
+  }
+
+  // Utils
+  function isDataURL(s) {
+    return typeof s === 'string' && s.startsWith('data:');
+  }
+
+  // Main handler for button click
+  async function onDownloadClick(ev) {
+    ev && ev.preventDefault();
+    if (!window.html2canvas) {
+      alert('html2canvas is not loaded. Please include html2canvas library before using this button.');
+      return;
+    }
+
+    const btn = document.getElementById(DOWNLOAD_BTN_ID);
+    if (btn) {
+      btn.disabled = true;
+      const prev = btn.textContent;
+      btn.textContent = 'Generating...';
+    }
+
+    try {
+      // Final attempt: wait one more time for images in case any late loads occurred
+      const imgs = Array.from(poster.querySelectorAll('img'));
+      await waitForImages(imgs, 3000);
+      await new Promise(r => setTimeout(r, 250)); // micro delay
+
+      // html2canvas options
+      const options = {
+        scale: Math.min(3, window.devicePixelRatio || 1), // reasonable scale
+        useCORS: true,
+        allowTaint: false,
+        backgroundColor: null,
+        logging: false,
+        width: poster.offsetWidth,
+        height: poster.offsetHeight
+      };
+
+      debug.log('Calling html2canvas with options:', options);
+      const canvas = await html2canvas(poster, options);
+
+      // Convert to data URL and download
+      try {
+        const link = document.createElement('a');
+        link.download = 'revolutionary-leaders-poster.png';
+        link.href = canvas.toDataURL('image/png');
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        debug.log('Download triggered successfully.');
+      } catch (err) {
+        // If canvas is tainted, toDataURL will throw or return a security error
+        debug.error('Failed to export canvas to data URL. Canvas may be tainted by cross-origin content.', err);
+        alert('Export failed: the canvas was tainted by cross-origin images. See console for details. To fix: host images on the same domain or enable CORS on the image server, or embed images as base64 data URLs.');
+      }
+    } catch (err) {
+      debug.error('Unexpected error during poster generation:', err);
+      alert('Unexpected error generating poster. See console for details.');
+    } finally {
+      if (button) {
+        button.disabled = false;
+        button.textContent = '📥 Download PNG Image';
+      }
+    }
+  }
+
+  // Expose function for manual call if needed
+  window.downloadPoster = onDownloadClick;
+
+  // Optional: expose a debug function that tests images and prints results
+  window._posterExport_debugCheckImages = async function() {
+    const imgs = Array.from(poster.querySelectorAll('img'));
+    const results = await waitForImages(imgs, 3000);
+    console.table(results.map(r => ({
+      src: r.src,
+      ok: r.ok,
+      reason: r.reason,
+      naturalWidth: r.img.naturalWidth,
+      complete: r.img.complete
+    })));
+    return results;
+  };
+
+  // If button exists but user didn't wait, attach click anyway (ensures it always works)
+  if (button && !button.onclick) {
+    button.addEventListener('click', onDownloadClick);
+  }
+
+})();
+
+        
     </script>
+
+    
 </body>
 </html>
