@@ -628,21 +628,22 @@ async function draw(data, width=1080, height=1920){
 
   // Phone number with enhanced styling
   ctx.save();
-  ctx.font = `900 ${Math.round(width*0.06)}px Poppins, sans-serif`; 
+  ctx.font = `900 ${Math.round(width*0.055)}px Poppins, sans-serif`; 
   ctx.fillStyle='#ffffff'; 
   ctx.shadowColor = 'rgba(245,180,66,0.6)';
   ctx.shadowBlur = 20;
   ctx.textAlign='center';
-  ctx.fillText('📞 ' + data.phone, width/2, cY + (cH*0.42));
+  ctx.fillText('📞 ' + data.phone, width/2, cY + (cH*0.38));
   ctx.restore();
 
-  // Website with icon - adjusted font size for full visibility
+  // Website with icon - properly sized to fit completely
   ctx.save();
-  ctx.font = `600 ${Math.round(width*0.029)}px Poppins, sans-serif`; 
+  ctx.font = `600 ${Math.round(width*0.027)}px Poppins, sans-serif`; 
   ctx.fillStyle = 'rgba(255,255,255,0.88)';
   ctx.shadowColor = 'rgba(0,0,0,0.4)';
   ctx.shadowBlur = 8;
-  ctx.fillText('🌐 ' + data.site, width/2, cY + (cH*0.74));
+  ctx.textAlign='center';
+  ctx.fillText('🌐 ' + data.site, width/2, cY + (cH*0.68));
   ctx.restore();
 
   // Brand name with premium styling
