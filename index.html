@@ -1,233 +1,411 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>2×3 ft Poster — They Dreamed of Freedom</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>They Dreamed of Freedom. We Must Build the Future.</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700;900&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+        body {
+            font-family: 'Georgia', serif;
+            overflow-x: hidden;
+            background: #000;
+        }
 
-  <style>
-    /* -------------------------------------------------
-       PRINT PAGE – exact physical size
-       ------------------------------------------------- */
-    @page {
-      size: 24in 36in;
-      margin: 0;
-    }
+        .poster {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            background: linear-gradient(to bottom, 
+                #FF9933 0%,
+                #FF9933 20%,
+                #FFFFFF 35%,
+                #FFFFFF 65%,
+                #138808 80%,
+                #138808 100%
+            );
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
+        }
 
-    /* -------------------------------------------------
-       BASIC RESET
-       ------------------------------------------------- */
-    *, *::before, *::after { box-sizing: border-box; }
-    html, body {
-      height: 100%;
-      margin: 0;
-      background: #111;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      font-smooth: always;
-    }
+        .sunrise-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center top, 
+                rgba(255, 200, 100, 0.4) 0%,
+                transparent 60%
+            );
+            pointer-events: none;
+            animation: glow 3s ease-in-out infinite alternate;
+        }
 
-    /* -------------------------------------------------
-       POSTER CONTAINER – exact 24 × 36 in
-       ------------------------------------------------- */
-    .poster {
-      width: 24in;
-      height: 36in;
-      position: relative;
-      overflow: hidden;
-      background: #000;
-      box-shadow: 0 20px 80px rgba(0,0,0,0.7);
-      -webkit-print-color-adjust: exact;
-      print-color-adjust: exact;
-    }
+        @keyframes glow {
+            from { opacity: 0.6; }
+            to { opacity: 1; }
+        }
 
-    /* -------------------------------------------------
-       SPLIT BACKGROUND
-       ------------------------------------------------- */
-    .bg-past {
-      position: absolute;
-      inset: 0 0 60% 0;               /* top 40% of poster */
-      background: url('past-dreamers.jpg') center/cover no-repeat;
-      filter: sepia(0.4) brightness(0.85);
-    }
-    .bg-future {
-      position: absolute;
-      inset: 40% 0 0 0;              /* bottom 60% */
-      background: url('future-builders.jpg') center/cover no-repeat;
-    }
+        .light-rays {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200%;
+            height: 80%;
+            background: repeating-conic-gradient(
+                from 0deg at 50% 0%,
+                rgba(255, 220, 150, 0.1) 0deg,
+                transparent 5deg,
+                transparent 10deg
+            );
+            animation: rotate 40s linear infinite;
+        }
 
-    /* -------------------------------------------------
-       SYMBOLIC BRIDGE – torch rising from past to future
-       ------------------------------------------------- */
-    .bridge {
-      position: absolute;
-      left: 50%; top: 38%;
-      width: 3.5in; height: 6in;
-      background: url('torch-symbol.svg') center/contain no-repeat;
-      transform: translateX(-50%);
-      opacity: 0.9;
-      pointer-events: none;
-    }
+        @keyframes rotate {
+            from { transform: translateX(-50%) rotate(0deg); }
+            to { transform: translateX(-50%) rotate(360deg); }
+        }
 
-    /* -------------------------------------------------
-       CALL-TO-ACTION BAND (bottom 6 in)
-       ------------------------------------------------- */
-    .cta-band {
-      position: absolute;
-      left: 0; right: 0; bottom: 0;
-      height: 6in;
-      background: linear-gradient(180deg, #8B1A1A 0%, #A52A2A 100%); /* deep crimson */
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 0 1.5in;
-      text-align: center;
-      color: #fff;
-      -webkit-print-color-adjust: exact;
-      print-color-adjust: exact;
-    }
+        .title {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 2rem 1rem;
+            background: rgba(0, 0, 0, 0.7);
+            color: #FFD700;
+            font-size: clamp(1.5rem, 4vw, 3rem);
+            font-weight: bold;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+            letter-spacing: 1px;
+        }
 
-    .cta-band h1 {
-      margin: 0 0 0.4rem;
-      font-family: 'Libre Baskerville', serif;
-      font-weight: 900;
-      font-size: 4.2rem;
-      line-height: 1.05;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      text-shadow: 0 4px 12px rgba(0,0,0,0.6);
-    }
-    .cta-band .line2 {
-      font-size: 3.6rem;
-      font-weight: 700;
-      margin-bottom: 0.6rem;
-    }
-    .cta-band .tagline {
-      font-family: 'Inter', sans-serif;
-      font-weight: 600;
-      font-size: 1.35rem;
-      letter-spacing: 0.08em;
-      margin-bottom: 0.4rem;
-      opacity: 0.95;
-    }
-    .cta-band .icons {
-      font-family: 'Inter', sans-serif;
-      font-weight: 800;
-      font-size: 1.1rem;
-      letter-spacing: 0.15em;
-      display: flex;
-      gap: 1.8rem;
-      margin-top: 0.3rem;
-    }
-    .cta-band .icons span { position: relative; }
-    .cta-band .icons span::before {
-      font-size: 1.6rem;
-      position: absolute;
-      left: -2.2rem;
-      top: 50%;
-      transform: translateY(-50%);
-    }
-    .cta-band .courage::before   { content: "⚡"; }
-    .cta-band .vision::before    { content: "👁️"; }
-    .cta-band .justice::before   { content: "⚖️"; }
+        .leaders-container {
+            position: relative;
+            z-index: 5;
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-end;
+            padding: 0 2rem 2rem;
+            height: 70%;
+        }
 
-    /* -------------------------------------------------
-       FOOTER (credits)
-       ------------------------------------------------- */
-    .footer {
-      position: absolute;
-      left: 1in; right: 1in; bottom: 0.35in;
-      font-family: 'Inter', sans-serif;
-      font-size: 0.75rem;
-      color: rgba(255,255,255,0.7);
-      text-align: center;
-      pointer-events: none;
-    }
+        .leader {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            flex: 1;
+            max-width: 300px;
+            animation: fadeInUp 1.5s ease-out forwards;
+            opacity: 0;
+        }
 
-    /* -------------------------------------------------
-       SCREEN PREVIEW SCALING
-       ------------------------------------------------- */
-    @media (max-width: 1400px), (max-height: 900px) {
-      body { padding: 12px; }
-      .poster { transform: scale(0.45); transform-origin: center; }
-    }
+        .leader:nth-child(1) { animation-delay: 0.3s; }
+        .leader:nth-child(2) { animation-delay: 0.6s; }
+        .leader:nth-child(3) { animation-delay: 0.9s; }
 
-    /* -------------------------------------------------
-       PRINT-ONLY RULES
-       ------------------------------------------------- */
-    @media print {
-      body { background: #fff; padding: 0; }
-      .poster { box-shadow: none; transform: none !important; }
-    }
-  </style>
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .leader-portrait {
+            width: 200px;
+            height: 280px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+            border: 3px solid rgba(255, 215, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+        }
+
+        .center .leader-portrait {
+            width: 220px;
+            height: 300px;
+            border-color: rgba(255, 215, 0, 0.6);
+            box-shadow: 0 30px 80px rgba(255, 215, 0, 0.3);
+        }
+
+        .leader-portrait::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.1) 0%, transparent 70%);
+            animation: shine 3s ease-in-out infinite;
+        }
+
+        @keyframes shine {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
+            50% { transform: translate(-50%, -50%) scale(1.5); opacity: 1; }
+        }
+
+        .symbol {
+            position: absolute;
+            bottom: 10px;
+            font-size: 2.5rem;
+            opacity: 0.3;
+        }
+
+        .leader-name {
+            font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+            font-weight: bold;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+            text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.8);
+        }
+
+        .leader-title {
+            font-size: clamp(0.9rem, 1.8vw, 1.1rem);
+            color: #2d2d2d;
+            font-style: italic;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.6);
+        }
+
+        .footer {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 2rem 1rem;
+            background: rgba(0, 0, 0, 0.7);
+            color: #FFD700;
+            font-size: clamp(1rem, 2.5vw, 1.5rem);
+            font-style: italic;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
+        }
+
+        .download-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #FF9933 0%, #138808 100%);
+            color: white;
+            border: 2px solid #FFD700;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            font-family: 'Georgia', serif;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.5);
+        }
+
+        .download-btn:active {
+            transform: translateY(0);
+        }
+
+        .download-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .silhouettes {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 30%;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.4), transparent);
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            padding-bottom: 1rem;
+            gap: 1rem;
+        }
+
+        .silhouette {
+            width: 30px;
+            height: 60px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px 15px 0 0;
+            animation: rise 2s ease-in-out infinite;
+        }
+
+        .silhouette:nth-child(2) { animation-delay: 0.2s; height: 70px; }
+        .silhouette:nth-child(3) { animation-delay: 0.4s; height: 55px; }
+        .silhouette:nth-child(4) { animation-delay: 0.6s; height: 65px; }
+        .silhouette:nth-child(5) { animation-delay: 0.8s; height: 58px; }
+
+        @keyframes rise {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @media (max-width: 768px) {
+            .leaders-container {
+                flex-direction: column;
+                align-items: center;
+                height: auto;
+                gap: 2rem;
+            }
+
+            .leader-portrait {
+                width: 150px;
+                height: 220px;
+            }
+
+            .center .leader-portrait {
+                width: 170px;
+                height: 240px;
+            }
+        }
+    </style>
 </head>
 <body>
+    <button id="downloadBtn" class="download-btn" onclick="downloadPoster()">📥 Download PNG Image</button>
+    
+    <div class="poster">
+        <div class="sunrise-overlay"></div>
+        <div class="light-rays"></div>
+        
+        <div class="title">
+            ✨ They Dreamed of Freedom. We Must Build the Future. ✨
+        </div>
 
-  <div class="poster" id="poster">
-    <!-- Background layers -->
-    <div class="bg-past" aria-hidden="true"></div>
-    <div class="bg-future" aria-hidden="true"></div>
+        <div class="leaders-container">
+            <div class="leader left">
+                <div class="leader-portrait">
+                    📖
+                    <div class="symbol">⚖️</div>
+                </div>
+                <div class="leader-name">Dr. B.R. Ambedkar</div>
+                <div class="leader-title">Architect of Equality</div>
+            </div>
 
-    <!-- Symbolic bridge -->
-    <div class="bridge" aria-hidden="true"></div>
+            <div class="leader center">
+                <div class="leader-portrait">
+                    🔥
+                    <div class="symbol">✊</div>
+                </div>
+                <div class="leader-name">Bhagat Singh</div>
+                <div class="leader-title">Voice of Revolution</div>
+            </div>
 
-    <!-- Call-to-action band -->
-    <section class="cta-band" role="banner" aria-label="Poster message">
-      <h1>
-        <div>They Dreamed</div>
-        <div class="line2">of Freedom</div>
-      </h1>
-      <h1 style="font-size:3.8rem; margin-top:0.2rem;">
-        <div>We Must</div>
-        <div class="line2">Build the Future</div>
-      </h1>
+            <div class="leader right">
+                <div class="leader-portrait">
+                    🌹
+                    <div class="symbol">🏛️</div>
+                </div>
+                <div class="leader-name">Jawaharlal Nehru</div>
+                <div class="leader-title">Architect of Modern India</div>
+            </div>
+        </div>
 
-      <div class="tagline">For the next generation</div>
+        <div class="silhouettes">
+            <div class="silhouette"></div>
+            <div class="silhouette"></div>
+            <div class="silhouette"></div>
+            <div class="silhouette"></div>
+            <div class="silhouette"></div>
+        </div>
 
-      <div class="icons">
-        <span class="courage">COURAGE</span>
-        <span class="vision">VISION</span>
-        <span class="justice">JUSTICE</span>
-      </div>
-    </section>
-
-    <!-- Footer -->
-    <div class="footer" aria-hidden="true">
-      Educational poster • Replace with your logo / credit • 24 × 36 in @ 300 dpi
+        <div class="footer">
+            "From Revolution to Reformation — The Torch Now Belongs to Us"
+        </div>
     </div>
-  </div>
 
-  <!-- -------------------------------------------------
-       OPTIONAL: Download preview button (screen only)
-       ------------------------------------------------- -->
-  <script>
-    (function () {
-      const btn = document.createElement('button');
-      btn.textContent = 'Download Preview PNG';
-      Object.assign(btn.style, {
-        position: 'fixed', right: '18px', top: '18px', zIndex: 9999,
-        padding: '10px 14px', border: 'none', borderRadius: '6px',
-        background: '#111', color: '#fff', cursor: 'pointer',
-        boxShadow: '0 6px 18px rgba(0,0,0,0.4)',
-        fontFamily: 'Inter, sans-serif', fontSize: '14px'
-      });
-      document.body.appendChild(btn);
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script>
+        // Add sparkle effect on hover
+        document.querySelectorAll('.leader-portrait').forEach(portrait => {
+            portrait.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.05)';
+                this.style.transition = 'transform 0.3s ease';
+            });
+            
+            portrait.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1)';
+            });
+        });
 
-      btn.addEventListener('click', () => {
-        alert(
-          'For a high-quality printable file:\n' +
-          '• Print to PDF at “Actual size” (24 × 36 in).\n' +
-          '• Or export the page from Chrome/Firefox with 300 dpi.\n' +
-          'This button only creates a low-res preview for sharing.'
-        );
-      });
-    })();
-  </script>
+        // Create floating particles
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.style.position = 'absolute';
+            particle.style.width = '3px';
+            particle.style.height = '3px';
+            particle.style.background = 'rgba(255, 215, 0, 0.6)';
+            particle.style.borderRadius = '50%';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = '100%';
+            particle.style.pointerEvents = 'none';
+            particle.style.zIndex = '1';
+            
+            document.querySelector('.poster').appendChild(particle);
+            
+            const duration = 3000 + Math.random() * 2000;
+            const drift = (Math.random() - 0.5) * 100;
+            
+            particle.animate([
+                { transform: 'translateY(0) translateX(0)', opacity: 0 },
+                { transform: `translateY(-${window.innerHeight}px) translateX(${drift}px)`, opacity: 1 }
+            ], {
+                duration: duration,
+                easing: 'ease-out'
+            }).onfinish = () => particle.remove();
+        }
+
+        setInterval(createParticle, 300);
+
+        // Download poster as PNG
+        function downloadPoster() {
+            const button = document.getElementById('downloadBtn');
+            button.textContent = 'Generating...';
+            button.disabled = true;
+
+            const poster = document.querySelector('.poster');
+            
+            html2canvas(poster, {
+                scale: 3, // Higher quality (3x resolution)
+                backgroundColor: null,
+                logging: false,
+                useCORS: true,
+                width: poster.offsetWidth,
+                height: poster.offsetHeight
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'revolutionary-leaders-poster.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+                
+                button.textContent = '📥 Download PNG Image';
+                button.disabled = false;
+            }).catch(err => {
+                console.error('Error generating image:', err);
+                button.textContent = '❌ Error - Try Again';
+                button.disabled = false;
+            });
+        }
+    </script>
 </body>
 </html>
