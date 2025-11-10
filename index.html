@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Raghava Consultancy — Ad Generator (Fixed Layout)</title>
+  <title>Raghava Consultency — Ad Generator (Fixed Layout)</title>
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Telugu:wght@400;700&family=Poppins:wght@300;500;700;900&display=swap" rel="stylesheet">
@@ -57,7 +57,7 @@
 <body>
 
   <aside class="sidebar" aria-label="controls">
-    <h1>Raghava Consultancy — Ad Maker (fixed)</h1>
+    <h1>Raghava Consultency — Ad Maker (fixed)</h1>
 
     <label>Template</label>
     <div class="templateList" role="tablist">
@@ -285,7 +285,7 @@ async function draw(data, width=1080, height=1920){
     const drawX = lx + (lW - drawW)/2; const drawY = ly + (lH - drawH)/2;
     ctx.drawImage(img, drawX, drawY, drawW, drawH);
   } else {
-    ctx.font = '700 32px Poppins, sans-serif'; ctx.fillStyle = '#ffdca2'; ctx.textAlign = 'left'; ctx.fillText('RaghavaConsult', width*0.06, height*0.09);
+    ctx.font = '700 32px Poppins, sans-serif'; ctx.fillStyle = '#ffdca2'; ctx.textAlign = 'left'; ctx.fillText('RaghavaConsultency', width*0.06, height*0.09);
   }
 
   // headline (Telugu)
@@ -387,7 +387,7 @@ async function draw(data, width=1080, height=1920){
   ctx.fillText(data.site, width/2, cY + (cH*0.75));
 
   // brand name
-  ctx.font = `900 ${Math.round(width*0.05)}px Poppins, sans-serif`; ctx.fillStyle='#ffdca2'; ctx.fillText('RAGHAVA CONSULTANCY', width/2, height*0.925);
+  ctx.font = `900 ${Math.round(width*0.05)}px Poppins, sans-serif`; ctx.fillStyle='#ffdca2'; ctx.fillText('RAGHAVA Consultency', width/2, height*0.925);
 
   // tagline
   ctx.font = `500 ${Math.round(width*0.03)}px Poppins, sans-serif`; ctx.fillStyle='rgba(255,255,255,0.9)'; ctx.fillText('Transforming Dreams into Homes.', width/2, height*0.96);
