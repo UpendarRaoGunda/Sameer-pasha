@@ -1,474 +1,449 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Raghava Consultancy — Ad Generator</title>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Telugu:wght@400;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Raghava Consultancy — Ad Generator (Fixed Layout)</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Telugu:wght@400;700&family=Poppins:wght@300;500;700;900&display=swap" rel="stylesheet">
+
   <style>
-    :root {
-      --canvas-w: 1080px;
-      --canvas-h: 1920px;
-      --primary: #0A3D62;
-      --secondary: #0F5A8A;
-      --gold: #F5B042;
-      --gold-glow: #FFD700;
-      --light: #FFFFFF;
-      --text-light: #E6F0FA;
-      --bg-dark: #040F1A;
-      --glass: rgba(255, 255, 255, 0.06);
-      --border: rgba(255, 255, 255, 0.1);
+    :root{
+      --w:1080; --h:1920;
+      --gold:#f5b041;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      min-height:100vh;
+      font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      background:
+        radial-gradient(900px 450px at 10% 10%, rgba(11,95,138,0.10), transparent 6%),
+        linear-gradient(180deg,#052238 0%, #07172a 100%);
+      color:#e6eef7;
+      display:flex;
+      gap:20px;
+      padding:28px;
+      align-items:flex-start;
+      justify-content:center;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #040F1A 0%, #0A1F33 50%, #0A3D62 100%);
-      color: var(--text-light);
-      min-height: 100vh;
-      display: flex;
-      gap: 24px;
-      align-items: flex-start;
-      justify-content: center;
-      padding: 32px;
-      background-attachment: fixed;
-      overflow-x: hidden;
+    .sidebar{
+      width:380px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:12px;
+      padding:16px;
+      box-shadow:0 10px 30px rgba(2,10,20,0.6);
+      border:1px solid rgba(255,255,255,0.03);
     }
-
-    .panel {
-      width: 440px;
-      background: var(--glass);
-      border-radius: 20px;
-      padding: 24px;
-      backdrop-filter: blur(12px);
-      border: 1px solid var(--border);
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
-      transition: transform 0.3s ease;
-    }
-    .panel:hover { transform: translateY(-4px); }
-
-    .panel h2 {
-      font-size: 20px;
-      font-weight: 700;
-      color: var(--gold);
-      margin-bottom: 16px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .panel h2 i { color: var(--gold-glow); }
-
-    label {
-      display: block;
-      margin-top: 16px;
-      font-size: 13px;
-      font-weight: 500;
-      color: #B0C4DE;
-    }
-
-    input[type="text"] {
-      width: 100%;
-      padding: 12px 14px;
-      margin-top: 6px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      background: rgba(255, 255, 255, 0.05);
-      color: #fff;
-      font-size: 14px;
-      outline: none;
-      transition: all 0.3s ease;
-    }
-    input:focus {
-      border-color: var(--gold);
-      box-shadow: 0 0 0 3px rgba(245, 180, 66, 0.2);
-      background: rgba(255, 255, 255, 0.08);
-    }
-
-    button {
-      margin-top: 16px;
-      width: 100%;
-      padding: 14px;
-      border: none;
-      border-radius: 12px;
-      font-weight: 600;
-      font-size: 15px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-    }
-    #renderBtn {
-      background: linear-gradient(135deg, var(--gold), #E67E22);
-      color: #1A1A1A;
-      box-shadow: 0 6px 20px rgba(245, 180, 66, 0.3);
-    }
-    #renderBtn:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(245, 180, 66, 0.4); }
-    #downloadBtn {
-      background: linear-gradient(135deg, #3498DB, #2980B9);
-      color: white;
-      margin-top: 12px;
-    }
-    #downloadBtn:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(52, 152, 219, 0.4); }
-
-    .hint {
-      margin-top: 16px;
-      font-size: 12.5px;
-      color: #94A3B8;
-      line-height: 1.5;
-    }
-
-    #preview {
-      width: 100%;
-      height: 180px;
-      background: #000;
-      border-radius: 12px;
-      overflow: hidden;
-      margin-top: 16px;
-      border: 1px solid var(--border);
-      background-size: cover;
-      background-position: center;
-      box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
-      transition: transform 0.3s ease;
-    }
-    #preview:hover { transform: scale(1.02); }
-
-    .canvas-area {
-      width: calc(var(--canvas-w) * 0.38);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-    }
-
-    canvas {
-      width: 360px;
-      height: 640px;
-      border-radius: 16px;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
-      background: #000;
-      image-rendering: pixelated;
-      transition: transform 0.4s ease;
-    }
-    canvas:hover { transform: scale(1.015); }
-
-    .canvas-info {
-      color: #94A3B8;
-      font-size: 13px;
-      text-align: center;
-    }
-
-    footer {
-      font-size: 11.5px;
-      color: #64748B;
-      margin-top: 12px;
-      text-align: center;
-    }
-
-    @media (max-width: 1100px) {
-      body { flex-direction: column; align-items: center; padding: 20px; }
-      .panel { width: 100%; max-width: 480px; }
-      .canvas-area { order: -1; width: 100%; max-width: 400px; }
-      canvas { width: 100%; max-width: 360px; height: auto; aspect-ratio: 1080/1920; }
-    }
-
-    .pulse {
-      animation: pulse 2s infinite;
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.7; }
-    }
+    .sidebar h1{font-size:18px;margin:0 0 10px 0}
+    label{display:block;font-size:13px;color:#bcd6eb;margin-top:10px}
+    input[type="text"], textarea, select{width:100%; padding:10px 12px; margin-top:6px; border-radius:8px; border:1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.02); color:var(--gold); outline:none; font-size:14px;}
+    textarea{min-height:70px; resize:vertical}
+    .row{display:flex; gap:8px}
+    .small{flex:1}
+    .btn{display:inline-block; width:100%; padding:12px; margin-top:12px; border-radius:10px; border:none; cursor:pointer; font-weight:700; font-size:14px; color:#061226; background: linear-gradient(90deg,var(--gold), #e4a13b); box-shadow: 0 8px 24px rgba(245,180,66,0.16);}
+    .btn.secondary{background:linear-gradient(90deg,#2b9ed7,#2688c8); color:white; box-shadow:0 8px 24px rgba(34,120,180,0.12);}
+    .controls{display:flex; gap:8px; margin-top:8px}
+    .previewWrap{width:420px; display:flex; flex-direction:column; align-items:center; gap:10px}
+    canvas{ width:360px; height:640px; border-radius:14px; box-shadow: 0 20px 60px rgba(3,12,28,0.6); background:white;}
+    .templateList{display:flex; gap:8px; margin-top:8px}
+    .templateItem{flex:1; padding:8px; text-align:center; border-radius:10px; cursor:pointer; font-weight:600; background:transparent; color:#cfe8ff; border:1px solid transparent}
+    .templateItem.active{background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.04)}
+    .meta{color:#9ec6e3; font-size:13px; text-align:center}
   </style>
 </head>
 <body>
 
-  <div class="panel">
-    <h2>Ad Generator</h2>
-    
+  <aside class="sidebar" aria-label="controls">
+    <h1>Raghava Consultancy — Ad Maker (fixed)</h1>
+
+    <label>Template</label>
+    <div class="templateList" role="tablist">
+      <div class="templateItem active" data-template="classic">Classic</div>
+      <div class="templateItem" data-template="modern">Modern</div>
+      <div class="templateItem" data-template="luxe">Luxe</div>
+    </div>
+
     <label>Telugu Headline</label>
-    <input id="headlineTel" type="text" value="రాఘవ కన్సల్టెన్సీ — హోమ్ లోన్స్ & మార్ట్గేజ్">
+    <input id="headlineTel" type="text" value="రాఘవ కన్సల్టెన్సీ — హోమ్ లోన్స్ & మార్ట్గేజ్ లోన్స్">
 
     <label>Telugu Subheading</label>
     <input id="subTel" type="text" value="మీ కలల ఇల్లు ఇప్పుడు మీ చేతుల్లోనే!">
 
-    <label>Phone Number</label>
-    <input id="phone" type="text" value="90148 33945">
+    <label>Bullets (comma-separated)</label>
+    <input id="bullets" type="text" value="₹5 లక్షల నుండి ₹1 కోటి వరకు లోన్, తక్కువ వడ్డీ రేట్లు & వేగవంతమైన మంజూరు, డోర్‌స్టెప్ డాక్యుమెంటేషన్">
 
-    <label>Website</label>
-    <input id="site" type="text" value="www.raghavaconsultency.com">
-
-    <label>Loan Bullets (Telugu, comma separated)</label>
-    <input id="bullets" type="text" value="₹5 లక్షల నుండి ₹1 కోటి వరకు లోన్, తక్కువ వడ్డలు & వేగవంతమైన మంజూరు, డోర్‌స్టెప్ డాక్యుమెంటేషన్">
-
-    <button id="renderBtn">Render Image</button>
-    <button id="downloadBtn">Download PNG</button>
-
-    <div class="hint">
-      Preview: Scaled view. Click <strong>Render</strong> → then <strong>Download</strong> full 1080×1920.
+    <div class="row">
+      <div class="small">
+        <label>Phone</label>
+        <input id="phone" type="text" value="90148 33945">
+      </div>
+      <div class="small">
+        <label>Website</label>
+        <input id="site" type="text" value="www.raghavaconsultency.com">
+      </div>
     </div>
-    <div id="preview"></div>
-    <footer>Edit → Render → Download. No text overlap guaranteed.</footer>
-  </div>
 
-  <div class="canvas-area">
-    <canvas id="adCanvas" width="1080" height="1920"></canvas>
-    <div class="canvas-info">1080 × 1920 (WhatsApp Status)</div>
-  </div>
+    <label>Upload Photo (optional)</label>
+    <input id="photoFile" type="file" accept="image/*">
+
+    <label>Upload Logo (optional)</label>
+    <input id="logoFile" type="file" accept="image/*">
+
+    <div style="display:flex; gap:8px;">
+      <button id="renderBtn" class="btn">Render</button>
+      <button id="downloadBtn" class="btn secondary">Download PNG</button>
+    </div>
+
+    <div style="display:flex; gap:8px; margin-top:8px;">
+      <button id="downloadPoster" class="btn" style="background:linear-gradient(90deg,#6f4bd7,#9b6cf2)">Download Poster (2000×3000)</button>
+      <button id="downloadSet" class="btn" style="background:linear-gradient(90deg,#3dd6a5,#18b686)">Download All Sizes</button>
+    </div>
+
+    <div style="margin-top:8px; color:#9ec6e3; font-size:13px;">Tip: test with lengthy Telugu bullets to verify auto-adjustment.</div>
+  </aside>
+
+  <main class="previewWrap" aria-live="polite">
+    <canvas id="adCanvas" width="1080" height="1920" role="img" aria-label="Ad preview"></canvas>
+    <div class="meta">Preview (scaled). Click Render then Download. Templates: Classic / Modern / Luxe</div>
+  </main>
 
 <script>
-  const canvas = document.getElementById('adCanvas');
-  const ctx = canvas.getContext('2d', { alpha: false });
-  const renderBtn = document.getElementById('renderBtn');
-  const downloadBtn = document.getElementById('downloadBtn');
-  const preview = document.getElementById('preview');
+/* Complete fixed ad generator:
+   - Dynamic measurement to avoid overlapping bullets and portrait
+   - Photo & logo upload
+   - Multiple templates and downloads
+*/
 
-  const inputs = {
-    headlineTel: document.getElementById('headlineTel'),
-    subTel: document.getElementById('subTel'),
-    phone: document.getElementById('phone'),
-    site: document.getElementById('site'),
-    bullets: document.getElementById('bullets')
-  };
+// DOM elements
+const canvas = document.getElementById('adCanvas');
+const ctx = canvas.getContext('2d', { alpha: false });
+const renderBtn = document.getElementById('renderBtn');
+const downloadBtn = document.getElementById('downloadBtn');
+const downloadPoster = document.getElementById('downloadPoster');
+const downloadSet = document.getElementById('downloadSet');
 
-  const defaultData = Object.fromEntries(
-    Object.entries(inputs).map(([k, el]) => [k, el.value])
-  );
+const headlineTelInput = document.getElementById('headlineTel');
+const subTelInput = document.getElementById('subTel');
+const bulletsInput = document.getElementById('bullets');
+const phoneInput = document.getElementById('phone');
+const siteInput = document.getElementById('site');
+const photoFile = document.getElementById('photoFile');
+const logoFile = document.getElementById('logoFile');
+const templateItems = Array.from(document.querySelectorAll('.templateItem'));
 
-  // Rounded Rect
-  function roundRect(ctx, x, y, w, h, r) {
-    ctx.beginPath();
-    ctx.moveTo(x + r, y);
-    ctx.arcTo(x + w, y, x + w, y + h, r);
-    ctx.arcTo(x + w, y + h, x, y + h, r);
-    ctx.arcTo(x, y + h, x, y, r);
-    ctx.arcTo(x, y, x + w, y, r);
-    ctx.closePath();
-  }
+let activeTemplate = 'classic';
+templateItems.forEach(it => it.addEventListener('click', ()=> {
+  templateItems.forEach(i=>i.classList.remove('active'));
+  it.classList.add('active');
+  activeTemplate = it.dataset.template;
+}));
 
-  // TELUGU-SAFE WRAP TEXT (FIXED)
-  function wrapTextSafe(ctx, text, x, y, maxWidth, lineHeight, font) {
-    ctx.font = font;
-    const words = text.split(' ');
-    let lines = [];
-    let currentLine = '';
+// uploaded images
+let uploadedPhoto = null;
+let uploadedLogo = null;
+photoFile.addEventListener('change', e => {
+  const f = e.target.files[0];
+  if(!f) return;
+  const url = URL.createObjectURL(f);
+  loadImage(url).then(img => { uploadedPhoto = img; URL.revokeObjectURL(url); }).catch(()=>{ uploadedPhoto=null; });
+});
+logoFile.addEventListener('change', e => {
+  const f = e.target.files[0];
+  if(!f) return;
+  const url = URL.createObjectURL(f);
+  loadImage(url).then(img => { uploadedLogo = img; URL.revokeObjectURL(url); }).catch(()=>{ uploadedLogo=null; });
+});
 
-    for (let word of words) {
-      const testLine = currentLine + (currentLine ? ' ' : '') + word;
-      const metrics = ctx.measureText(testLine);
-      const width = metrics.width;
+// helper: load HTMLImageElement
+function loadImage(src){
+  return new Promise((resolve,reject)=>{
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.onload = ()=> resolve(img);
+    img.onerror = reject;
+    img.src = src;
+  });
+}
 
-      // Force break if single word is too long
-      if (width > maxWidth && currentLine) {
-        lines.push(currentLine);
-        currentLine = word;
-      } 
-      // Force break long unbreakable word
-      else if (ctx.measureText(word).width > maxWidth) {
-        if (currentLine) {
-          lines.push(currentLine);
-          currentLine = '';
-        }
-        // Split long word by characters
-        let chunk = '';
-        for (let char of word) {
-          if (ctx.measureText(chunk + char).width > maxWidth) {
-            lines.push(chunk);
-            chunk = char;
-          } else {
-            chunk += char;
-          }
-        }
-        if (chunk) currentLine = chunk;
-      } 
-      else {
-        currentLine = testLine;
-      }
+// rounding helper
+function roundRectPath(ctx,x,y,w,h,r){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y);
+  ctx.arcTo(x+w,y,x+w,y+h,r);
+  ctx.arcTo(x+w,y+h,x,y+h,r);
+  ctx.arcTo(x,y+h,x,y,r);
+  ctx.arcTo(x,y,x+w,y,r);
+  ctx.closePath();
+}
+
+// simple house icon drawer
+function drawHouseIcon(ctx,x,y,size,fill){
+  ctx.save();
+  ctx.translate(x,y);
+  ctx.beginPath();
+  ctx.moveTo(0,-size*0.35);
+  ctx.lineTo(-size*0.45,0);
+  ctx.lineTo(-size*0.45,size*0.35);
+  ctx.lineTo(size*0.45,size*0.35);
+  ctx.lineTo(size*0.45,0);
+  ctx.closePath();
+  ctx.fillStyle = fill;
+  ctx.fill();
+  ctx.restore();
+}
+
+// measure wrapped lines (returns array)
+function measureWrappedLines(ctx, text, maxWidth){
+  const words = text.split(' ');
+  let line = '';
+  const lines = [];
+  for(let n=0;n<words.length;n++){
+    const testLine = line + words[n] + ' ';
+    const metrics = ctx.measureText(testLine);
+    if(metrics.width > maxWidth && n > 0){
+      lines.push(line.trim());
+      line = words[n] + ' ';
+    } else {
+      line = testLine;
     }
-    if (currentLine) lines.push(currentLine);
+  }
+  if(line.trim().length) lines.push(line.trim());
+  return lines;
+}
 
-    // Draw lines
-    lines.forEach((line, i) => {
-      ctx.fillText(line, x, y + i * lineHeight);
-    });
+// draw array of lines at x,y with lineHeight. align: 'left'|'center'
+function drawWrappedText(ctx, lines, x, y, lineHeight, align='left'){
+  ctx.textAlign = align;
+  for(let i=0;i<lines.length;i++){
+    ctx.fillText(lines[i], x, y + (i * lineHeight));
+  }
+  return lines.length * lineHeight;
+}
 
-    return lines.length;
+// main draw function (dynamic)
+async function draw(data, width=1080, height=1920){
+  await document.fonts.ready;
+  canvas.width = width;
+  canvas.height = height;
+
+  // background per template
+  if(activeTemplate === 'classic'){
+    const g = ctx.createLinearGradient(0,0,0,height);
+    g.addColorStop(0,'#07243a'); g.addColorStop(0.45,'#06334f'); g.addColorStop(1,'#041226');
+    ctx.fillStyle = g; ctx.fillRect(0,0,width,height);
+  } else if(activeTemplate === 'modern'){
+    const g = ctx.createLinearGradient(0,0,width,height);
+    g.addColorStop(0,'#06293a'); g.addColorStop(1,'#0b4b6b');
+    ctx.fillStyle = g; ctx.fillRect(0,0,width,height);
+  } else {
+    const g = ctx.createLinearGradient(0,0,0,height);
+    g.addColorStop(0,'#081224'); g.addColorStop(0.6,'#0d2540'); g.addColorStop(1,'#0b1220');
+    ctx.fillStyle = g; ctx.fillRect(0,0,width,height);
+    const vign = ctx.createRadialGradient(width*0.5, height*0.36, 200, width*0.5, height*0.36, Math.max(width,height));
+    vign.addColorStop(0,'rgba(245,180,66,0.08)'); vign.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle = vign; ctx.fillRect(0,0,width,height);
   }
 
-  function drawAd(data) {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  // central warm glow
+  const glow = ctx.createRadialGradient(width/2, height*0.36, 10, width/2, height*0.36, 900);
+  glow.addColorStop(0,'rgba(245,180,66,0.95)');
+  glow.addColorStop(0.15,'rgba(245,180,66,0.28)');
+  glow.addColorStop(0.35,'rgba(0,0,0,0.02)');
+  glow.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle = glow; ctx.fillRect(0,0,width,height);
 
-    // Background
-    const bg = ctx.createLinearGradient(0, 0, 0, canvas.height);
-    bg.addColorStop(0, '#0A3D62');
-    bg.addColorStop(0.5, '#041F33');
-    bg.addColorStop(1, '#040F1A');
-    ctx.fillStyle = bg;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+  // subtle skyline
+  ctx.save();
+  ctx.globalAlpha = 0.06; ctx.fillStyle = '#000';
+  for(let i=0;i<12;i++){ const wRect = 80 + (i%4)*30; const hRect = 140 + (i%5)*60; const x = i * 90; const y = height*0.58 - hRect; ctx.fillRect(x,y,wRect,hRect); }
+  ctx.restore();
 
-    // Golden Glow
-    const glow = ctx.createRadialGradient(canvas.width/2, canvas.height*0.4, 0, canvas.width/2, canvas.height*0.4, 1000);
-    glow.addColorStop(0, 'rgba(245, 180, 66, 0.7)');
-    glow.addColorStop(0.3, 'rgba(245, 180, 66, 0.2)');
-    glow.addColorStop(1, 'rgba(4, 15, 26, 0)');
-    ctx.fillStyle = glow;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+  // house area
+  const houseW = Math.round(width*0.5);
+  const houseH = Math.round(height*0.21);
+  const houseX = Math.round(width*0.06);
+  const houseY = Math.round(height*0.48);
+  roundRectPath(ctx, houseX, houseY, houseW, houseH, 24);
+  ctx.fillStyle = 'rgba(255,255,255,0.04)'; ctx.fill();
 
-    // House
-    const houseX = canvas.width * 0.1;
-    const houseY = canvas.height * 0.38;
-    const houseW = 660;
-    const houseH = 420;
+  // windows
+  ctx.fillStyle = '#ffdca2'; ctx.fillRect(houseX+60, houseY+40, 140, 90); ctx.fillRect(houseX+240, houseY+40, 120,90); ctx.fillRect(houseX+420, houseY+40, 80,90);
+  // roof
+  ctx.beginPath(); ctx.moveTo(houseX-20, houseY+10); ctx.lineTo(houseX+houseW/2, houseY-110); ctx.lineTo(houseX+houseW+20, houseY+10); ctx.closePath(); ctx.fillStyle='rgba(0,0,0,0.12)'; ctx.fill();
+  ctx.strokeStyle='rgba(245,180,66,0.08)'; ctx.lineWidth=4; ctx.stroke();
 
-    roundRect(ctx, houseX, houseY, houseW, houseH, 32);
-    ctx.fillStyle = 'rgba(10, 30, 50, 0.8)';
-    ctx.fill();
-    ctx.strokeStyle = 'rgba(245, 180, 66, 0.3)';
-    ctx.lineWidth = 3;
-    ctx.stroke();
+  // draw logo or text top-left
+  if(uploadedLogo){
+    const lW = Math.round(width*0.18), lH = Math.round(width*0.06), lx = Math.round(width*0.06), ly = Math.round(height*0.06);
+    roundRectPath(ctx, lx-8, ly-8, lW+16, lH+16, 12); ctx.fillStyle='rgba(0,0,0,0.16)'; ctx.fill();
+    const img = uploadedLogo;
+    const ratio = Math.min(lW/img.width, lH/img.height);
+    const drawW = img.width * ratio; const drawH = img.height * ratio;
+    const drawX = lx + (lW - drawW)/2; const drawY = ly + (lH - drawH)/2;
+    ctx.drawImage(img, drawX, drawY, drawW, drawH);
+  } else {
+    ctx.font = '700 32px Poppins, sans-serif'; ctx.fillStyle = '#ffdca2'; ctx.textAlign = 'left'; ctx.fillText('RaghavaConsult', width*0.06, height*0.09);
+  }
 
-    // Roof
+  // headline (Telugu)
+  ctx.font = `700 ${Math.round(width*0.055)}px "Noto Sans Telugu", Poppins, sans-serif`;
+  ctx.fillStyle = '#fffaf0'; ctx.textAlign = 'center';
+  wrapAndDraw(ctx, data.headlineTel, width/2, height*0.14, width - 120, Math.round(width*0.07));
+
+  // subheading
+  ctx.font = `600 ${Math.round(width*0.035)}px "Noto Sans Telugu", Poppins, sans-serif`;
+  ctx.fillStyle = 'rgba(255,255,255,0.92)';
+  wrapAndDraw(ctx, data.subTel, width/2, height*0.205, width - 160, Math.round(width*0.044));
+
+  // BULLETS & PORTRAIT (DYNAMIC)
+  // constants
+  const bullets = data.bullets.split(',').map(s=>s.trim()).filter(Boolean).slice(0,8);
+  const bulletsFontSize = Math.round(width*0.034);
+  ctx.font = `500 ${bulletsFontSize}px "Noto Sans Telugu", Poppins, sans-serif`;
+  const bulletsMaxWidth = Math.round(width * 0.36); // available width for bullet text
+  const bulletsX = Math.round(width * 0.58);
+  let bulletsY = Math.round(height * 0.52);
+  const bulletLineHeight = Math.round(width * 0.048);
+
+  // measure each bullet (lines & height)
+  const measured = bullets.map(b => {
+    const lines = measureWrappedLines(ctx, b, bulletsMaxWidth);
+    return { text: b, lines, height: lines.length * bulletLineHeight };
+  });
+
+  // total bullets height with small spacing
+  const bulletsTotalHeight = measured.reduce((acc,m)=> acc + m.height + Math.round(width*0.015), 0);
+
+  // portrait candidate
+  const portraitSize = Math.round(width*0.22);
+  let portraitX = Math.round(width * 0.74);
+  let portraitY = Math.round(height * 0.50);
+
+  // compute vertical ranges
+  const bulletsTop = bulletsY;
+  const bulletsBottom = bulletsY + bulletsTotalHeight;
+  const portraitTop = portraitY - portraitSize/2;
+  const portraitBottom = portraitY + portraitSize/2;
+
+  // if vertical overlap (and horizontal proximity) -> move portrait below bullets
+  if (!( (bulletsBottom < portraitTop - 20) || (bulletsTop > portraitBottom + 20) )){
+    portraitY = bulletsBottom + portraitSize/2 + Math.round(width*0.04);
+  }
+
+  // draw bullets now (icons + wrapped lines)
+  ctx.fillStyle = 'rgba(255,255,255,0.96)';
+  let currentY = bulletsY;
+  measured.forEach((m, idx) => {
+    // bullet circle
     ctx.beginPath();
-    ctx.moveTo(houseX - 30, houseY + 40);
-    ctx.lineTo(houseX + houseW/2, houseY - 160);
-    ctx.lineTo(houseX + houseW + 30, houseY + 40);
-    ctx.closePath();
-    const roofGrad = ctx.createLinearGradient(houseX, houseY - 160, houseX + houseW, houseY + 40);
-    roofGrad.addColorStop(0, '#1E90FF');
-    roofGrad.addColorStop(1, '#0F5A8A');
-    ctx.fillStyle = roofGrad;
-    ctx.fill();
+    ctx.arc(bulletsX - 70, currentY + 6, 22, 0, Math.PI*2);
+    ctx.fillStyle = '#ffdca2'; ctx.fill();
+    // small house icon inside circle
+    ctx.save(); ctx.fillStyle = '#0b2740'; drawHouseIcon(ctx, bulletsX - 77, currentY - 6, 26, '#0b2740'); ctx.restore();
+    // draw wrapped lines
+    ctx.fillStyle = '#fff';
+    drawWrappedText(ctx, m.lines, bulletsX - 20, currentY + 6, bulletLineHeight, 'left');
+    currentY += m.height + Math.round(width*0.015);
+  });
 
-    // Windows
-    ctx.fillStyle = '#FFECB3';
-    ctx.shadowBlur = 20;
-    ctx.shadowColor = '#FFD700';
-    roundRect(ctx, houseX + 80, houseY + 100, 130, 110, 12); ctx.fill();
-    roundRect(ctx, houseX + 260, houseY + 100, 130, 110, 12); ctx.fill();
-    roundRect(ctx, houseX + 440, houseY + 100, 130, 110, 12); ctx.fill();
-    ctx.shadowBlur = 0;
-
-    // Door
-    roundRect(ctx, houseX + 440, houseY + 220, 100, 180, 16);
-    ctx.fillStyle = '#FFECB3';
-    ctx.fill();
-
-    // Icons
-    const iconY = houseY - 50;
-    const iconSize = 48;
-    ctx.fillStyle = '#F5B042';
-    ctx.shadowBlur = 12;
-    ctx.shadowColor = '#F5B042';
-    ctx.beginPath(); ctx.arc(houseX + 100, iconY, iconSize/2, 0, Math.PI*2); ctx.fill();
-    ctx.fillRect(houseX + 220, iconY - iconSize/2, iconSize, iconSize/2);
-    ctx.fillRect(houseX + 230, iconY - iconSize/4, iconSize - 20, iconSize/2);
-    roundRect(ctx, houseX + 340, iconY - iconSize/2, 36, iconSize, 6); ctx.fill();
-    ctx.shadowBlur = 0;
-
-    // Headline
-    ctx.fillStyle = '#FFF8E1';
-    ctx.textAlign = 'center';
-    wrapTextSafe(ctx, data.headlineTel, canvas.width/2, canvas.height*0.12, canvas.width - 140, 88, '800 72px "Noto Sans Telugu", "Poppins", sans-serif');
-
-    // Subheading
-    ctx.fillStyle = '#E6F0FA';
-    wrapTextSafe(ctx, data.subTel, canvas.width/2, canvas.height*0.20, canvas.width - 180, 56, '600 42px "Noto Sans Telugu", "Poppins", sans-serif');
-
-    // Bullets
-    const bullets = data.bullets.split(',').map(s => s.trim()).filter(Boolean);
-    const bx = canvas.width * 0.62;
-    let by = canvas.height * 0.50;
-
-    ctx.textAlign = 'left';
-    bullets.forEach((bullet, i) => {
-      if (i >= 4) return;
-      ctx.beginPath();
-      ctx.arc(bx - 40, by + i*78 + 10, 12, 0, Math.PI*2);
-      ctx.fillStyle = '#F5B042';
-      ctx.fill();
-
-      ctx.fillStyle = '#FFFFFF';
-      wrapTextSafe(ctx, bullet, bx, by + i*78 + 15, canvas.width - bx - 100, 48, '600 36px "Noto Sans Telugu", "Poppins", sans-serif');
-    });
-
-    // Portrait
-    const faceX = canvas.width * 0.68;
-    const faceY = canvas.height * 0.68;
-    roundRect(ctx, faceX - 50, faceY - 360, 340, 560, 36);
-    ctx.fillStyle = '#0A3D62';
-    ctx.fill();
-    ctx.strokeStyle = '#F5B042';
-    ctx.lineWidth = 4;
-    ctx.stroke();
-
+  // Draw portrait (clipped) at portraitX, portraitY
+  if(uploadedPhoto){
+    const px = portraitX, py = portraitY, pSize = portraitSize;
+    ctx.save();
+    // soft shadow behind circle
     ctx.beginPath();
-    ctx.ellipse(faceX + 120, faceY - 160, 90, 120, 0, 0, Math.PI*2);
-    ctx.fillStyle = '#F4C2A1';
-    ctx.fill();
-
-    ctx.fillStyle = '#041F33';
-    roundRect(ctx, faceX - 20, faceY + 60, 280, 300, 20);
-    ctx.fill();
-
-    // Contact
-    ctx.textAlign = 'center';
-    ctx.fillStyle = '#FFFFFF';
-    ctx.font = '700 48px "Poppins", sans-serif';
-    ctx.fillText(data.phone, canvas.width/2, canvas.height*0.78);
-
-    ctx.font = '500 34px "Poppins", sans-serif';
-    ctx.fillStyle = '#A0D8F1';
-    ctx.fillText(data.site, canvas.width/2, canvas.height*0.82);
-
-    // Brand
-    ctx.font = '800 76px "Poppins", sans-serif';
-    ctx.fillStyle = '#F5B042';
-    ctx.shadowBlur = 20;
-    ctx.shadowColor = '#F5B042';
-    ctx.fillText('RAGHAVA', canvas.width/2, canvas.height*0.89);
-    ctx.fillText('CONSULTANCY', canvas.width/2, canvas.height*0.935);
-    ctx.shadowBlur = 0;
-
-    ctx.font = '600 32px "Poppins", sans-serif';
-    ctx.fillStyle = '#E6F0FA';
-    ctx.fillText('Transforming Dreams into Homes.', canvas.width/2, canvas.height*0.97);
+    ctx.arc(px, py - 20, pSize/2 + 8, 0, Math.PI*2);
+    ctx.fillStyle = 'rgba(0,0,0,0.18)'; ctx.fill();
+    // clip circle and draw photo as cover
+    ctx.beginPath(); ctx.arc(px, py - 20, pSize/2, 0, Math.PI*2); ctx.closePath(); ctx.clip();
+    const img = uploadedPhoto;
+    let sx=0, sy=0, sw=img.width, sh=img.height;
+    const ratio = img.width / img.height;
+    if(ratio > 1){ sw = img.height; sx = Math.round((img.width - sw)/2); } else { sh = img.width; sy = Math.round((img.height - sh)/2); }
+    ctx.drawImage(img, sx, sy, sw, sh, px - pSize/2, py - 20 - pSize/2, pSize, pSize);
+    ctx.restore();
+  } else {
+    // placeholder
+    const px = portraitX, py = portraitY, pSize = portraitSize;
+    ctx.beginPath(); ctx.arc(px, py - 20, pSize/2, 0, Math.PI*2); ctx.fillStyle = 'rgba(255,255,255,0.06)'; ctx.fill();
+    ctx.font = `700 ${Math.round(pSize*0.28)}px Poppins, sans-serif`; ctx.fillStyle = '#ffdca2'; ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillText('HP', px, py - 20);
   }
 
-  function renderFromInputs() {
-    const data = Object.fromEntries(
-      Object.entries(inputs).map(([k, el]) => [k, el.value || defaultData[k]])
-    );
-    drawAd(data);
-    updatePreview();
-    preview.classList.add('pulse');
-    setTimeout(() => preview.classList.remove('pulse'), 2000);
+  // CONTACT BLOCK bottom center
+  const cH = Math.round(height*0.14);
+  const cW = Math.round(width*0.86);
+  const cX = Math.round((width - cW)/2);
+  const cY = Math.round(height*0.74);
+  roundRectPath(ctx, cX, cY, cW, cH, 18); ctx.fillStyle = 'rgba(0,0,0,0.22)'; ctx.fill();
+
+  ctx.font = `800 ${Math.round(width*0.055)}px Poppins, sans-serif`; ctx.fillStyle='#fff'; ctx.textAlign='center';
+  ctx.fillText(data.phone, width/2, cY + (cH*0.45));
+
+  ctx.font = `500 ${Math.round(width*0.032)}px Poppins, sans-serif`; ctx.fillStyle = 'rgba(255,255,255,0.84)';
+  ctx.fillText(data.site, width/2, cY + (cH*0.75));
+
+  // brand name
+  ctx.font = `900 ${Math.round(width*0.05)}px Poppins, sans-serif`; ctx.fillStyle='#ffdca2'; ctx.fillText('RAGHAVA CONSULTANCY', width/2, height*0.925);
+
+  // tagline
+  ctx.font = `500 ${Math.round(width*0.03)}px Poppins, sans-serif`; ctx.fillStyle='rgba(255,255,255,0.9)'; ctx.fillText('Transforming Dreams into Homes.', width/2, height*0.96);
+
+  // footer small
+  ctx.font = `400 ${Math.round(width*0.02)}px Poppins, sans-serif`; ctx.fillStyle='rgba(255,255,255,0.12)'; ctx.fillText('Associated with major Banks & NBFCs', width/2, height*0.986);
+}
+
+// small helper: wrap and draw (used for headline/sub)
+function wrapAndDraw(ctx, text, x, y, maxWidth, lineHeight){
+  const font = ctx.font;
+  const lines = measureWrappedLines(ctx, text, maxWidth);
+  for(let i=0;i<lines.length;i++){
+    ctx.fillText(lines[i], x, y + (i * lineHeight));
   }
+  ctx.font = font;
+}
 
-  function updatePreview() {
-    const scale = 0.25;
-    const temp = document.createElement('canvas');
-    temp.width = canvas.width * scale;
-    temp.height = canvas.height * scale;
-    const tctx = temp.getContext('2d');
-    tctx.drawImage(canvas, 0, 0, temp.width, temp.height);
-    preview.style.backgroundImage = `url(${temp.toDataURL()})`;
-  }
+// render driver
+async function renderAd(width=1080, height=1920){
+  const data = {
+    headlineTel: headlineTelInput.value.trim() || 'రాఘవ కన్సల్టెన్సీ — హోమ్ లోన్స్',
+    subTel: subTelInput.value.trim() || 'మీ కలల ఇల్లు ఇప్పుడు మీ చేతుల్లోనే!',
+    bullets: bulletsInput.value.trim() || '₹5 లక్షల నుండి ₹1 కోటి వరకు లోన్, తక్కువ వడ్డీ రేట్లు, డోర్‌స్టెప్ డాక్యుమెంటేషన్',
+    phone: phoneInput.value.trim() || '90148 33945',
+    site: siteInput.value.trim() || 'www.raghavaconsultency.com'
+  };
+  await draw(data, width, height);
+}
 
-  function downloadPNG() {
-    renderFromInputs();
-    setTimeout(() => {
-      const link = document.createElement('a');
-      link.href = canvas.toDataURL('image/png');
-      const date = new Date().toISOString().slice(0,10).replace(/-/g, '');
-      link.download = `raghava_ad_${date}.png`;
-      link.click();
-    }, 200);
-  }
+// download at size
+function downloadCanvas(filename, width=1080, height=1920){
+  return new Promise(async (resolve)=>{
+    await renderAd(width, height);
+    const dataURL = canvas.toDataURL('image/png');
+    const link = document.createElement('a');
+    link.href = dataURL;
+    link.download = filename;
+    document.body.appendChild(link); link.click(); link.remove();
+    resolve();
+  });
+}
 
-  renderBtn.addEventListener('click', renderFromInputs);
-  downloadBtn.addEventListener('click', downloadPNG);
+// events
+renderBtn.addEventListener('click', ()=> renderAd());
+downloadBtn.addEventListener('click', async ()=> { await downloadCanvas('raghava_ad_1080x1920.png', 1080, 1920); });
+downloadPoster.addEventListener('click', async ()=> { await downloadCanvas('raghava_poster_2000x3000.png', 2000, 3000); });
+downloadSet.addEventListener('click', async ()=>{
+  await downloadCanvas('raghava_ad_1080x1920.png', 1080, 1920);
+  await new Promise(r=>setTimeout(r,200));
+  await downloadCanvas('raghava_poster_2000x3000.png', 2000, 3000);
+});
 
-  window.addEventListener('load', () => setTimeout(renderFromInputs, 400));
+// initial render
+window.addEventListener('load', ()=> { setTimeout(()=> renderAd(), 240); });
 </script>
+
 </body>
 </html>
