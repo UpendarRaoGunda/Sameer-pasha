@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>They Dreamed of Freedom. We Must Build the Future.</title>
+    <title>Revolutionary Leaders Poster</title>
     <style>
         * {
             margin: 0;
@@ -13,161 +13,116 @@
 
         body {
             font-family: 'Georgia', serif;
-            overflow-x: hidden;
-            background: #000;
-            min-height: 100vh;
+            background: #1a1a1a;
             display: flex;
             justify-content: center;
             align-items: center;
+            min-height: 100vh;
             padding: 20px;
         }
 
-        .poster-wrapper {
+        .controls {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #FF9933 0%, #138808 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 153, 51, 0.5);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .poster-container {
             width: 100%;
-            max-width: 1400px;
+            max-width: 1800px;
             display: flex;
             justify-content: center;
         }
 
+        /* Poster optimized for 2x3 feet (24x36 inches = 2400x3600px at 100 DPI) */
         .poster {
-            width: 1200px;
-            height: 1600px;
+            width: 2400px;
+            height: 3600px;
             position: relative;
-            background: #0a0a0a;
+            background: linear-gradient(180deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
             display: flex;
             flex-direction: column;
-            overflow: hidden;
-            box-shadow: 0 30px 100px rgba(0, 0, 0, 0.8);
+            transform: scale(0.3);
+            transform-origin: top center;
+            box-shadow: 0 50px 150px rgba(0, 0, 0, 0.8);
         }
 
-        /* Dynamic gradient background */
-        .poster::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
+        /* Tricolor bars */
+        .tricolor-bar {
             width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(ellipse at 20% 30%, rgba(255, 153, 51, 0.15) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 30%, rgba(19, 136, 8, 0.15) 0%, transparent 50%),
-                radial-gradient(ellipse at 50% 70%, rgba(255, 255, 255, 0.05) 0%, transparent 60%);
-            animation: breathe 8s ease-in-out infinite;
+            height: 30px;
+            background: linear-gradient(to right,
+                #FF9933 0%, #FF9933 33.33%,
+                #FFFFFF 33.33%, #FFFFFF 66.66%,
+                #138808 66.66%, #138808 100%);
+            box-shadow: 0 5px 30px rgba(255, 153, 51, 0.6);
         }
 
-        @keyframes breathe {
-            0%, 100% { opacity: 0.6; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.1); }
+        .tricolor-bar.bottom {
+            box-shadow: 0 -5px 30px rgba(19, 136, 8, 0.6);
         }
 
-        /* Tricolor accent bars */
-        .tricolor-accent {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 12px;
-            background: linear-gradient(to right, 
-                #FF9933 0%, #FF9933 33.33%, 
-                #FFFFFF 33.33%, #FFFFFF 66.66%, 
-                #138808 66.66%, #138808 100%
-            );
-            z-index: 100;
-            box-shadow: 0 2px 20px rgba(255, 153, 51, 0.5);
-        }
-
-        .tricolor-accent.bottom {
-            top: auto;
-            bottom: 0;
-        }
-
-        /* Animated particles */
-        .particles {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            overflow: hidden;
-        }
-
-        .particle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: rgba(255, 215, 0, 0.6);
-            border-radius: 50%;
-            animation: float 15s infinite;
-        }
-
-        @keyframes float {
-            0% {
-                transform: translateY(100%) translateX(0) scale(0);
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            90% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-100px) translateX(100px) scale(1);
-                opacity: 0;
-            }
-        }
-
-        .title {
-            position: relative;
-            z-index: 10;
+        /* Header section */
+        .header {
+            padding: 150px 100px 100px;
             text-align: center;
-            padding: 80px 40px 60px;
-            background: linear-gradient(180deg, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.7) 100%);
-            backdrop-filter: blur(10px);
+            background: linear-gradient(180deg, rgba(0,0,0,0.9) 0%, transparent 100%);
         }
 
-        .title h1 {
-            color: #FFD700;
-            font-size: 52px;
+        .header h1 {
+            font-size: 120px;
             font-weight: 900;
+            color: #FFD700;
             text-shadow: 
-                0 0 20px rgba(255, 215, 0, 0.5),
-                0 0 40px rgba(255, 215, 0, 0.3),
-                2px 2px 4px rgba(0, 0, 0, 0.8);
-            letter-spacing: 3px;
-            margin-bottom: 20px;
+                0 0 40px rgba(255, 215, 0, 0.6),
+                0 0 80px rgba(255, 215, 0, 0.4),
+                4px 4px 8px rgba(0, 0, 0, 0.9);
+            letter-spacing: 6px;
             line-height: 1.3;
-            animation: titleGlow 3s ease-in-out infinite;
+            margin-bottom: 40px;
         }
 
-        @keyframes titleGlow {
-            0%, 100% { text-shadow: 0 0 20px rgba(255, 215, 0, 0.5), 0 0 40px rgba(255, 215, 0, 0.3), 2px 2px 4px rgba(0, 0, 0, 0.8); }
-            50% { text-shadow: 0 0 30px rgba(255, 215, 0, 0.7), 0 0 60px rgba(255, 215, 0, 0.5), 2px 2px 4px rgba(0, 0, 0, 0.8); }
-        }
-
-        .title-underline {
-            width: 200px;
-            height: 4px;
+        .header-line {
+            width: 600px;
+            height: 8px;
             background: linear-gradient(to right, transparent, #FFD700, transparent);
-            margin: 20px auto 0;
-            animation: expand 2s ease-in-out infinite;
+            margin: 0 auto;
         }
 
-        @keyframes expand {
-            0%, 100% { width: 200px; opacity: 0.6; }
-            50% { width: 280px; opacity: 1; }
-        }
-
-        .leaders-container {
-            position: relative;
-            z-index: 5;
+        /* Leaders section */
+        .leaders {
+            flex: 1;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 60px 80px;
-            gap: 60px;
-            flex: 1;
+            gap: 120px;
+            padding: 100px 120px;
         }
 
         .leader {
@@ -175,355 +130,188 @@
             flex-direction: column;
             align-items: center;
             text-align: center;
-            position: relative;
-            animation: fadeInUp 1.2s ease-out forwards;
-            opacity: 0;
-            transition: transform 0.4s ease;
         }
 
-        .leader:hover {
-            transform: translateY(-15px);
-        }
-
-        .leader:nth-child(1) { animation-delay: 0.2s; }
-        .leader:nth-child(2) { animation-delay: 0.5s; }
-        .leader:nth-child(3) { animation-delay: 0.8s; }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(60px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .leader-portrait {
-            width: 280px;
-            height: 380px;
-            background: linear-gradient(145deg, #1a1a1a 0%, #2d2d2d 100%);
-            border-radius: 25px;
-            margin-bottom: 30px;
+        .portrait-frame {
+            width: 600px;
+            height: 800px;
+            background: linear-gradient(145deg, #2a2a2a 0%, #1a1a1a 100%);
+            border-radius: 40px;
+            padding: 15px;
+            margin-bottom: 60px;
             box-shadow: 
-                0 25px 60px rgba(0, 0, 0, 0.6),
-                0 0 0 1px rgba(255, 215, 0, 0.2),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+                0 50px 120px rgba(0, 0, 0, 0.8),
+                0 0 0 5px rgba(255, 215, 0, 0.3),
+                inset 0 2px 0 rgba(255, 255, 255, 0.1);
             position: relative;
             overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 3px solid transparent;
-            background-clip: padding-box;
-            transition: all 0.4s ease;
         }
 
-        .leader:hover .leader-portrait {
+        .center .portrait-frame {
+            width: 680px;
+            height: 900px;
             box-shadow: 
-                0 30px 80px rgba(255, 215, 0, 0.4),
-                0 0 0 3px rgba(255, 215, 0, 0.6),
-                inset 0 1px 0 rgba(255, 255, 255, 0.2);
-            transform: scale(1.05);
+                0 60px 150px rgba(255, 215, 0, 0.4),
+                0 0 0 8px rgba(255, 215, 0, 0.5),
+                inset 0 2px 0 rgba(255, 255, 255, 0.15);
         }
 
-        .leader-portrait::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: conic-gradient(
-                from 0deg,
-                transparent 0deg,
-                rgba(255, 215, 0, 0.1) 60deg,
-                transparent 120deg
-            );
-            animation: rotate 6s linear infinite;
-        }
-
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        .leader-portrait::after {
-            content: '';
-            position: absolute;
-            inset: 3px;
-            background: linear-gradient(145deg, #1a1a1a 0%, #2d2d2d 100%);
-            border-radius: 22px;
-            z-index: 1;
-        }
-
-        .leader-portrait .placeholder {
+        .portrait-inner {
             width: 100%;
             height: 100%;
-            background: linear-gradient(145deg, #2a2a2a 0%, #1a1a1a 100%);
+            background: linear-gradient(145deg, #1a1a1a 0%, #0a0a0a 100%);
+            border-radius: 30px;
+            overflow: hidden;
+            position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 80px;
-            position: relative;
-            z-index: 2;
-            border-radius: 22px;
         }
 
-        .leader-portrait img {
+        .portrait-placeholder {
+            font-size: 200px;
+            opacity: 0.3;
+        }
+
+        .portrait-image {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            object-position: center;
-            position: relative;
-            z-index: 2;
-            border-radius: 22px;
             display: none;
         }
 
-        .leader-portrait img.loaded {
+        .portrait-image.loaded {
             display: block;
         }
 
-        .center .leader-portrait {
-            width: 320px;
-            height: 420px;
-            box-shadow: 
-                0 35px 90px rgba(255, 215, 0, 0.3),
-                0 0 0 3px rgba(255, 215, 0, 0.4),
-                inset 0 1px 0 rgba(255, 255, 255, 0.15);
-        }
-
-        .center:hover .leader-portrait {
-            box-shadow: 
-                0 40px 100px rgba(255, 215, 0, 0.5),
-                0 0 0 4px rgba(255, 215, 0, 0.8),
-                inset 0 1px 0 rgba(255, 255, 255, 0.3);
-        }
-
-        .symbol {
+        .symbol-overlay {
             position: absolute;
-            bottom: 20px;
-            right: 20px;
-            font-size: 60px;
-            z-index: 3;
-            filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.6));
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 0.7; }
-            50% { transform: scale(1.1); opacity: 1; }
+            bottom: 40px;
+            right: 40px;
+            font-size: 120px;
+            opacity: 0.8;
+            filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.8));
+            z-index: 10;
         }
 
         .leader-name {
-            font-size: 32px;
+            font-size: 72px;
             font-weight: 900;
             color: #FFD700;
-            margin-bottom: 12px;
             text-shadow: 
-                0 0 10px rgba(255, 215, 0, 0.5),
-                2px 2px 4px rgba(0, 0, 0, 0.8);
-            letter-spacing: 1.5px;
+                0 0 20px rgba(255, 215, 0, 0.6),
+                3px 3px 6px rgba(0, 0, 0, 0.9);
+            letter-spacing: 3px;
+            margin-bottom: 20px;
         }
 
         .leader-title {
-            font-size: 20px;
+            font-size: 48px;
             color: #c0c0c0;
             font-style: italic;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
             font-weight: 300;
         }
 
+        /* Footer section */
         .footer {
-            position: relative;
-            z-index: 10;
+            padding: 100px 120px 150px;
             text-align: center;
-            padding: 60px 40px 80px;
-            background: linear-gradient(0deg, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.7) 100%);
-            backdrop-filter: blur(10px);
+            background: linear-gradient(0deg, rgba(0,0,0,0.9) 0%, transparent 100%);
         }
 
         .footer-quote {
+            font-size: 64px;
             color: #FFD700;
-            font-size: 28px;
             font-style: italic;
             text-shadow: 
-                0 0 15px rgba(255, 215, 0, 0.3),
-                1px 1px 4px rgba(0, 0, 0, 0.9);
+                0 0 30px rgba(255, 215, 0, 0.4),
+                2px 2px 6px rgba(0, 0, 0, 0.9);
             font-weight: 300;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
             line-height: 1.5;
         }
 
         .footer-quote::before,
         .footer-quote::after {
             content: '✦';
-            margin: 0 20px;
-            opacity: 0.6;
-            font-size: 0.8em;
+            margin: 0 40px;
+            opacity: 0.7;
         }
 
-        .download-btn {
-            position: fixed;
-            top: 30px;
-            right: 30px;
-            z-index: 1000;
-            padding: 16px 32px;
-            background: linear-gradient(135deg, #FF9933 0%, #FF6600 50%, #138808 100%);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 
-                0 8px 25px rgba(255, 153, 51, 0.4),
-                inset 0 1px 0 rgba(255, 255, 255, 0.2);
-            transition: all 0.3s ease;
-            font-family: 'Georgia', serif;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .download-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 
-                0 12px 35px rgba(255, 153, 51, 0.6),
-                inset 0 1px 0 rgba(255, 255, 255, 0.3);
-        }
-
-        .download-btn:active {
-            transform: translateY(-1px);
-        }
-
-        .download-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: translateY(0);
-        }
-
-        /* Ambient light effects */
-        .ambient-light {
+        /* Decorative elements */
+        .glow-effect {
             position: absolute;
-            border-radius: 50%;
-            filter: blur(100px);
-            opacity: 0.15;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: radial-gradient(ellipse at center, rgba(255, 215, 0, 0.05) 0%, transparent 70%);
             pointer-events: none;
-            animation: ambientFloat 10s ease-in-out infinite;
-        }
-
-        .ambient-light.orange {
-            top: 10%;
-            left: 10%;
-            width: 500px;
-            height: 500px;
-            background: #FF9933;
-            animation-delay: 0s;
-        }
-
-        .ambient-light.white {
-            top: 40%;
-            right: 10%;
-            width: 450px;
-            height: 450px;
-            background: #FFFFFF;
-            animation-delay: 3s;
-        }
-
-        .ambient-light.green {
-            bottom: 15%;
-            left: 15%;
-            width: 550px;
-            height: 550px;
-            background: #138808;
-            animation-delay: 6s;
-        }
-
-        @keyframes ambientFloat {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            33% { transform: translate(30px, -30px) scale(1.1); }
-            66% { transform: translate(-30px, 30px) scale(0.9); }
         }
 
         @media (max-width: 1400px) {
             .poster {
-                transform: scale(0.8);
-                transform-origin: top center;
+                transform: scale(0.2);
             }
         }
 
-        @media (max-width: 1100px) {
+        @media (max-width: 900px) {
             .poster {
-                transform: scale(0.6);
-            }
-        }
-
-        @media (max-width: 768px) {
-            body {
-                padding: 10px;
-            }
-            
-            .poster {
-                transform: scale(0.4);
-            }
-
-            .download-btn {
-                top: 15px;
-                right: 15px;
-                padding: 12px 24px;
-                font-size: 14px;
+                transform: scale(0.15);
             }
         }
     </style>
 </head>
 <body>
-    <button id="downloadBtn" class="download-btn">📥 Download Poster</button>
-    
-    <div class="poster-wrapper">
-        <div class="poster" id="poster">
-            <div class="tricolor-accent"></div>
-            
-            <!-- Ambient lighting -->
-            <div class="ambient-light orange"></div>
-            <div class="ambient-light white"></div>
-            <div class="ambient-light green"></div>
+    <div class="controls">
+        <button class="btn" onclick="window.location.reload()">🔄 Reset</button>
+        <button class="btn" id="downloadBtn">📥 Download PNG</button>
+    </div>
 
-            <!-- Floating particles -->
-            <div class="particles" id="particles"></div>
+    <div class="poster-container">
+        <div class="poster" id="poster">
+            <div class="tricolor-bar"></div>
             
-            <div class="title">
+            <div class="glow-effect"></div>
+            
+            <div class="header">
                 <h1>They Dreamed of Freedom<br>We Must Build the Future</h1>
-                <div class="title-underline"></div>
+                <div class="header-line"></div>
             </div>
 
-            <div class="leaders-container">
+            <div class="leaders">
                 <div class="leader left">
-                    <div class="leader-portrait">
-                        <div class="placeholder">⚖️</div>
-                        <img src="ambedkar.png" alt="Dr. B.R. Ambedkar" onerror="this.style.display='none'">
-                        <div class="symbol">⚖️</div>
+                    <div class="portrait-frame">
+                        <div class="portrait-inner">
+                            <div class="portrait-placeholder">⚖️</div>
+                            <img class="portrait-image" src="ambedkar.png" alt="Dr. B.R. Ambedkar">
+                            <div class="symbol-overlay">⚖️</div>
+                        </div>
                     </div>
                     <div class="leader-name">Dr. B.R. Ambedkar</div>
                     <div class="leader-title">Architect of Equality</div>
                 </div>
 
                 <div class="leader center">
-                    <div class="leader-portrait">
-                        <div class="placeholder">✊</div>
-                        <img src="bhagat.png" alt="Bhagat Singh" onerror="this.style.display='none'">
-                        <div class="symbol">✊</div>
+                    <div class="portrait-frame">
+                        <div class="portrait-inner">
+                            <div class="portrait-placeholder">✊</div>
+                            <img class="portrait-image" src="bhagat.png" alt="Bhagat Singh">
+                            <div class="symbol-overlay">✊</div>
+                        </div>
                     </div>
                     <div class="leader-name">Bhagat Singh</div>
                     <div class="leader-title">Voice of Revolution</div>
                 </div>
 
                 <div class="leader right">
-                    <div class="leader-portrait">
-                        <div class="placeholder">🏛️</div>
-                        <img src="nehru.png" alt="Jawaharlal Nehru" onerror="this.style.display='none'">
-                        <div class="symbol">🏛️</div>
+                    <div class="portrait-frame">
+                        <div class="portrait-inner">
+                            <div class="portrait-placeholder">🏛️</div>
+                            <img class="portrait-image" src="nehru.png" alt="Jawaharlal Nehru">
+                            <div class="symbol-overlay">🏛️</div>
+                        </div>
                     </div>
                     <div class="leader-name">Jawaharlal Nehru</div>
                     <div class="leader-title">Architect of Modern India</div>
@@ -531,105 +319,102 @@
             </div>
 
             <div class="footer">
-                <div class="footer-quote">From Revolution to Reformation — The Torch Now Belongs to Us</div>
+                <div class="footer-quote">From Revolution to Reformation<br>The Torch Now Belongs to Us</div>
             </div>
 
-            <div class="tricolor-accent bottom"></div>
+            <div class="tricolor-bar bottom"></div>
         </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script>
-        // Create floating particles
-        const particlesContainer = document.getElementById('particles');
-        for (let i = 0; i < 40; i++) {
-            const particle = document.createElement('div');
-            particle.className = 'particle';
-            particle.style.left = Math.random() * 100 + '%';
-            particle.style.animationDelay = Math.random() * 15 + 's';
-            particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
-            particlesContainer.appendChild(particle);
-        }
-
-        // Image loading handler
-        document.querySelectorAll('.leader-portrait img').forEach(img => {
-            img.onload = function() {
+        // Handle image loading
+        document.querySelectorAll('.portrait-image').forEach(img => {
+            img.addEventListener('load', function() {
                 this.classList.add('loaded');
                 const placeholder = this.previousElementSibling;
-                if (placeholder && placeholder.classList.contains('placeholder')) {
+                if (placeholder && placeholder.classList.contains('portrait-placeholder')) {
                     placeholder.style.display = 'none';
                 }
-            };
-            
+            });
+
+            img.addEventListener('error', function() {
+                console.log('Image failed to load:', this.src);
+                // Keep placeholder visible
+            });
+
             // Check if already loaded
             if (img.complete && img.naturalWidth > 0) {
                 img.classList.add('loaded');
                 const placeholder = img.previousElementSibling;
-                if (placeholder && placeholder.classList.contains('placeholder')) {
+                if (placeholder && placeholder.classList.contains('portrait-placeholder')) {
                     placeholder.style.display = 'none';
                 }
             }
         });
 
         // Download functionality
-        const downloadBtn = document.getElementById('downloadBtn');
-        const poster = document.getElementById('poster');
+        document.getElementById('downloadBtn').addEventListener('click', async function() {
+            const btn = this;
+            const poster = document.getElementById('poster');
 
-        downloadBtn.addEventListener('click', async function() {
             if (!window.html2canvas) {
                 alert('html2canvas library not loaded. Please refresh the page.');
                 return;
             }
 
-            // Disable button
-            downloadBtn.disabled = true;
-            downloadBtn.textContent = '⏳ Generating...';
+            btn.disabled = true;
+            btn.textContent = '⏳ Generating High-Res Image...';
 
             try {
-                // Wait a bit for any animations to settle
+                // Small delay to ensure everything is rendered
                 await new Promise(resolve => setTimeout(resolve, 500));
 
-                // Stop animations temporarily
-                const particles = document.getElementById('particles');
-                const originalDisplay = particles.style.display;
-                particles.style.display = 'none';
+                // Temporarily reset transform for capture
+                const originalTransform = poster.style.transform;
+                poster.style.transform = 'scale(1)';
 
-                // Capture the poster
+                // Capture at full resolution
                 const canvas = await html2canvas(poster, {
-                    scale: 2,
+                    scale: 1, // No scaling needed, poster is already at print size
                     useCORS: true,
                     allowTaint: true,
                     backgroundColor: '#0a0a0a',
-                    width: 1200,
-                    height: 1600,
-                    logging: false,
+                    width: 2400,
+                    height: 3600,
+                    logging: true,
                     imageTimeout: 0,
                     removeContainer: false
                 });
 
-                // Restore animations
-                particles.style.display = originalDisplay;
+                // Restore transform
+                poster.style.transform = originalTransform;
 
-                // Download
+                // Create download link
                 const link = document.createElement('a');
-                link.download = 'revolutionary-leaders-poster.png';
+                const timestamp = new Date().getTime();
+                link.download = `revolutionary-leaders-poster-${timestamp}.png`;
                 link.href = canvas.toDataURL('image/png', 1.0);
                 link.click();
 
                 // Success feedback
-                downloadBtn.textContent = '✅ Downloaded!';
+                btn.textContent = '✅ Downloaded! (2400x3600px)';
                 setTimeout(() => {
-                    downloadBtn.textContent = '📥 Download Poster';
-                    downloadBtn.disabled = false;
-                }, 2000);
+                    btn.textContent = '📥 Download PNG';
+                    btn.disabled = false;
+                }, 3000);
 
             } catch (error) {
                 console.error('Error generating poster:', error);
-                alert('Failed to generate poster. Please try again.');
-                downloadBtn.textContent = '📥 Download Poster';
-                downloadBtn.disabled = false;
+                alert('Failed to generate poster. Error: ' + error.message);
+                btn.textContent = '📥 Download PNG';
+                btn.disabled = false;
             }
         });
+
+        // Log poster dimensions
+        console.log('Poster dimensions: 2400x3600px (2ft x 3ft at 100 DPI)');
+        console.log('For best print quality, use at least 150 DPI printer');
     </script>
 </body>
 </html>
