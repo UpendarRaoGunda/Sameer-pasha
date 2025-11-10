@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Revolutionary Leaders Poster</title>
+    <title>Scientific Visionaries Poster</title>
     <style>
         * {
             margin: 0;
@@ -13,12 +13,13 @@
 
         body {
             font-family: 'Georgia', serif;
-            background: #1a1a1a;
+            background: #0a0a0a;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             padding: 20px;
+            overflow-x: auto;
         }
 
         .controls {
@@ -32,7 +33,7 @@
 
         .btn {
             padding: 12px 24px;
-            background: linear-gradient(135deg, #FF9933 0%, #138808 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
             border-radius: 25px;
@@ -45,7 +46,7 @@
 
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(255, 153, 51, 0.5);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
         }
 
         .btn:disabled {
@@ -55,7 +56,7 @@
 
         .poster-container {
             width: 100%;
-            max-width: 1800px;
+            max-width: 2000px;
             display: flex;
             justify-content: center;
         }
@@ -65,7 +66,7 @@
             width: 2400px;
             height: 3600px;
             position: relative;
-            background: linear-gradient(180deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
+            background: linear-gradient(180deg, #0a0a1f 0%, #1a0a2e 30%, #0a0a1f 70%, #000000 100%);
             display: flex;
             flex-direction: column;
             transform: scale(0.3);
@@ -73,59 +74,101 @@
             box-shadow: 0 50px 150px rgba(0, 0, 0, 0.8);
         }
 
-        /* Tricolor bars */
-        .tricolor-bar {
+        /* Cosmic background effects */
+        .stars {
+            position: absolute;
             width: 100%;
-            height: 30px;
-            background: linear-gradient(to right,
-                #FF9933 0%, #FF9933 33.33%,
-                #FFFFFF 33.33%, #FFFFFF 66.66%,
-                #138808 66.66%, #138808 100%);
-            box-shadow: 0 5px 30px rgba(255, 153, 51, 0.6);
+            height: 100%;
+            background-image: 
+                radial-gradient(2px 2px at 20% 30%, white, transparent),
+                radial-gradient(2px 2px at 60% 70%, white, transparent),
+                radial-gradient(1px 1px at 50% 50%, white, transparent),
+                radial-gradient(1px 1px at 80% 10%, white, transparent),
+                radial-gradient(2px 2px at 90% 60%, white, transparent),
+                radial-gradient(1px 1px at 33% 80%, white, transparent),
+                radial-gradient(1px 1px at 15% 90%, white, transparent);
+            background-size: 200% 200%;
+            background-position: 0% 0%, 40% 60%, 80% 20%, 50% 90%, 10% 40%, 70% 70%, 30% 10%;
+            opacity: 0.4;
+            pointer-events: none;
         }
 
-        .tricolor-bar.bottom {
-            box-shadow: 0 -5px 30px rgba(19, 136, 8, 0.6);
+        .glow-effect {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(ellipse at 20% 20%, rgba(102, 126, 234, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 40%, rgba(118, 75, 162, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 80%, rgba(66, 153, 225, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        /* Accent line */
+        .accent-line {
+            width: 100%;
+            height: 8px;
+            background: linear-gradient(to right,
+                #667eea 0%, #764ba2 33%,
+                #f093fb 66%, #4facfe 100%);
+            box-shadow: 0 0 30px rgba(102, 126, 234, 0.6);
+        }
+
+        .accent-line.bottom {
+            box-shadow: 0 0 30px rgba(118, 75, 162, 0.6);
         }
 
         /* Header section */
         .header {
-            padding: 150px 100px 100px;
+            padding: 120px 100px 80px;
             text-align: center;
-            background: linear-gradient(180deg, rgba(0,0,0,0.9) 0%, transparent 100%);
+            background: linear-gradient(180deg, rgba(0,0,0,0.8) 0%, transparent 100%);
+            position: relative;
+            z-index: 10;
         }
 
         .header h1 {
-            font-size: 120px;
+            font-size: 110px;
             font-weight: 900;
-            color: #FFD700;
-            text-shadow: 
-                0 0 40px rgba(255, 215, 0, 0.6),
-                0 0 80px rgba(255, 215, 0, 0.4),
-                4px 4px 8px rgba(0, 0, 0, 0.9);
-            letter-spacing: 6px;
-            line-height: 1.3;
-            margin-bottom: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 60px rgba(102, 126, 234, 0.5);
+            letter-spacing: 4px;
+            line-height: 1.2;
+            margin-bottom: 30px;
+            filter: drop-shadow(0 0 20px rgba(102, 126, 234, 0.4));
+        }
+
+        .header-subtitle {
+            font-size: 56px;
+            color: #a0aec0;
+            font-style: italic;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.9);
+            font-weight: 300;
+            letter-spacing: 2px;
         }
 
         .header-line {
             width: 600px;
-            height: 8px;
-            background: linear-gradient(to right, transparent, #FFD700, transparent);
-            margin: 0 auto;
+            height: 6px;
+            background: linear-gradient(to right, transparent, #667eea, #764ba2, transparent);
+            margin: 40px auto 0;
         }
 
-        /* Leaders section */
-        .leaders {
+        /* Scientists grid */
+        .scientists {
             flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 120px;
-            padding: 100px 120px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 80px;
+            padding: 80px 100px;
+            position: relative;
+            z-index: 10;
         }
 
-        .leader {
+        .scientist {
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -133,34 +176,61 @@
         }
 
         .portrait-frame {
-            width: 600px;
-            height: 800px;
-            background: linear-gradient(145deg, #2a2a2a 0%, #1a1a1a 100%);
-            border-radius: 40px;
-            padding: 15px;
-            margin-bottom: 60px;
+            width: 520px;
+            height: 650px;
+            background: linear-gradient(145deg, #1a1a2e 0%, #0f0f1e 100%);
+            border-radius: 30px;
+            padding: 12px;
+            margin-bottom: 40px;
             box-shadow: 
-                0 50px 120px rgba(0, 0, 0, 0.8),
-                0 0 0 5px rgba(255, 215, 0, 0.3),
-                inset 0 2px 0 rgba(255, 255, 255, 0.1);
+                0 40px 100px rgba(0, 0, 0, 0.8),
+                0 0 0 4px rgba(102, 126, 234, 0.2),
+                inset 0 2px 0 rgba(255, 255, 255, 0.05);
             position: relative;
             overflow: hidden;
+            transition: all 0.3s ease;
         }
 
-        .center .portrait-frame {
-            width: 680px;
-            height: 900px;
+        .scientist:hover .portrait-frame {
+            transform: translateY(-10px);
             box-shadow: 
-                0 60px 150px rgba(255, 215, 0, 0.4),
-                0 0 0 8px rgba(255, 215, 0, 0.5),
-                inset 0 2px 0 rgba(255, 255, 255, 0.15);
+                0 50px 120px rgba(102, 126, 234, 0.4),
+                0 0 0 5px rgba(102, 126, 234, 0.4),
+                inset 0 2px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .portrait-frame::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(
+                from 0deg,
+                transparent,
+                rgba(102, 126, 234, 0.1),
+                transparent 120deg
+            );
+            animation: rotate 8s linear infinite;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .scientist:hover .portrait-frame::before {
+            opacity: 1;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
 
         .portrait-inner {
             width: 100%;
             height: 100%;
-            background: linear-gradient(145deg, #1a1a1a 0%, #0a0a0a 100%);
-            border-radius: 30px;
+            background: linear-gradient(145deg, #0f0f1e 0%, #0a0a1a 100%);
+            border-radius: 20px;
             overflow: hidden;
             position: relative;
             display: flex;
@@ -169,7 +239,7 @@
         }
 
         .portrait-placeholder {
-            font-size: 200px;
+            font-size: 120px;
             opacity: 0.3;
         }
 
@@ -186,68 +256,68 @@
 
         .symbol-overlay {
             position: absolute;
-            bottom: 40px;
-            right: 40px;
-            font-size: 120px;
-            opacity: 0.8;
+            bottom: 25px;
+            right: 25px;
+            font-size: 80px;
+            opacity: 0.7;
             filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.8));
             z-index: 10;
         }
 
-        .leader-name {
-            font-size: 72px;
+        .scientist-name {
+            font-size: 52px;
             font-weight: 900;
-            color: #FFD700;
-            text-shadow: 
-                0 0 20px rgba(255, 215, 0, 0.6),
-                3px 3px 6px rgba(0, 0, 0, 0.9);
-            letter-spacing: 3px;
-            margin-bottom: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #f093fb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.8));
         }
 
-        .leader-title {
-            font-size: 48px;
-            color: #c0c0c0;
+        .scientist-field {
+            font-size: 36px;
+            color: #a0aec0;
             font-style: italic;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9);
+            font-weight: 300;
+        }
+
+        .scientist-years {
+            font-size: 28px;
+            color: #718096;
+            margin-top: 8px;
             font-weight: 300;
         }
 
         /* Footer section */
         .footer {
-            padding: 100px 120px 150px;
+            padding: 80px 100px 120px;
             text-align: center;
-            background: linear-gradient(0deg, rgba(0,0,0,0.9) 0%, transparent 100%);
+            background: linear-gradient(0deg, rgba(0,0,0,0.8) 0%, transparent 100%);
+            position: relative;
+            z-index: 10;
         }
 
         .footer-quote {
-            font-size: 64px;
-            color: #FFD700;
+            font-size: 56px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             font-style: italic;
-            text-shadow: 
-                0 0 30px rgba(255, 215, 0, 0.4),
-                2px 2px 6px rgba(0, 0, 0, 0.9);
             font-weight: 300;
             letter-spacing: 2px;
             line-height: 1.5;
+            filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.9));
         }
 
         .footer-quote::before,
         .footer-quote::after {
-            content: '✦';
-            margin: 0 40px;
-            opacity: 0.7;
-        }
-
-        /* Decorative elements */
-        .glow-effect {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            background: radial-gradient(ellipse at center, rgba(255, 215, 0, 0.05) 0%, transparent 70%);
-            pointer-events: none;
+            content: '⚛';
+            margin: 0 30px;
+            opacity: 0.6;
         }
 
         @media (max-width: 1400px) {
@@ -271,58 +341,104 @@
 
     <div class="poster-container">
         <div class="poster" id="poster">
-            <div class="tricolor-bar"></div>
+            <div class="accent-line"></div>
             
+            <div class="stars"></div>
             <div class="glow-effect"></div>
             
             <div class="header">
-                <h1>They Dreamed of Freedom<br>We Must Build the Future</h1>
+                <h1>Scientific Visionaries</h1>
+                <div class="header-subtitle">Who Shaped Our Understanding of the Universe</div>
                 <div class="header-line"></div>
             </div>
 
-            <div class="leaders">
-                <div class="leader left">
+            <div class="scientists">
+                <!-- Row 1 -->
+                <div class="scientist">
                     <div class="portrait-frame">
                         <div class="portrait-inner">
-                            <div class="portrait-placeholder">⚖️</div>
-                            <img class="portrait-image" src="ambedkar.png" alt="Dr. B.R. Ambedkar">
-                            <div class="symbol-overlay">⚖️</div>
+                            <div class="portrait-placeholder">🧬</div>
+                            <img class="portrait-image" src="darwin.png" alt="Charles Darwin">
+                            <div class="symbol-overlay">🧬</div>
                         </div>
                     </div>
-                    <div class="leader-name">Dr. B.R. Ambedkar</div>
-                    <div class="leader-title">Architect of Equality</div>
+                    <div class="scientist-name">Charles Darwin</div>
+                    <div class="scientist-field">Evolution & Biology</div>
+                    <div class="scientist-years">1809 - 1882</div>
                 </div>
 
-                <div class="leader center">
+                <div class="scientist">
                     <div class="portrait-frame">
                         <div class="portrait-inner">
-                            <div class="portrait-placeholder">✊</div>
-                            <img class="portrait-image" src="bhagat.png" alt="Bhagat Singh">
-                            <div class="symbol-overlay">✊</div>
+                            <div class="portrait-placeholder">⚛️</div>
+                            <img class="portrait-image" src="einstein.png" alt="Albert Einstein">
+                            <div class="symbol-overlay">⚛️</div>
                         </div>
                     </div>
-                    <div class="leader-name">Bhagat Singh</div>
-                    <div class="leader-title">Voice of Revolution</div>
+                    <div class="scientist-name">Albert Einstein</div>
+                    <div class="scientist-field">Theoretical Physics</div>
+                    <div class="scientist-years">1879 - 1955</div>
                 </div>
 
-                <div class="leader right">
+                <div class="scientist">
                     <div class="portrait-frame">
                         <div class="portrait-inner">
-                            <div class="portrait-placeholder">🏛️</div>
-                            <img class="portrait-image" src="nehru.png" alt="Jawaharlal Nehru">
-                            <div class="symbol-overlay">🏛️</div>
+                            <div class="portrait-placeholder">☢️</div>
+                            <img class="portrait-image" src="curie.png" alt="Marie Curie">
+                            <div class="symbol-overlay">☢️</div>
                         </div>
                     </div>
-                    <div class="leader-name">Jawaharlal Nehru</div>
-                    <div class="leader-title">Architect of Modern India</div>
+                    <div class="scientist-name">Marie Curie</div>
+                    <div class="scientist-field">Radioactivity</div>
+                    <div class="scientist-years">1867 - 1934</div>
+                </div>
+
+                <!-- Row 2 -->
+                <div class="scientist">
+                    <div class="portrait-frame">
+                        <div class="portrait-inner">
+                            <div class="portrait-placeholder">⚡</div>
+                            <img class="portrait-image" src="bohr.png" alt="Niels Bohr">
+                            <div class="symbol-overlay">⚡</div>
+                        </div>
+                    </div>
+                    <div class="scientist-name">Niels Bohr</div>
+                    <div class="scientist-field">Quantum Mechanics</div>
+                    <div class="scientist-years">1885 - 1962</div>
+                </div>
+
+                <div class="scientist">
+                    <div class="portrait-frame">
+                        <div class="portrait-inner">
+                            <div class="portrait-placeholder">🌌</div>
+                            <img class="portrait-image" src="hawking.png" alt="Stephen Hawking">
+                            <div class="symbol-overlay">🌌</div>
+                        </div>
+                    </div>
+                    <div class="scientist-name">Stephen Hawking</div>
+                    <div class="scientist-field">Cosmology & Black Holes</div>
+                    <div class="scientist-years">1942 - 2018</div>
+                </div>
+
+                <div class="scientist">
+                    <div class="portrait-frame">
+                        <div class="portrait-inner">
+                            <div class="portrait-placeholder">🚀</div>
+                            <img class="portrait-image" src="musk.png" alt="Elon Musk">
+                            <div class="symbol-overlay">🚀</div>
+                        </div>
+                    </div>
+                    <div class="scientist-name">Elon Musk</div>
+                    <div class="scientist-field">Space & Innovation</div>
+                    <div class="scientist-years">1971 - Present</div>
                 </div>
             </div>
 
             <div class="footer">
-                <div class="footer-quote">From Revolution to Reformation<br>The Torch Now Belongs to Us</div>
+                <div class="footer-quote">Standing on the Shoulders of Giants<br>To Reach for the Stars</div>
             </div>
 
-            <div class="tricolor-bar bottom"></div>
+            <div class="accent-line bottom"></div>
         </div>
     </div>
 
@@ -340,10 +456,8 @@
 
             img.addEventListener('error', function() {
                 console.log('Image failed to load:', this.src);
-                // Keep placeholder visible
             });
 
-            // Check if already loaded
             if (img.complete && img.naturalWidth > 0) {
                 img.classList.add('loaded');
                 const placeholder = img.previousElementSibling;
@@ -367,19 +481,16 @@
             btn.textContent = '⏳ Generating High-Res Image...';
 
             try {
-                // Small delay to ensure everything is rendered
                 await new Promise(resolve => setTimeout(resolve, 500));
 
-                // Temporarily reset transform for capture
                 const originalTransform = poster.style.transform;
                 poster.style.transform = 'scale(1)';
 
-                // Capture at full resolution
                 const canvas = await html2canvas(poster, {
-                    scale: 1, // No scaling needed, poster is already at print size
+                    scale: 1,
                     useCORS: true,
                     allowTaint: true,
-                    backgroundColor: '#0a0a0a',
+                    backgroundColor: '#0a0a1f',
                     width: 2400,
                     height: 3600,
                     logging: true,
@@ -387,17 +498,14 @@
                     removeContainer: false
                 });
 
-                // Restore transform
                 poster.style.transform = originalTransform;
 
-                // Create download link
                 const link = document.createElement('a');
                 const timestamp = new Date().getTime();
-                link.download = `revolutionary-leaders-poster-${timestamp}.png`;
+                link.download = `scientific-visionaries-poster-${timestamp}.png`;
                 link.href = canvas.toDataURL('image/png', 1.0);
                 link.click();
 
-                // Success feedback
                 btn.textContent = '✅ Downloaded! (2400x3600px)';
                 setTimeout(() => {
                     btn.textContent = '📥 Download PNG';
@@ -412,9 +520,8 @@
             }
         });
 
-        // Log poster dimensions
         console.log('Poster dimensions: 2400x3600px (2ft x 3ft at 100 DPI)');
-        console.log('For best print quality, use at least 150 DPI printer');
+        console.log('Expected images: darwin.png, einstein.png, curie.png, bohr.png, hawking.png, musk.png');
     </script>
 </body>
 </html>
