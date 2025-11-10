@@ -3,115 +3,573 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Raghava Consultency — Ad Generator (Enhanced)</title>
+  <title>Raghava Consultency — Ad Generator</title>
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Telugu:wght@400;700&family=Poppins:wght@300;500;700;900&display=swap" rel="stylesheet">
 
   <style>
-    :root{
-      --w:1080; --h:1920;
-      --gold:#f5b041;
-    }
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      min-height:100vh;
-      font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, Arial;
-      background:
-        radial-gradient(900px 450px at 10% 10%, rgba(11,95,138,0.10), transparent 6%),
-        linear-gradient(180deg,#052238 0%, #07172a 100%);
-      color:#e6eef7;
-      display:flex;
-      gap:20px;
-      padding:28px;
-      align-items:flex-start;
-      justify-content:center;
+    :root {
+      --primary: #f5b041;
+      --primary-dark: #e4a13b;
+      --secondary: #2b9ed7;
+      --secondary-dark: #2688c8;
+      --accent: #6f4bd7;
+      --success: #3dd6a5;
+      --dark: #061226;
+      --dark-light: #0a1e35;
+      --light: #e6eef7;
+      --gray: #9ec6e3;
+      --gray-light: #bcd6eb;
+      --border: rgba(255,255,255,0.08);
+      --card-bg: rgba(255,255,255,0.03);
+      --shadow: 0 10px 30px rgba(2,10,20,0.6);
+      --radius: 12px;
+      --transition: all 0.3s ease;
     }
 
-    .sidebar{
-      width:380px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      border-radius:12px;
-      padding:16px;
-      box-shadow:0 10px 30px rgba(2,10,20,0.6);
-      border:1px solid rgba(255,255,255,0.03);
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
-    .sidebar h1{font-size:18px;margin:0 0 10px 0}
-    label{display:block;font-size:13px;color:#bcd6eb;margin-top:10px}
-    input[type="text"], textarea, select{width:100%; padding:10px 12px; margin-top:6px; border-radius:8px; border:1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.02); color:var(--gold); outline:none; font-size:14px;}
-    textarea{min-height:70px; resize:vertical}
-    .row{display:flex; gap:8px}
-    .small{flex:1}
-    .btn{display:inline-block; width:100%; padding:12px; margin-top:12px; border-radius:10px; border:none; cursor:pointer; font-weight:700; font-size:14px; color:#061226; background: linear-gradient(90deg,var(--gold), #e4a13b); box-shadow: 0 8px 24px rgba(245,180,66,0.16);}
-    .btn.secondary{background:linear-gradient(90deg,#2b9ed7,#2688c8); color:white; box-shadow:0 8px 24px rgba(34,120,180,0.12);}
-    .controls{display:flex; gap:8px; margin-top:8px}
-    .previewWrap{width:420px; display:flex; flex-direction:column; align-items:center; gap:10px}
-    canvas{ width:360px; height:640px; border-radius:14px; box-shadow: 0 20px 60px rgba(3,12,28,0.6); background:white;}
-    .templateList{display:flex; gap:8px; margin-top:8px}
-    .templateItem{flex:1; padding:8px; text-align:center; border-radius:10px; cursor:pointer; font-weight:600; background:transparent; color:#cfe8ff; border:1px solid transparent}
-    .templateItem.active{background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.04)}
-    .meta{color:#9ec6e3; font-size:13px; text-align:center}
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      background: linear-gradient(135deg, #052238 0%, #07172a 100%);
+      color: var(--light);
+      display: flex;
+      gap: 24px;
+      padding: 24px;
+      align-items: flex-start;
+      justify-content: center;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(900px 450px at 10% 10%, rgba(11,95,138,0.10), transparent 6%),
+        radial-gradient(800px 800px at 90% 90%, rgba(245,180,66,0.05), transparent 30%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .app-container {
+      display: flex;
+      gap: 24px;
+      max-width: 1400px;
+      width: 100%;
+    }
+
+    .sidebar {
+      width: 380px;
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(10px);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .app-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .app-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--dark);
+      font-weight: 900;
+      font-size: 18px;
+    }
+
+    .app-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    .app-subtitle {
+      font-size: 13px;
+      color: var(--gray);
+      margin-top: -4px;
+      margin-bottom: 16px;
+    }
+
+    .section {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .section-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--gray-light);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-title::before {
+      content: '';
+      display: block;
+      width: 4px;
+      height: 16px;
+      background: var(--primary);
+      border-radius: 2px;
+    }
+
+    .template-list {
+      display: flex;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .template-item {
+      flex: 1;
+      padding: 12px 8px;
+      text-align: center;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      background: transparent;
+      color: var(--gray-light);
+      border: 1px solid transparent;
+      transition: var(--transition);
+      font-size: 13px;
+    }
+
+    .template-item:hover {
+      background: rgba(255,255,255,0.05);
+    }
+
+    .template-item.active {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: var(--primary);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      color: var(--gray-light);
+      margin-bottom: 6px;
+      font-weight: 500;
+    }
+
+    .input-group {
+      margin-bottom: 8px;
+    }
+
+    input[type="text"], textarea, select {
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.04);
+      color: var(--light);
+      outline: none;
+      font-size: 14px;
+      transition: var(--transition);
+      font-family: inherit;
+    }
+
+    input[type="text"]:focus, textarea:focus, select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(245, 180, 65, 0.2);
+    }
+
+    textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    .row {
+      display: flex;
+      gap: 12px;
+    }
+
+    .small {
+      flex: 1;
+    }
+
+    .file-input-wrapper {
+      position: relative;
+      overflow: hidden;
+      display: inline-block;
+      width: 100%;
+    }
+
+    .file-input-wrapper input[type=file] {
+      position: absolute;
+      left: 0;
+      top: 0;
+      opacity: 0;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+    }
+
+    .file-input-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 12px 16px;
+      background: rgba(255,255,255,0.04);
+      border: 1px dashed var(--border);
+      border-radius: 10px;
+      color: var(--gray);
+      font-size: 13px;
+      transition: var(--transition);
+      cursor: pointer;
+    }
+
+    .file-input-button:hover {
+      background: rgba(255,255,255,0.06);
+      border-color: var(--primary);
+    }
+
+    .file-input-button i {
+      font-size: 16px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 14px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--dark);
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      box-shadow: 0 8px 24px rgba(245,180,66,0.16);
+      transition: var(--transition);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(245,180,66,0.24);
+    }
+
+    .btn.secondary {
+      background: linear-gradient(135deg, var(--secondary), var(--secondary-dark));
+      color: white;
+      box-shadow: 0 8px 24px rgba(34,120,180,0.12);
+    }
+
+    .btn.secondary:hover {
+      box-shadow: 0 12px 28px rgba(34,120,180,0.2);
+    }
+
+    .btn.accent {
+      background: linear-gradient(135deg, var(--accent), #9b6cf2);
+    }
+
+    .btn.success {
+      background: linear-gradient(135deg, var(--success), #18b686);
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 12px;
+    }
+
+    .controls {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .preview-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .canvas-container {
+      position: relative;
+      width: 360px;
+      height: 640px;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(3,12,28,0.8);
+      background: white;
+      transition: var(--transition);
+    }
+
+    .canvas-container:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 25px 70px rgba(3,12,28,0.9);
+    }
+
+    canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .preview-info {
+      color: var(--gray);
+      font-size: 13px;
+      text-align: center;
+      max-width: 360px;
+      line-height: 1.5;
+    }
+
+    .preview-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .preview-action-btn {
+      padding: 8px 16px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--gray-light);
+      font-size: 12px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .preview-action-btn:hover {
+      background: rgba(255,255,255,0.08);
+      color: var(--light);
+    }
+
+    .status-message {
+      padding: 12px 16px;
+      border-radius: 10px;
+      background: rgba(61, 214, 165, 0.1);
+      border: 1px solid rgba(61, 214, 165, 0.2);
+      color: var(--success);
+      font-size: 13px;
+      text-align: center;
+      margin-top: 8px;
+      display: none;
+    }
+
+    .status-message.show {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .tooltip {
+      position: relative;
+      display: inline-block;
+    }
+
+    .tooltip .tooltip-text {
+      visibility: hidden;
+      width: 200px;
+      background-color: rgba(0,0,0,0.8);
+      color: #fff;
+      text-align: center;
+      border-radius: 6px;
+      padding: 8px;
+      position: absolute;
+      z-index: 1;
+      bottom: 125%;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+      transition: opacity 0.3s;
+      font-size: 12px;
+      font-weight: normal;
+    }
+
+    .tooltip:hover .tooltip-text {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 1200px) {
+      .app-container {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .sidebar {
+        width: 100%;
+        max-width: 600px;
+      }
+      
+      .preview-container {
+        width: 100%;
+      }
+    }
   </style>
 </head>
 <body>
 
-  <aside class="sidebar" aria-label="controls">
-    <h1>Raghava Consultency — Ad Maker (Enhanced)</h1>
-
-    <label>Template</label>
-    <div class="templateList" role="tablist">
-      <div class="templateItem active" data-template="classic">Classic</div>
-      <div class="templateItem" data-template="modern">Modern</div>
-      <div class="templateItem" data-template="luxe">Luxe</div>
-    </div>
-
-    <label>Telugu Headline</label>
-    <input id="headlineTel" type="text" value="రాఘవ కన్సల్టెన్సీ — హోమ్ లోన్స్ & మార్ట్గేజ్ లోన్స్">
-
-    <label>Telugu Subheading</label>
-    <input id="subTel" type="text" value="మీ కలల ఇల్లు ఇప్పుడు మీ చేతుల్లోనే!">
-
-    <label>Bullets (comma-separated)</label>
-    <input id="bullets" type="text" value="₹5 లక్షల నుండి ₹1 కోటి వరకు లోన్, తక్కువ వడ్డీ రేట్లు & వేగవంతమైన మంజూరు, డోర్‌స్టెప్ డాక్యుమెంటేషన్">
-
-    <div class="row">
-      <div class="small">
-        <label>Phone</label>
-        <input id="phone" type="text" value="90148 33945">
+  <div class="app-container">
+    <aside class="sidebar" aria-label="controls">
+      <div class="app-header">
+        <div class="app-icon">RC</div>
+        <div>
+          <h1 class="app-title">Raghava Consultency</h1>
+          <div class="app-subtitle">Professional Ad Generator</div>
+        </div>
       </div>
-      <div class="small">
-        <label>Website</label>
-        <input id="site" type="text" value="www.raghavaconsultency.com">
+
+      <div class="section">
+        <h2 class="section-title">Template</h2>
+        <div class="template-list" role="tablist">
+          <div class="template-item active" data-template="classic">Classic</div>
+          <div class="template-item" data-template="modern">Modern</div>
+          <div class="template-item" data-template="luxe">Luxe</div>
+        </div>
       </div>
-    </div>
 
-    <label>Upload Photo (optional)</label>
-    <input id="photoFile" type="file" accept="image/*">
+      <div class="section">
+        <h2 class="section-title">Content</h2>
+        
+        <div class="input-group">
+          <label for="headlineTel">Telugu Headline</label>
+          <input id="headlineTel" type="text" value="రాఘవ కన్సల్టెన్సీ — హోమ్ లోన్స్ & మార్ట్గేజ్ లోన్స్">
+        </div>
 
-    <label>Upload Logo (optional)</label>
-    <input id="logoFile" type="file" accept="image/*">
+        <div class="input-group">
+          <label for="subTel">Telugu Subheading</label>
+          <input id="subTel" type="text" value="మీ కలల ఇల్లు ఇప్పుడు మీ చేతుల్లోనే!">
+        </div>
 
-    <div style="display:flex; gap:8px;">
-      <button id="renderBtn" class="btn">Render</button>
-      <button id="downloadBtn" class="btn secondary">Download PNG</button>
-    </div>
+        <div class="input-group">
+          <label for="bullets">Bullets (comma-separated)</label>
+          <input id="bullets" type="text" value="₹5 లక్షల నుండి ₹1 కోటి వరకు లోన్, తక్కువ వడ్డీ రేట్లు & వేగవంతమైన మంజూరు, డోర్‌స్టెప్ డాక్యుమెంటేషన్">
+        </div>
 
-    <div style="display:flex; gap:8px; margin-top:8px;">
-      <button id="downloadPoster" class="btn" style="background:linear-gradient(90deg,#6f4bd7,#9b6cf2)">Download Poster (2000×3000)</button>
-      <button id="downloadSet" class="btn" style="background:linear-gradient(90deg,#3dd6a5,#18b686)">Download All Sizes</button>
-    </div>
+        <div class="row">
+          <div class="small">
+            <label for="phone">Phone</label>
+            <input id="phone" type="text" value="90148 33945">
+          </div>
+          <div class="small">
+            <label for="site">Website</label>
+            <input id="site" type="text" value="www.raghavaconsultency.com">
+          </div>
+        </div>
+      </div>
 
-    <div style="margin-top:8px; color:#9ec6e3; font-size:13px;">Tip: test with lengthy Telugu bullets to verify auto-adjustment.</div>
-  </aside>
+      <div class="section">
+        <h2 class="section-title">Media</h2>
+        
+        <div class="input-group">
+          <label for="photoFile">Upload Photo (optional)</label>
+          <div class="file-input-wrapper">
+            <div class="file-input-button">
+              <i>📷</i> Choose Photo
+            </div>
+            <input id="photoFile" type="file" accept="image/*">
+          </div>
+        </div>
 
-  <main class="previewWrap" aria-live="polite">
-    <canvas id="adCanvas" width="1080" height="1920" role="img" aria-label="Ad preview"></canvas>
-    <div class="meta">Preview (scaled). Click Render then Download. Enhanced Design!</div>
-  </main>
+        <div class="input-group">
+          <label for="logoFile">Upload Logo (optional)</label>
+          <div class="file-input-wrapper">
+            <div class="file-input-button">
+              <i>🏢</i> Choose Logo
+            </div>
+            <input id="logoFile" type="file" accept="image/*">
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2 class="section-title">Actions</h2>
+        
+        <div class="btn-group">
+          <button id="renderBtn" class="btn">
+            <i>🔄</i> Render Ad
+          </button>
+          <button id="downloadBtn" class="btn secondary">
+            <i>📥</i> Download
+          </button>
+        </div>
+
+        <div class="btn-group">
+          <button id="downloadPoster" class="btn accent">
+            <i>🖼️</i> Poster (2000×3000)
+          </button>
+          <button id="downloadSet" class="btn success">
+            <i>📦</i> All Sizes
+          </button>
+        </div>
+      </div>
+
+      <div class="status-message" id="statusMessage">
+        Ad rendered successfully! Ready to download.
+      </div>
+
+      <div class="tooltip" style="margin-top: 8px;">
+        <div style="color: var(--gray); font-size: 13px; text-align: center;">
+          💡 Tip: Test with lengthy Telugu text to verify auto-adjustment
+        </div>
+        <span class="tooltip-text">The layout automatically adjusts to prevent overlapping elements when text is longer</span>
+      </div>
+    </aside>
+
+    <main class="preview-container" aria-live="polite">
+      <div class="canvas-container">
+        <canvas id="adCanvas" width="1080" height="1920" role="img" aria-label="Ad preview"></canvas>
+      </div>
+      
+      <div class="preview-info">
+        Preview (scaled). Click Render then Download. Templates: Classic / Modern / Luxe
+      </div>
+      
+      <div class="preview-actions">
+        <button class="preview-action-btn" id="zoomInBtn">Zoom In</button>
+        <button class="preview-action-btn" id="zoomOutBtn">Zoom Out</button>
+        <button class="preview-action-btn" id="resetZoomBtn">Reset Zoom</button>
+      </div>
+    </main>
+  </div>
 
 <script>
-/* Complete enhanced ad generator with premium design */
+/* Complete fixed ad generator:
+   - Dynamic measurement to avoid overlapping bullets and portrait
+   - Photo & logo upload
+   - Multiple templates and downloads
+*/
 
 // DOM elements
 const canvas = document.getElementById('adCanvas');
@@ -120,6 +578,10 @@ const renderBtn = document.getElementById('renderBtn');
 const downloadBtn = document.getElementById('downloadBtn');
 const downloadPoster = document.getElementById('downloadPoster');
 const downloadSet = document.getElementById('downloadSet');
+const statusMessage = document.getElementById('statusMessage');
+const zoomInBtn = document.getElementById('zoomInBtn');
+const zoomOutBtn = document.getElementById('zoomOutBtn');
+const resetZoomBtn = document.getElementById('resetZoomBtn');
 
 const headlineTelInput = document.getElementById('headlineTel');
 const subTelInput = document.getElementById('subTel');
@@ -131,10 +593,13 @@ const logoFile = document.getElementById('logoFile');
 const templateItems = Array.from(document.querySelectorAll('.templateItem'));
 
 let activeTemplate = 'classic';
+let zoomLevel = 1;
+
 templateItems.forEach(it => it.addEventListener('click', ()=> {
   templateItems.forEach(i=>i.classList.remove('active'));
   it.classList.add('active');
   activeTemplate = it.dataset.template;
+  showStatus('Template changed to ' + it.textContent);
 }));
 
 // uploaded images
@@ -144,14 +609,73 @@ photoFile.addEventListener('change', e => {
   const f = e.target.files[0];
   if(!f) return;
   const url = URL.createObjectURL(f);
-  loadImage(url).then(img => { uploadedPhoto = img; URL.revokeObjectURL(url); }).catch(()=>{ uploadedPhoto=null; });
+  loadImage(url).then(img => { 
+    uploadedPhoto = img; 
+    URL.revokeObjectURL(url); 
+    showStatus('Photo uploaded successfully');
+  }).catch(()=>{ 
+    uploadedPhoto=null; 
+    showStatus('Failed to load photo', true);
+  });
 });
 logoFile.addEventListener('change', e => {
   const f = e.target.files[0];
   if(!f) return;
   const url = URL.createObjectURL(f);
-  loadImage(url).then(img => { uploadedLogo = img; URL.revokeObjectURL(url); }).catch(()=>{ uploadedLogo=null; });
+  loadImage(url).then(img => { 
+    uploadedLogo = img; 
+    URL.revokeObjectURL(url); 
+    showStatus('Logo uploaded successfully');
+  }).catch(()=>{ 
+    uploadedLogo=null; 
+    showStatus('Failed to load logo', true);
+  });
 });
+
+// Zoom functionality
+zoomInBtn.addEventListener('click', () => {
+  if (zoomLevel < 2) {
+    zoomLevel += 0.1;
+    updateCanvasZoom();
+  }
+});
+
+zoomOutBtn.addEventListener('click', () => {
+  if (zoomLevel > 0.5) {
+    zoomLevel -= 0.1;
+    updateCanvasZoom();
+  }
+});
+
+resetZoomBtn.addEventListener('click', () => {
+  zoomLevel = 1;
+  updateCanvasZoom();
+});
+
+function updateCanvasZoom() {
+  const container = document.querySelector('.canvas-container');
+  container.style.transform = `scale(${zoomLevel})`;
+  showStatus(`Zoom: ${Math.round(zoomLevel * 100)}%`);
+}
+
+// Status message function
+function showStatus(message, isError = false) {
+  statusMessage.textContent = message;
+  statusMessage.style.background = isError 
+    ? 'rgba(255, 100, 100, 0.1)' 
+    : 'rgba(61, 214, 165, 0.1)';
+  statusMessage.style.borderColor = isError 
+    ? 'rgba(255, 100, 100, 0.2)' 
+    : 'rgba(61, 214, 165, 0.2)';
+  statusMessage.style.color = isError 
+    ? '#ff6464' 
+    : 'var(--success)';
+  
+  statusMessage.classList.add('show');
+  setTimeout(() => {
+    statusMessage.classList.remove('show');
+  }, 3000);
+}
 
 // helper: load HTMLImageElement
 function loadImage(src){
@@ -225,206 +749,74 @@ async function draw(data, width=1080, height=1920){
   canvas.width = width;
   canvas.height = height;
 
-  // background per template - ENHANCED
+  // background per template
   if(activeTemplate === 'classic'){
-    // Rich gradient with depth
     const g = ctx.createLinearGradient(0,0,0,height);
-    g.addColorStop(0,'#0a1929'); g.addColorStop(0.3,'#0d2d4a'); 
-    g.addColorStop(0.7,'#081f3b'); g.addColorStop(1,'#030d1a');
+    g.addColorStop(0,'#07243a'); g.addColorStop(0.45,'#06334f'); g.addColorStop(1,'#041226');
     ctx.fillStyle = g; ctx.fillRect(0,0,width,height);
-    
-    // Radial accent glow
-    const accent = ctx.createRadialGradient(width*0.5, height*0.25, 0, width*0.5, height*0.25, width*0.8);
-    accent.addColorStop(0,'rgba(245,180,66,0.15)');
-    accent.addColorStop(0.4,'rgba(245,180,66,0.04)');
-    accent.addColorStop(1,'rgba(0,0,0,0)');
-    ctx.fillStyle = accent; ctx.fillRect(0,0,width,height);
   } else if(activeTemplate === 'modern'){
-    // Bold modern gradient
-    const g = ctx.createLinearGradient(width*0.2,0,width*0.8,height);
-    g.addColorStop(0,'#0a2540'); g.addColorStop(0.5,'#0e3d5f'); g.addColorStop(1,'#071825');
+    const g = ctx.createLinearGradient(0,0,width,height);
+    g.addColorStop(0,'#06293a'); g.addColorStop(1,'#0b4b6b');
     ctx.fillStyle = g; ctx.fillRect(0,0,width,height);
-    
-    // Corner accents
-    const corner1 = ctx.createRadialGradient(0, 0, 0, 0, 0, width*0.6);
-    corner1.addColorStop(0,'rgba(34,150,214,0.12)');
-    corner1.addColorStop(1,'rgba(0,0,0,0)');
-    ctx.fillStyle = corner1; ctx.fillRect(0,0,width,height);
   } else {
-    // Luxe premium gradient
     const g = ctx.createLinearGradient(0,0,0,height);
-    g.addColorStop(0,'#0b1520'); g.addColorStop(0.4,'#162843'); 
-    g.addColorStop(0.75,'#0d1f38'); g.addColorStop(1,'#08111d');
+    g.addColorStop(0,'#081224'); g.addColorStop(0.6,'#0d2540'); g.addColorStop(1,'#0b1220');
     ctx.fillStyle = g; ctx.fillRect(0,0,width,height);
-    
-    // Premium gold vignette
-    const vign = ctx.createRadialGradient(width*0.5, height*0.3, 100, width*0.5, height*0.3, Math.max(width,height)*0.7);
-    vign.addColorStop(0,'rgba(245,180,66,0.18)'); 
-    vign.addColorStop(0.5,'rgba(245,180,66,0.06)');
-    vign.addColorStop(1,'rgba(0,0,0,0.1)');
+    const vign = ctx.createRadialGradient(width*0.5, height*0.36, 200, width*0.5, height*0.36, Math.max(width,height));
+    vign.addColorStop(0,'rgba(245,180,66,0.08)'); vign.addColorStop(1,'rgba(0,0,0,0)');
     ctx.fillStyle = vign; ctx.fillRect(0,0,width,height);
   }
 
-  // Enhanced atmospheric glow with multiple layers
-  const glow1 = ctx.createRadialGradient(width/2, height*0.38, 50, width/2, height*0.38, width*0.7);
-  glow1.addColorStop(0,'rgba(245,180,66,0.25)');
-  glow1.addColorStop(0.3,'rgba(245,180,66,0.08)');
-  glow1.addColorStop(0.6,'rgba(34,150,214,0.04)');
-  glow1.addColorStop(1,'rgba(0,0,0,0)');
-  ctx.fillStyle = glow1; ctx.fillRect(0,0,width,height);
+  // central warm glow
+  const glow = ctx.createRadialGradient(width/2, height*0.36, 10, width/2, height*0.36, 900);
+  glow.addColorStop(0,'rgba(245,180,66,0.95)');
+  glow.addColorStop(0.15,'rgba(245,180,66,0.28)');
+  glow.addColorStop(0.35,'rgba(0,0,0,0.02)');
+  glow.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle = glow; ctx.fillRect(0,0,width,height);
 
-  // Sophisticated skyline with varied buildings
+  // subtle skyline
   ctx.save();
-  ctx.globalAlpha = 0.08; 
-  const buildingData = [
-    {x:0, w:110, h:180}, {x:120, w:90, h:240}, {x:220, w:130, h:160},
-    {x:360, w:95, h:280}, {x:465, w:115, h:200}, {x:590, w:100, h:320},
-    {x:700, w:130, h:190}, {x:840, w:90, h:260}, {x:940, w:110, h:150}
-  ];
-  buildingData.forEach(b => {
-    const by = height*0.56 - b.h;
-    const grad = ctx.createLinearGradient(b.x, by, b.x, by + b.h);
-    grad.addColorStop(0,'rgba(0,0,0,0.8)');
-    grad.addColorStop(1,'rgba(0,0,0,0.3)');
-    ctx.fillStyle = grad;
-    ctx.fillRect(b.x, by, b.w, b.h);
-    // Windows
-    for(let wy = by + 30; wy < by + b.h - 20; wy += 45){
-      for(let wx = b.x + 20; wx < b.x + b.w - 20; wx += 35){
-        ctx.fillStyle = Math.random() > 0.4 ? 'rgba(255,220,162,0.6)' : 'rgba(255,220,162,0.15)';
-        ctx.fillRect(wx, wy, 18, 28);
-      }
-    }
-  });
+  ctx.globalAlpha = 0.06; ctx.fillStyle = '#000';
+  for(let i=0;i<12;i++){ const wRect = 80 + (i%4)*30; const hRect = 140 + (i%5)*60; const x = i * 90; const y = height*0.58 - hRect; ctx.fillRect(x,y,wRect,hRect); }
   ctx.restore();
 
-  // Premium house illustration with depth
-  const houseW = Math.round(width*0.52);
-  const houseH = Math.round(height*0.24);
-  const houseX = Math.round(width*0.05);
-  const houseY = Math.round(height*0.47);
-  
-  // House shadow
-  ctx.save();
-  ctx.globalAlpha = 0.3;
-  roundRectPath(ctx, houseX + 8, houseY + 8, houseW, houseH, 28);
-  ctx.fillStyle = 'rgba(0,0,0,0.5)'; ctx.fill();
-  ctx.restore();
-  
-  // House body with gradient
-  roundRectPath(ctx, houseX, houseY, houseW, houseH, 28);
-  const houseGrad = ctx.createLinearGradient(houseX, houseY, houseX, houseY + houseH);
-  houseGrad.addColorStop(0,'rgba(255,255,255,0.08)');
-  houseGrad.addColorStop(1,'rgba(255,255,255,0.02)');
-  ctx.fillStyle = houseGrad; ctx.fill();
-  
-  // House border glow
-  ctx.strokeStyle = 'rgba(245,180,66,0.25)';
-  ctx.lineWidth = 2;
-  ctx.stroke();
+  // house area
+  const houseW = Math.round(width*0.5);
+  const houseH = Math.round(height*0.21);
+  const houseX = Math.round(width*0.06);
+  const houseY = Math.round(height*0.48);
+  roundRectPath(ctx, houseX, houseY, houseW, houseH, 24);
+  ctx.fillStyle = 'rgba(255,255,255,0.04)'; ctx.fill();
 
-  // Windows with glow effect
-  const windowData = [
-    {x: houseX+50, y: houseY+50, w: 155, h: 100},
-    {x: houseX+230, y: houseY+50, w: 135, h: 100},
-    {x: houseX+390, y: houseY+50, w: 110, h: 100}
-  ];
-  windowData.forEach(win => {
-    // Window glow
-    ctx.save();
-    ctx.shadowColor = 'rgba(255,220,162,0.6)';
-    ctx.shadowBlur = 25;
-    ctx.fillStyle = '#ffdca2'; 
-    roundRectPath(ctx, win.x, win.y, win.w, win.h, 8);
-    ctx.fill();
-    ctx.restore();
-    
-    // Window frame
-    ctx.strokeStyle = 'rgba(0,0,0,0.2)';
-    ctx.lineWidth = 3;
-    roundRectPath(ctx, win.x, win.y, win.w, win.h, 8);
-    ctx.stroke();
-    
-    // Window panes
-    ctx.strokeStyle = 'rgba(0,0,0,0.15)';
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.moveTo(win.x + win.w/2, win.y);
-    ctx.lineTo(win.x + win.w/2, win.y + win.h);
-    ctx.moveTo(win.x, win.y + win.h/2);
-    ctx.lineTo(win.x + win.w, win.y + win.h/2);
-    ctx.stroke();
-  });
-  
-  // Roof with enhanced styling
-  ctx.save();
-  ctx.beginPath(); 
-  ctx.moveTo(houseX-25, houseY+15); 
-  ctx.lineTo(houseX+houseW/2, houseY-130); 
-  ctx.lineTo(houseX+houseW+25, houseY+15); 
-  ctx.closePath();
-  
-  const roofGrad = ctx.createLinearGradient(houseX, houseY-130, houseX, houseY+15);
-  roofGrad.addColorStop(0,'rgba(0,0,0,0.25)');
-  roofGrad.addColorStop(1,'rgba(0,0,0,0.1)');
-  ctx.fillStyle = roofGrad;
-  ctx.fill();
-  
-  ctx.strokeStyle='rgba(245,180,66,0.3)'; 
-  ctx.lineWidth=5; 
-  ctx.stroke();
-  ctx.restore();
+  // windows
+  ctx.fillStyle = '#ffdca2'; ctx.fillRect(houseX+60, houseY+40, 140, 90); ctx.fillRect(houseX+240, houseY+40, 120,90); ctx.fillRect(houseX+420, houseY+40, 80,90);
+  // roof
+  ctx.beginPath(); ctx.moveTo(houseX-20, houseY+10); ctx.lineTo(houseX+houseW/2, houseY-110); ctx.lineTo(houseX+houseW+20, houseY+10); ctx.closePath(); ctx.fillStyle='rgba(0,0,0,0.12)'; ctx.fill();
+  ctx.strokeStyle='rgba(245,180,66,0.08)'; ctx.lineWidth=4; ctx.stroke();
 
-  // draw logo or text top-left with modern styling
+  // draw logo or text top-left
   if(uploadedLogo){
-    const lW = Math.round(width*0.2), lH = Math.round(width*0.065), lx = Math.round(width*0.05), ly = Math.round(height*0.055);
-    
-    // Logo background with depth
-    ctx.save();
-    ctx.shadowColor = 'rgba(0,0,0,0.4)';
-    ctx.shadowBlur = 20;
-    roundRectPath(ctx, lx-10, ly-10, lW+20, lH+20, 14); 
-    const logoBg = ctx.createLinearGradient(lx, ly, lx, ly + lH);
-    logoBg.addColorStop(0,'rgba(255,255,255,0.1)');
-    logoBg.addColorStop(1,'rgba(255,255,255,0.03)');
-    ctx.fillStyle = logoBg; 
-    ctx.fill();
-    ctx.restore();
-    
+    const lW = Math.round(width*0.18), lH = Math.round(width*0.06), lx = Math.round(width*0.06), ly = Math.round(height*0.06);
+    roundRectPath(ctx, lx-8, ly-8, lW+16, lH+16, 12); ctx.fillStyle='rgba(0,0,0,0.16)'; ctx.fill();
     const img = uploadedLogo;
     const ratio = Math.min(lW/img.width, lH/img.height);
     const drawW = img.width * ratio; const drawH = img.height * ratio;
     const drawX = lx + (lW - drawW)/2; const drawY = ly + (lH - drawH)/2;
     ctx.drawImage(img, drawX, drawY, drawW, drawH);
   } else {
-    ctx.save();
-    ctx.font = '800 36px Poppins, sans-serif'; 
-    ctx.fillStyle = '#ffdca2';
-    ctx.shadowColor = 'rgba(245,180,66,0.5)';
-    ctx.shadowBlur = 15;
-    ctx.textAlign = 'left'; 
-    ctx.fillText('RaghavaConsultency', width*0.055, height*0.09);
-    ctx.restore();
+    ctx.font = '700 32px Poppins, sans-serif'; ctx.fillStyle = '#ffdca2'; ctx.textAlign = 'left'; ctx.fillText('RaghavaConsultency', width*0.06, height*0.09);
   }
 
-  // headline (Telugu) with enhanced styling
-  ctx.save();
-  ctx.font = `900 ${Math.round(width*0.058)}px "Noto Sans Telugu", Poppins, sans-serif`;
-  ctx.fillStyle = '#ffffff';
-  ctx.shadowColor = 'rgba(245,180,66,0.4)';
-  ctx.shadowBlur = 20;
-  ctx.textAlign = 'center';
-  wrapAndDraw(ctx, data.headlineTel, width/2, height*0.135, width - 100, Math.round(width*0.072));
-  ctx.restore();
+  // headline (Telugu)
+  ctx.font = `700 ${Math.round(width*0.055)}px "Noto Sans Telugu", Poppins, sans-serif`;
+  ctx.fillStyle = '#fffaf0'; ctx.textAlign = 'center';
+  wrapAndDraw(ctx, data.headlineTel, width/2, height*0.14, width - 120, Math.round(width*0.07));
 
-  // subheading with accent
-  ctx.save();
-  ctx.font = `600 ${Math.round(width*0.037)}px "Noto Sans Telugu", Poppins, sans-serif`;
-  ctx.fillStyle = 'rgba(255,255,255,0.95)';
-  ctx.shadowColor = 'rgba(0,0,0,0.3)';
-  ctx.shadowBlur = 10;
-  wrapAndDraw(ctx, data.subTel, width/2, height*0.2, width - 140, Math.round(width*0.046));
-  ctx.restore();
+  // subheading
+  ctx.font = `600 ${Math.round(width*0.035)}px "Noto Sans Telugu", Poppins, sans-serif`;
+  ctx.fillStyle = 'rgba(255,255,255,0.92)';
+  wrapAndDraw(ctx, data.subTel, width/2, height*0.205, width - 160, Math.round(width*0.044));
 
   // BULLETS & PORTRAIT (DYNAMIC)
   // constants
@@ -461,83 +853,31 @@ async function draw(data, width=1080, height=1920){
     portraitY = bulletsBottom + portraitSize/2 + Math.round(width*0.04);
   }
 
-  // draw bullets now with modern icons
+  // draw bullets now (icons + wrapped lines)
   ctx.fillStyle = 'rgba(255,255,255,0.96)';
   let currentY = bulletsY;
   measured.forEach((m, idx) => {
-    // Modern bullet circle with gradient
-    ctx.save();
-    const bulletGrad = ctx.createRadialGradient(bulletsX - 70, currentY + 6, 0, bulletsX - 70, currentY + 6, 28);
-    bulletGrad.addColorStop(0,'#ffdca2');
-    bulletGrad.addColorStop(1,'#f5b041');
-    ctx.fillStyle = bulletGrad;
-    
-    ctx.shadowColor = 'rgba(245,180,66,0.5)';
-    ctx.shadowBlur = 15;
+    // bullet circle
     ctx.beginPath();
-    ctx.arc(bulletsX - 70, currentY + 6, 26, 0, Math.PI*2);
-    ctx.fill();
-    ctx.restore();
-    
-    // Inner circle for depth
-    ctx.beginPath();
-    ctx.arc(bulletsX - 70, currentY + 6, 20, 0, Math.PI*2);
-    ctx.fillStyle = 'rgba(11, 39, 64, 0.3)';
-    ctx.fill();
-    
-    // Enhanced house icon
-    ctx.save(); 
-    ctx.fillStyle = '#0b2740'; 
-    ctx.shadowColor = 'rgba(0,0,0,0.3)';
-    ctx.shadowBlur = 4;
-    drawHouseIcon(ctx, bulletsX - 77, currentY - 6, 28, '#0b2740'); 
-    ctx.restore();
-    
-    // draw wrapped lines with shadow
-    ctx.save();
-    ctx.shadowColor = 'rgba(0,0,0,0.3)';
-    ctx.shadowBlur = 8;
+    ctx.arc(bulletsX - 70, currentY + 6, 22, 0, Math.PI*2);
+    ctx.fillStyle = '#ffdca2'; ctx.fill();
+    // small house icon inside circle
+    ctx.save(); ctx.fillStyle = '#0b2740'; drawHouseIcon(ctx, bulletsX - 77, currentY - 6, 26, '#0b2740'); ctx.restore();
+    // draw wrapped lines
     ctx.fillStyle = '#fff';
     drawWrappedText(ctx, m.lines, bulletsX - 20, currentY + 6, bulletLineHeight, 'left');
-    ctx.restore();
-    
     currentY += m.height + Math.round(width*0.015);
   });
 
-  // Draw portrait with premium styling
+  // Draw portrait (clipped) at portraitX, portraitY
   if(uploadedPhoto){
     const px = portraitX, py = portraitY, pSize = portraitSize;
     ctx.save();
-    
-    // Outer glow ring
+    // soft shadow behind circle
     ctx.beginPath();
-    ctx.arc(px, py - 20, pSize/2 + 15, 0, Math.PI*2);
-    const glowGrad = ctx.createRadialGradient(px, py - 20, pSize/2, px, py - 20, pSize/2 + 15);
-    glowGrad.addColorStop(0,'rgba(245,180,66,0.6)');
-    glowGrad.addColorStop(1,'rgba(245,180,66,0)');
-    ctx.fillStyle = glowGrad;
-    ctx.fill();
-    
-    // Border ring
-    ctx.beginPath();
-    ctx.arc(px, py - 20, pSize/2 + 6, 0, Math.PI*2);
-    ctx.strokeStyle = 'rgba(245,180,66,0.8)';
-    ctx.lineWidth = 8;
-    ctx.stroke();
-    
-    // Inner border
-    ctx.beginPath();
-    ctx.arc(px, py - 20, pSize/2 + 3, 0, Math.PI*2);
-    ctx.strokeStyle = 'rgba(255,255,255,0.2)';
-    ctx.lineWidth = 2;
-    ctx.stroke();
-    
-    // Shadow
-    ctx.shadowColor = 'rgba(0,0,0,0.4)';
-    ctx.shadowBlur = 30;
-    ctx.shadowOffsetY = 10;
-    
-    // clip circle and draw photo
+    ctx.arc(px, py - 20, pSize/2 + 8, 0, Math.PI*2);
+    ctx.fillStyle = 'rgba(0,0,0,0.18)'; ctx.fill();
+    // clip circle and draw photo as cover
     ctx.beginPath(); ctx.arc(px, py - 20, pSize/2, 0, Math.PI*2); ctx.closePath(); ctx.clip();
     const img = uploadedPhoto;
     let sx=0, sy=0, sw=img.width, sh=img.height;
@@ -546,131 +886,34 @@ async function draw(data, width=1080, height=1920){
     ctx.drawImage(img, sx, sy, sw, sh, px - pSize/2, py - 20 - pSize/2, pSize, pSize);
     ctx.restore();
   } else {
-    // Enhanced placeholder
+    // placeholder
     const px = portraitX, py = portraitY, pSize = portraitSize;
-    ctx.save();
-    
-    // Outer glow
-    ctx.beginPath();
-    ctx.arc(px, py - 20, pSize/2 + 12, 0, Math.PI*2);
-    const placeholderGlow = ctx.createRadialGradient(px, py - 20, pSize/2, px, py - 20, pSize/2 + 12);
-    placeholderGlow.addColorStop(0,'rgba(245,180,66,0.3)');
-    placeholderGlow.addColorStop(1,'rgba(245,180,66,0)');
-    ctx.fillStyle = placeholderGlow;
-    ctx.fill();
-    
-    // Main circle
-    ctx.beginPath(); 
-    ctx.arc(px, py - 20, pSize/2, 0, Math.PI*2); 
-    const circleGrad = ctx.createLinearGradient(px, py - 20 - pSize/2, px, py - 20 + pSize/2);
-    circleGrad.addColorStop(0,'rgba(255,255,255,0.12)');
-    circleGrad.addColorStop(1,'rgba(255,255,255,0.04)');
-    ctx.fillStyle = circleGrad;
-    ctx.fill();
-    
-    // Border
-    ctx.strokeStyle = 'rgba(245,180,66,0.6)';
-    ctx.lineWidth = 5;
-    ctx.stroke();
-    
-    // Text with glow
-    ctx.shadowColor = 'rgba(245,180,66,0.6)';
-    ctx.shadowBlur = 15;
-    ctx.font = `800 ${Math.round(pSize*0.32)}px Poppins, sans-serif`; 
-    ctx.fillStyle = '#ffdca2'; 
-    ctx.textAlign='center'; 
-    ctx.textBaseline='middle';
+    ctx.beginPath(); ctx.arc(px, py - 20, pSize/2, 0, Math.PI*2); ctx.fillStyle = 'rgba(255,255,255,0.06)'; ctx.fill();
+    ctx.font = `700 ${Math.round(pSize*0.28)}px Poppins, sans-serif`; ctx.fillStyle = '#ffdca2'; ctx.textAlign='center'; ctx.textBaseline='middle';
     ctx.fillText('HP', px, py - 20);
-    ctx.restore();
   }
 
-  // PREMIUM CONTACT BLOCK with modern design
-  const cH = Math.round(height*0.16);
-  const cW = Math.round(width*0.88);
+  // CONTACT BLOCK bottom center
+  const cH = Math.round(height*0.14);
+  const cW = Math.round(width*0.86);
   const cX = Math.round((width - cW)/2);
-  const cY = Math.round(height*0.73);
-  
-  ctx.save();
-  
-  // Shadow layer
-  ctx.shadowColor = 'rgba(0,0,0,0.5)';
-  ctx.shadowBlur = 30;
-  ctx.shadowOffsetY = 10;
-  
-  roundRectPath(ctx, cX, cY, cW, cH, 24); 
-  
-  // Gradient background
-  const contactGrad = ctx.createLinearGradient(cX, cY, cX, cY + cH);
-  contactGrad.addColorStop(0,'rgba(20,40,60,0.85)');
-  contactGrad.addColorStop(1,'rgba(10,25,45,0.92)');
-  ctx.fillStyle = contactGrad;
-  ctx.fill();
-  
-  // Border glow
-  ctx.strokeStyle = 'rgba(245,180,66,0.4)';
-  ctx.lineWidth = 3;
-  ctx.stroke();
-  ctx.restore();
-  
-  // Accent line
-  ctx.save();
-  const accentGrad = ctx.createLinearGradient(cX + 40, cY + 20, cX + cW - 40, cY + 20);
-  accentGrad.addColorStop(0,'rgba(245,180,66,0)');
-  accentGrad.addColorStop(0.5,'rgba(245,180,66,0.6)');
-  accentGrad.addColorStop(1,'rgba(245,180,66,0)');
-  ctx.strokeStyle = accentGrad;
-  ctx.lineWidth = 2;
-  ctx.beginPath();
-  ctx.moveTo(cX + 40, cY + 20);
-  ctx.lineTo(cX + cW - 40, cY + 20);
-  ctx.stroke();
-  ctx.restore();
+  const cY = Math.round(height*0.74);
+  roundRectPath(ctx, cX, cY, cW, cH, 18); ctx.fillStyle = 'rgba(0,0,0,0.22)'; ctx.fill();
 
-  // Phone number with enhanced styling
-  ctx.save();
-  ctx.font = `900 ${Math.round(width*0.055)}px Poppins, sans-serif`; 
-  ctx.fillStyle='#ffffff'; 
-  ctx.shadowColor = 'rgba(245,180,66,0.6)';
-  ctx.shadowBlur = 20;
-  ctx.textAlign='center';
-  ctx.fillText('📞 ' + data.phone, width/2, cY + (cH*0.38));
-  ctx.restore();
+  ctx.font = `800 ${Math.round(width*0.055)}px Poppins, sans-serif`; ctx.fillStyle='#fff'; ctx.textAlign='center';
+  ctx.fillText(data.phone, width/2, cY + (cH*0.45));
 
-  // Website with icon - properly sized to fit completely
-  ctx.save();
-  ctx.font = `600 ${Math.round(width*0.025)}px Poppins, sans-serif`; 
-  ctx.fillStyle = 'rgba(255,255,255,0.88)';
-  ctx.shadowColor = 'rgba(0,0,0,0.4)';
-  ctx.shadowBlur = 8;
-  ctx.textAlign='center';
-  ctx.fillText('🌐 ' + data.site, width/2, cY + (cH*0.68));
-  ctx.restore();
+  ctx.font = `500 ${Math.round(width*0.032)}px Poppins, sans-serif`; ctx.fillStyle = 'rgba(255,255,255,0.84)';
+  ctx.fillText(data.site, width/2, cY + (cH*0.75));
 
-  // Brand name with premium styling
-  ctx.save();
-  ctx.font = `900 ${Math.round(width*0.053)}px Poppins, sans-serif`; 
-  ctx.fillStyle='#ffdca2';
-  ctx.shadowColor = 'rgba(245,180,66,0.7)';
-  ctx.shadowBlur = 25;
-  ctx.textAlign='center';
-  ctx.fillText('RAGHAVA Consultency', width/2, height*0.92);
-  ctx.restore();
+  // brand name
+  ctx.font = `900 ${Math.round(width*0.05)}px Poppins, sans-serif`; ctx.fillStyle='#ffdca2'; ctx.fillText('RAGHAVA Consultency', width/2, height*0.925);
 
-  // Tagline with accent
-  ctx.save();
-  ctx.font = `600 ${Math.round(width*0.032)}px Poppins, sans-serif`; 
-  ctx.fillStyle='rgba(255,255,255,0.92)';
-  ctx.shadowColor = 'rgba(0,0,0,0.5)';
-  ctx.shadowBlur = 10;
-  ctx.fillText('✨ Transforming Dreams into Homes ✨', width/2, height*0.958);
-  ctx.restore();
+  // tagline
+  ctx.font = `500 ${Math.round(width*0.03)}px Poppins, sans-serif`; ctx.fillStyle='rgba(255,255,255,0.9)'; ctx.fillText('Transforming Dreams into Homes.', width/2, height*0.96);
 
-  // Footer with subtle styling
-  ctx.save();
-  ctx.font = `400 ${Math.round(width*0.022)}px Poppins, sans-serif`; 
-  ctx.fillStyle='rgba(255,255,255,0.4)';
-  ctx.fillText('Associated with major Banks & NBFCs', width/2, height*0.986);
-  ctx.restore();
+  // footer small
+  ctx.font = `400 ${Math.round(width*0.02)}px Poppins, sans-serif`; ctx.fillStyle='rgba(255,255,255,0.12)'; ctx.fillText('Associated with major Banks & NBFCs', width/2, height*0.986);
 }
 
 // small helper: wrap and draw (used for headline/sub)
@@ -693,6 +936,7 @@ async function renderAd(width=1080, height=1920){
     site: siteInput.value.trim() || 'www.raghavaconsultency.com'
   };
   await draw(data, width, height);
+  showStatus('Ad rendered successfully!');
 }
 
 // download at size
@@ -710,16 +954,28 @@ function downloadCanvas(filename, width=1080, height=1920){
 
 // events
 renderBtn.addEventListener('click', ()=> renderAd());
-downloadBtn.addEventListener('click', async ()=> { await downloadCanvas('raghava_ad_1080x1920.png', 1080, 1920); });
-downloadPoster.addEventListener('click', async ()=> { await downloadCanvas('raghava_poster_2000x3000.png', 2000, 3000); });
+downloadBtn.addEventListener('click', async ()=> { 
+  await downloadCanvas('raghava_ad_1080x1920.png', 1080, 1920); 
+  showStatus('Downloaded: raghava_ad_1080x1920.png');
+});
+downloadPoster.addEventListener('click', async ()=> { 
+  await downloadCanvas('raghava_poster_2000x3000.png', 2000, 3000); 
+  showStatus('Downloaded: raghava_poster_2000x3000.png');
+});
 downloadSet.addEventListener('click', async ()=>{
   await downloadCanvas('raghava_ad_1080x1920.png', 1080, 1920);
   await new Promise(r=>setTimeout(r,200));
   await downloadCanvas('raghava_poster_2000x3000.png', 2000, 3000);
+  showStatus('All sizes downloaded successfully!');
 });
 
 // initial render
-window.addEventListener('load', ()=> { setTimeout(()=> renderAd(), 240); });
+window.addEventListener('load', ()=> { 
+  setTimeout(()=> {
+    renderAd(); 
+    showStatus('Welcome to Raghava Consultency Ad Generator');
+  }, 500); 
+});
 </script>
 
 </body>
