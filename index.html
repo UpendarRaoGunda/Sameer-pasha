@@ -1,527 +1,433 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scientific Visionaries Poster</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Raghava Consultancy — Ad Generator</title>
 
-        body {
-            font-family: 'Georgia', serif;
-            background: #0a0a0a;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-            overflow-x: auto;
-        }
+  <!-- Google fonts: Noto Sans Telugu for Telugu, Poppins for English -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Telugu:wght@400;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
-        .controls {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-            display: flex;
-            gap: 10px;
-        }
+  <style>
+    :root{
+      --canvas-w:1080px;
+      --canvas-h:1920px;
+      --bg-dark:#071733;
+      --gold:#f5b042;
+      --accent:#0f4b6b;
+    }
+    body {
+      margin:0;
+      font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      background: linear-gradient(180deg,#071733 0%, #0d2f4a 60%, #061626 100%);
+      color: #fff;
+      min-height:100vh;
+      display:flex;
+      gap:20px;
+      align-items:flex-start;
+      justify-content:center;
+      padding:28px;
+      box-sizing:border-box;
+    }
 
-        .btn {
-            padding: 12px 24px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 25px;
-            font-size: 14px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease;
-        }
+    .panel {
+      width: 420px;
+      background: rgba(255,255,255,0.03);
+      border-radius:12px;
+      padding:18px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      backdrop-filter: blur(6px);
+    }
 
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
-        }
+    .panel h2{
+      margin:0 0 8px 0;
+      font-size:18px;
+      letter-spacing:0.2px;
+    }
+    label{display:block;margin-top:10px;font-size:13px;color:#cbd5e1}
+    input[type="text"]{
+      width:100%;
+      padding:8px 10px;
+      margin-top:6px;
+      border-radius:8px;
+      border:1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.02);
+      color:#fff;
+      outline:none;
+      box-sizing:border-box;
+    }
+    button{
+      margin-top:12px;
+      width:100%;
+      padding:12px;
+      background: linear-gradient(90deg,var(--gold),#e08e2f);
+      color:#061626;
+      border:none;
+      border-radius:10px;
+      font-weight:700;
+      cursor:pointer;
+      box-shadow:0 6px 18px rgba(240,180,80,0.22);
+    }
+    #preview {
+      width: calc(var(--canvas-w) * 0.25);
+      height: calc(var(--canvas-h) * 0.25);
+      background: #000;
+      border-radius:8px;
+      overflow:hidden;
+      display:block;
+      margin-top:14px;
+      border:1px solid rgba(255,255,255,0.06);
+    }
+    .hint {
+      margin-top:12px;
+      font-size:12px;
+      color:#9fb3c8;
+    }
 
-        .btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
+    /* canvas container */
+    .canvas-area{
+      width: calc(var(--canvas-w) * 0.45);
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      align-items:center;
+    }
+    canvas{
+      width:360px; /* scaled preview on page */
+      height:640px;
+      border-radius:10px;
+      box-shadow:0 12px 40px rgba(0,0,0,0.6);
+      background: #000;
+    }
 
-        .poster-container {
-            width: 100%;
-            max-width: 2000px;
-            display: flex;
-            justify-content: center;
-        }
+    footer {
+      font-size:12px;
+      color:#9fb3c8;
+      margin-top:8px;
+    }
 
-        /* Poster optimized for 2x3 feet (24x36 inches = 2400x3600px at 100 DPI) */
-        .poster {
-            width: 2400px;
-            height: 3600px;
-            position: relative;
-            background: linear-gradient(180deg, #0a0a1f 0%, #1a0a2e 30%, #0a0a1f 70%, #000000 100%);
-            display: flex;
-            flex-direction: column;
-            transform: scale(0.3);
-            transform-origin: top center;
-            box-shadow: 0 50px 150px rgba(0, 0, 0, 0.8);
-        }
-
-        /* Cosmic background effects */
-        .stars {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                radial-gradient(2px 2px at 20% 30%, white, transparent),
-                radial-gradient(2px 2px at 60% 70%, white, transparent),
-                radial-gradient(1px 1px at 50% 50%, white, transparent),
-                radial-gradient(1px 1px at 80% 10%, white, transparent),
-                radial-gradient(2px 2px at 90% 60%, white, transparent),
-                radial-gradient(1px 1px at 33% 80%, white, transparent),
-                radial-gradient(1px 1px at 15% 90%, white, transparent);
-            background-size: 200% 200%;
-            background-position: 0% 0%, 40% 60%, 80% 20%, 50% 90%, 10% 40%, 70% 70%, 30% 10%;
-            opacity: 0.4;
-            pointer-events: none;
-        }
-
-        .glow-effect {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(ellipse at 20% 20%, rgba(102, 126, 234, 0.1) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 40%, rgba(118, 75, 162, 0.1) 0%, transparent 50%),
-                radial-gradient(ellipse at 50% 80%, rgba(66, 153, 225, 0.1) 0%, transparent 50%);
-            pointer-events: none;
-        }
-
-        /* Accent line */
-        .accent-line {
-            width: 100%;
-            height: 8px;
-            background: linear-gradient(to right,
-                #667eea 0%, #764ba2 33%,
-                #f093fb 66%, #4facfe 100%);
-            box-shadow: 0 0 30px rgba(102, 126, 234, 0.6);
-        }
-
-        .accent-line.bottom {
-            box-shadow: 0 0 30px rgba(118, 75, 162, 0.6);
-        }
-
-        /* Header section */
-        .header {
-            padding: 120px 100px 80px;
-            text-align: center;
-            background: linear-gradient(180deg, rgba(0,0,0,0.8) 0%, transparent 100%);
-            position: relative;
-            z-index: 10;
-        }
-
-        .header h1 {
-            font-size: 110px;
-            font-weight: 900;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-shadow: 0 0 60px rgba(102, 126, 234, 0.5);
-            letter-spacing: 4px;
-            line-height: 1.2;
-            margin-bottom: 30px;
-            filter: drop-shadow(0 0 20px rgba(102, 126, 234, 0.4));
-        }
-
-        .header-subtitle {
-            font-size: 56px;
-            color: #a0aec0;
-            font-style: italic;
-            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.9);
-            font-weight: 300;
-            letter-spacing: 2px;
-        }
-
-        .header-line {
-            width: 600px;
-            height: 6px;
-            background: linear-gradient(to right, transparent, #667eea, #764ba2, transparent);
-            margin: 40px auto 0;
-        }
-
-        /* Scientists grid */
-        .scientists {
-            flex: 1;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 80px;
-            padding: 80px 100px;
-            position: relative;
-            z-index: 10;
-        }
-
-        .scientist {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-        }
-
-        .portrait-frame {
-            width: 520px;
-            height: 650px;
-            background: linear-gradient(145deg, #1a1a2e 0%, #0f0f1e 100%);
-            border-radius: 30px;
-            padding: 12px;
-            margin-bottom: 40px;
-            box-shadow: 
-                0 40px 100px rgba(0, 0, 0, 0.8),
-                0 0 0 4px rgba(102, 126, 234, 0.2),
-                inset 0 2px 0 rgba(255, 255, 255, 0.05);
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .scientist:hover .portrait-frame {
-            transform: translateY(-10px);
-            box-shadow: 
-                0 50px 120px rgba(102, 126, 234, 0.4),
-                0 0 0 5px rgba(102, 126, 234, 0.4),
-                inset 0 2px 0 rgba(255, 255, 255, 0.1);
-        }
-
-        .portrait-frame::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: conic-gradient(
-                from 0deg,
-                transparent,
-                rgba(102, 126, 234, 0.1),
-                transparent 120deg
-            );
-            animation: rotate 8s linear infinite;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .scientist:hover .portrait-frame::before {
-            opacity: 1;
-        }
-
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        .portrait-inner {
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(145deg, #0f0f1e 0%, #0a0a1a 100%);
-            border-radius: 20px;
-            overflow: hidden;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .portrait-placeholder {
-            font-size: 120px;
-            opacity: 0.3;
-        }
-
-        .portrait-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: none;
-        }
-
-        .portrait-image.loaded {
-            display: block;
-        }
-
-        .symbol-overlay {
-            position: absolute;
-            bottom: 25px;
-            right: 25px;
-            font-size: 80px;
-            opacity: 0.7;
-            filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.8));
-            z-index: 10;
-        }
-
-        .scientist-name {
-            font-size: 52px;
-            font-weight: 900;
-            background: linear-gradient(135deg, #667eea 0%, #f093fb 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            letter-spacing: 2px;
-            margin-bottom: 15px;
-            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.8));
-        }
-
-        .scientist-field {
-            font-size: 36px;
-            color: #a0aec0;
-            font-style: italic;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9);
-            font-weight: 300;
-        }
-
-        .scientist-years {
-            font-size: 28px;
-            color: #718096;
-            margin-top: 8px;
-            font-weight: 300;
-        }
-
-        /* Footer section */
-        .footer {
-            padding: 80px 100px 120px;
-            text-align: center;
-            background: linear-gradient(0deg, rgba(0,0,0,0.8) 0%, transparent 100%);
-            position: relative;
-            z-index: 10;
-        }
-
-        .footer-quote {
-            font-size: 56px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            font-style: italic;
-            font-weight: 300;
-            letter-spacing: 2px;
-            line-height: 1.5;
-            filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.9));
-        }
-
-        .footer-quote::before,
-        .footer-quote::after {
-            content: '⚛';
-            margin: 0 30px;
-            opacity: 0.6;
-        }
-
-        @media (max-width: 1400px) {
-            .poster {
-                transform: scale(0.2);
-            }
-        }
-
-        @media (max-width: 900px) {
-            .poster {
-                transform: scale(0.15);
-            }
-        }
-    </style>
+    /* Responsive */
+    @media (max-width:1100px){
+      body{flex-direction:column;align-items:center}
+      .canvas-area{order: -1}
+    }
+  </style>
 </head>
 <body>
-    <div class="controls">
-        <button class="btn" onclick="window.location.reload()">🔄 Reset</button>
-        <button class="btn" id="downloadBtn">📥 Download PNG</button>
-    </div>
 
-    <div class="poster-container">
-        <div class="poster" id="poster">
-            <div class="accent-line"></div>
-            
-            <div class="stars"></div>
-            <div class="glow-effect"></div>
-            
-            <div class="header">
-                <h1>Scientific Visionaries</h1>
-                <div class="header-subtitle">Who Shaped Our Understanding of the Universe</div>
-                <div class="header-line"></div>
-            </div>
+  <div class="panel">
+    <h2>Raghava Consultancy — Ad generator (WhatsApp vertical)</h2>
 
-            <div class="scientists">
-                <!-- Row 1 -->
-                <div class="scientist">
-                    <div class="portrait-frame">
-                        <div class="portrait-inner">
-                            <div class="portrait-placeholder">🧬</div>
-                            <img class="portrait-image" src="darwin.png" alt="Charles Darwin">
-                            <div class="symbol-overlay">🧬</div>
-                        </div>
-                    </div>
-                    <div class="scientist-name">Charles Darwin</div>
-                    <div class="scientist-field">Evolution & Biology</div>
-                    <div class="scientist-years">1809 - 1882</div>
-                </div>
+    <label>Telugu Headline (auto-filled)</label>
+    <input id="headlineTel" type="text" value="రాఘవ కన్సల్టెన్సీ — హోమ్ లోన్స్ & మార్ట్గేజ్ లోన్స్">
 
-                <div class="scientist">
-                    <div class="portrait-frame">
-                        <div class="portrait-inner">
-                            <div class="portrait-placeholder">⚛️</div>
-                            <img class="portrait-image" src="einstein.png" alt="Albert Einstein">
-                            <div class="symbol-overlay">⚛️</div>
-                        </div>
-                    </div>
-                    <div class="scientist-name">Albert Einstein</div>
-                    <div class="scientist-field">Theoretical Physics</div>
-                    <div class="scientist-years">1879 - 1955</div>
-                </div>
+    <label>Telugu Subheading</label>
+    <input id="subTel" type="text" value="మీ కలల ఇల్లు ఇప్పుడు మీ చేతుల్లోనే!">
 
-                <div class="scientist">
-                    <div class="portrait-frame">
-                        <div class="portrait-inner">
-                            <div class="portrait-placeholder">☢️</div>
-                            <img class="portrait-image" src="curie.png" alt="Marie Curie">
-                            <div class="symbol-overlay">☢️</div>
-                        </div>
-                    </div>
-                    <div class="scientist-name">Marie Curie</div>
-                    <div class="scientist-field">Radioactivity</div>
-                    <div class="scientist-years">1867 - 1934</div>
-                </div>
+    <label>Phone</label>
+    <input id="phone" type="text" value="90148 33945">
 
-                <!-- Row 2 -->
-                <div class="scientist">
-                    <div class="portrait-frame">
-                        <div class="portrait-inner">
-                            <div class="portrait-placeholder">⚡</div>
-                            <img class="portrait-image" src="bohr.png" alt="Niels Bohr">
-                            <div class="symbol-overlay">⚡</div>
-                        </div>
-                    </div>
-                    <div class="scientist-name">Niels Bohr</div>
-                    <div class="scientist-field">Quantum Mechanics</div>
-                    <div class="scientist-years">1885 - 1962</div>
-                </div>
+    <label>Website</label>
+    <input id="site" type="text" value="www.raghavaconsultency.com">
 
-                <div class="scientist">
-                    <div class="portrait-frame">
-                        <div class="portrait-inner">
-                            <div class="portrait-placeholder">🌌</div>
-                            <img class="portrait-image" src="hawking.png" alt="Stephen Hawking">
-                            <div class="symbol-overlay">🌌</div>
-                        </div>
-                    </div>
-                    <div class="scientist-name">Stephen Hawking</div>
-                    <div class="scientist-field">Cosmology & Black Holes</div>
-                    <div class="scientist-years">1942 - 2018</div>
-                </div>
+    <label>Loan bullets (Telugu, comma separated)</label>
+    <input id="bullets" type="text" value="₹5 లక్షల నుండి ₹1 కోటి వరకు లోన్, తక్కువ వడ్డలు & వేగవంతమైన మంజూరు, డోర్‌స్టెప్ డాక్యుమెంటేషన్">
 
-                <div class="scientist">
-                    <div class="portrait-frame">
-                        <div class="portrait-inner">
-                            <div class="portrait-placeholder">🚀</div>
-                            <img class="portrait-image" src="musk.png" alt="Elon Musk">
-                            <div class="symbol-overlay">🚀</div>
-                        </div>
-                    </div>
-                    <div class="scientist-name">Elon Musk</div>
-                    <div class="scientist-field">Space & Innovation</div>
-                    <div class="scientist-years">1971 - Present</div>
-                </div>
-            </div>
+    <button id="renderBtn">Render Image</button>
+    <button id="downloadBtn" style="background:linear-gradient(90deg,#3498db,#2aa3ff);">Download PNG</button>
 
-            <div class="footer">
-                <div class="footer-quote">Standing on the Shoulders of Giants<br>To Reach for the Stars</div>
-            </div>
+    <div class="hint">Preview (scaled). Use Render Image to refresh preview — then Download PNG to save full 1080×1920.</div>
+    <div id="preview"></div>
+    <footer>Tip: Edit phone/website then click Render → Download.</footer>
+  </div>
 
-            <div class="accent-line bottom"></div>
-        </div>
-    </div>
+  <div class="canvas-area">
+    <canvas id="adCanvas" width="1080" height="1920" aria-label="Ad canvas"></canvas>
+    <div style="color:#cfe8ff;font-size:13px;text-align:center;">1080 × 1920 (WhatsApp Status)</div>
+  </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script>
-        // Handle image loading
-        document.querySelectorAll('.portrait-image').forEach(img => {
-            img.addEventListener('load', function() {
-                this.classList.add('loaded');
-                const placeholder = this.previousElementSibling;
-                if (placeholder && placeholder.classList.contains('portrait-placeholder')) {
-                    placeholder.style.display = 'none';
-                }
-            });
+<script>
+  // References
+  const canvas = document.getElementById('adCanvas');
+  const ctx = canvas.getContext('2d', {alpha:false});
+  const renderBtn = document.getElementById('renderBtn');
+  const downloadBtn = document.getElementById('downloadBtn');
+  const preview = document.getElementById('preview');
 
-            img.addEventListener('error', function() {
-                console.log('Image failed to load:', this.src);
-            });
+  // Inputs
+  const headlineTelInput = document.getElementById('headlineTel');
+  const subTelInput = document.getElementById('subTel');
+  const phoneInput = document.getElementById('phone');
+  const siteInput = document.getElementById('site');
+  const bulletsInput = document.getElementById('bullets');
 
-            if (img.complete && img.naturalWidth > 0) {
-                img.classList.add('loaded');
-                const placeholder = img.previousElementSibling;
-                if (placeholder && placeholder.classList.contains('portrait-placeholder')) {
-                    placeholder.style.display = 'none';
-                }
-            }
-        });
+  // Default values
+  const defaultData = {
+    headlineTel: headlineTelInput.value,
+    subTel: subTelInput.value,
+    phone: phoneInput.value,
+    site: siteInput.value,
+    bullets: bulletsInput.value
+  };
 
-        // Download functionality
-        document.getElementById('downloadBtn').addEventListener('click', async function() {
-            const btn = this;
-            const poster = document.getElementById('poster');
+  // Helper: draw rounded rect
+  function roundRect(ctx, x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x+r, y);
+    ctx.arcTo(x+w, y, x+w, y+h, r);
+    ctx.arcTo(x+w, y+h, x, y+h, r);
+    ctx.arcTo(x, y+h, x, y, r);
+    ctx.arcTo(x, y, x+w, y, r);
+    ctx.closePath();
+  }
 
-            if (!window.html2canvas) {
-                alert('html2canvas library not loaded. Please refresh the page.');
-                return;
-            }
+  // Draw function (main)
+  function drawAd(data) {
+    // Clear
+    ctx.clearRect(0,0,canvas.width,canvas.height);
 
-            btn.disabled = true;
-            btn.textContent = '⏳ Generating High-Res Image...';
+    // Background gradient (royal blue -> deep teal -> dark)
+    const g = ctx.createLinearGradient(0,0,0,canvas.height);
+    g.addColorStop(0, '#0b3762');
+    g.addColorStop(0.45, '#06334f');
+    g.addColorStop(1, '#041423');
+    ctx.fillStyle = g;
+    ctx.fillRect(0,0,canvas.width,canvas.height);
 
-            try {
-                await new Promise(resolve => setTimeout(resolve, 500));
+    // Soft golden glow behind main house area
+    const glowX = canvas.width/2;
+    const glowY = canvas.height * 0.42;
+    const glow = ctx.createRadialGradient(glowX, glowY, 10, glowX, glowY, 900);
+    glow.addColorStop(0, 'rgba(245,180,66,0.95)');
+    glow.addColorStop(0.12, 'rgba(245,180,66,0.65)');
+    glow.addColorStop(0.25, 'rgba(245,180,66,0.18)');
+    glow.addColorStop(1, 'rgba(4,20,35,0)');
+    ctx.fillStyle = glow;
+    ctx.fillRect(0,0,canvas.width,canvas.height);
 
-                const originalTransform = poster.style.transform;
-                poster.style.transform = 'scale(1)';
+    // subtle skyline silhouettes
+    ctx.save();
+    ctx.globalAlpha = 0.06;
+    ctx.fillStyle = '#000000';
+    // simple rectangles as city blocks
+    for(let i=0;i<12;i++){
+      const w = 60 + i*8;
+      const h = 60 + (i%6)*40 + 80;
+      const x = (i*90) % canvas.width;
+      const y = canvas.height*0.55 - h;
+      ctx.fillRect(x, y, w, h);
+    }
+    ctx.restore();
 
-                const canvas = await html2canvas(poster, {
-                    scale: 1,
-                    useCORS: true,
-                    allowTaint: true,
-                    backgroundColor: '#0a0a1f',
-                    width: 2400,
-                    height: 3600,
-                    logging: true,
-                    imageTimeout: 0,
-                    removeContainer: false
-                });
+    // Draw house (stylized) in center-left
+    const houseW = 640;
+    const houseH = 380;
+    const houseX = canvas.width*0.12;
+    const houseY = canvas.height*0.45;
 
-                poster.style.transform = originalTransform;
+    // base
+    roundRect(ctx, houseX, houseY, houseW, houseH, 20);
+    ctx.fillStyle = 'rgba(8,19,40,0.65)';
+    ctx.fill();
 
-                const link = document.createElement('a');
-                const timestamp = new Date().getTime();
-                link.download = `scientific-visionaries-poster-${timestamp}.png`;
-                link.href = canvas.toDataURL('image/png', 1.0);
-                link.click();
+    // roof triangle
+    ctx.beginPath();
+    ctx.moveTo(houseX-20, houseY+30);
+    ctx.lineTo(houseX + houseW/2, houseY - 120);
+    ctx.lineTo(houseX + houseW + 20, houseY + 30);
+    ctx.closePath();
+    ctx.fillStyle = '#2c6aa6';
+    ctx.fill();
 
-                btn.textContent = '✅ Downloaded! (2400x3600px)';
-                setTimeout(() => {
-                    btn.textContent = '📥 Download PNG';
-                    btn.disabled = false;
-                }, 3000);
+    // windows (glowing)
+    ctx.fillStyle = '#ffdca2';
+    ctx.fillRect(houseX + 60, houseY + 80, 120, 100);
+    ctx.fillRect(houseX + 220, houseY + 80, 120, 100);
 
-            } catch (error) {
-                console.error('Error generating poster:', error);
-                alert('Failed to generate poster. Error: ' + error.message);
-                btn.textContent = '📥 Download PNG';
-                btn.disabled = false;
-            }
-        });
+    // door
+    roundRect(ctx, houseX + 420, houseY + 200, 80, 150, 10);
+    ctx.fillStyle = '#ffdca2';
+    ctx.fill();
 
-        console.log('Poster dimensions: 2400x3600px (2ft x 3ft at 100 DPI)');
-        console.log('Expected images: darwin.png, einstein.png, curie.png, bohr.png, hawking.png, musk.png');
-    </script>
+    // roof highlight
+    const roofGrad = ctx.createLinearGradient(houseX, houseY-120, houseX + houseW, houseY+30);
+    roofGrad.addColorStop(0, 'rgba(255,230,180,0.24)');
+    roofGrad.addColorStop(1, 'rgba(255,255,255,0.02)');
+    ctx.fillStyle = roofGrad;
+    ctx.fill();
+
+    // small icon row above house: bank, handshake, document
+    const iconY = houseY - 40;
+    const iconSize = 44;
+    ctx.fillStyle = '#ffdca2';
+    // globe-like bank (circle + pillars)
+    ctx.beginPath();
+    ctx.arc(houseX + 80, iconY, iconSize/2, 0, Math.PI*2);
+    ctx.fill();
+    // handshake simplified rectangle
+    ctx.fillRect(houseX + 80 + 120, iconY - iconSize/2, iconSize, iconSize/2);
+    // doc (paper)
+    roundRect(ctx, houseX + 80 + 240, iconY - iconSize/2, iconSize*0.7, iconSize, 6);
+    ctx.fill();
+
+    // main Telugu headline (Top)
+    ctx.fillStyle = '#fff7e9';
+    ctx.textAlign = 'center';
+    // Telugu font
+    const telugofont = '700 64px "Noto Sans Telugu", "Poppins", sans-serif';
+    ctx.font = telugofont;
+    wrapText(ctx, data.headlineTel, canvas.width/2, canvas.height*0.12, canvas.width - 80, 72);
+
+    // subheading Telugu (center)
+    ctx.fillStyle = 'rgba(255,255,255,0.92)';
+    ctx.font = '600 36px "Noto Sans Telugu", "Poppins", sans-serif';
+    ctx.textAlign = 'center';
+    wrapText(ctx, data.subTel, canvas.width/2, canvas.height*0.18 + 10, canvas.width - 120, 46);
+
+    // Middle bullet points (Telugu) - render as three bullets
+    ctx.textAlign = 'left';
+    ctx.font = '500 34px "Noto Sans Telugu", "Poppins", sans-serif';
+    ctx.fillStyle = '#fff';
+    const bullets = data.bullets.split(',').map(s => s.trim()).slice(0,5);
+    let by = canvas.height*0.52;
+    const bx = canvas.width*0.62;
+    bullets.forEach((b, i) => {
+      // circle bullet
+      ctx.beginPath();
+      ctx.fillStyle = '#ffdca2';
+      ctx.arc(bx - 36, by + i*58 + 8, 10, 0, Math.PI*2);
+      ctx.fill();
+
+      // text
+      ctx.fillStyle = '#fff';
+      wrapText(ctx, '•  ' + b, bx - 6, by + i*58 + 8, canvas.width - bx - 60, 40);
+    });
+
+    // Right side: portrait simplified (rounded rectangle w/ face tone)
+    const faceX = canvas.width * 0.68;
+    const faceY = canvas.height * 0.65;
+    const faceW = 320;
+    const faceH = 520;
+    roundRect(ctx, faceX - 40, faceY - 330, faceW, faceH, 28);
+    ctx.fillStyle = '#0f3b57';
+    ctx.fill();
+
+    // simple smiling face oval
+    ctx.beginPath();
+    ctx.fillStyle = '#ffd9b2';
+    ctx.ellipse(faceX + faceW/2 - 40, faceY - 120, 86, 116, 0, 0, Math.PI*2);
+    ctx.fill();
+    // suit area
+    ctx.fillStyle = '#08304a';
+    roundRect(ctx, faceX - 10, faceY + 40, faceW - 40, 240, 20);
+    ctx.fill();
+
+    // Contact lines (center bottom)
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#fff';
+    ctx.font = '700 40px "Poppins", sans-serif';
+    ctx.fillText(data.phone, canvas.width/2, canvas.height*0.78);
+
+    ctx.font = '500 30px "Poppins", sans-serif';
+    ctx.fillStyle = 'rgba(255,255,255,0.9)';
+    ctx.fillText(data.site, canvas.width/2, canvas.height*0.815);
+
+    // Big brand name near bottom
+    ctx.font = '800 64px "Poppins", sans-serif';
+    ctx.fillStyle = 'rgba(245,180,66,1)';
+    ctx.fillText('RAGHAVA CONSULTANCY', canvas.width/2, canvas.height*0.9);
+
+    // Tagline
+    ctx.font = '500 30px "Poppins", sans-serif';
+    ctx.fillStyle = 'rgba(255,255,255,0.9)';
+    ctx.fillText('Transforming Dreams into Homes.', canvas.width/2, canvas.height*0.94);
+
+    // subtle footer
+    ctx.font = '400 20px "Poppins", sans-serif';
+    ctx.fillStyle = 'rgba(255,255,255,0.12)';
+    ctx.fillText('Associated with major Banks & NBFCs', canvas.width/2, canvas.height*0.975);
+  }
+
+  // Wrap text helper for canvas
+  function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
+    const words = text.split(' ');
+    let line = '';
+    let testLine = '';
+    let lineArray = [];
+    for(let n=0;n<words.length;n++){
+      testLine = line + words[n] + ' ';
+      const metrics = ctx.measureText(testLine);
+      if(metrics.width > maxWidth && n > 0){
+        lineArray.push(line.trim());
+        line = words[n] + ' ';
+      } else {
+        line = testLine;
+      }
+    }
+    lineArray.push(line.trim());
+    // Draw lines centered by default behavior: ctx.textAlign should be set before calling this
+    for(let i=0;i<lineArray.length;i++){
+      ctx.fillText(lineArray[i], x, y + (i * lineHeight));
+    }
+  }
+
+  // initial render
+  function renderFromInputs(){
+    const data = {
+      headlineTel: headlineTelInput.value || defaultData.headlineTel,
+      subTel: subTelInput.value || defaultData.subTel,
+      phone: phoneInput.value || defaultData.phone,
+      site: siteInput.value || defaultData.site,
+      bullets: bulletsInput.value || defaultData.bullets
+    };
+    drawAd(data);
+    // update preview (small scaled PNG)
+    updatePreview();
+  }
+
+  function updatePreview(){
+    // make a small dataURL and set as background in preview div for crisp scaled preview
+    const scale = 0.25; // 1080x1920 -> 270x480
+    const tmpCanvas = document.createElement('canvas');
+    tmpCanvas.width = canvas.width * scale;
+    tmpCanvas.height = canvas.height * scale;
+    const tctx = tmpCanvas.getContext('2d');
+    // draw scaled
+    tctx.drawImage(canvas, 0, 0, tmpCanvas.width, tmpCanvas.height);
+    preview.style.backgroundImage = `url(${tmpCanvas.toDataURL('image/png')})`;
+    preview.style.backgroundSize = 'cover';
+    preview.style.backgroundPosition = 'center';
+  }
+
+  // download as PNG
+  function downloadPNG(){
+    // Convert canvas to data URL
+    const dataURL = canvas.toDataURL('image/png');
+    const link = document.createElement('a');
+    link.href = dataURL;
+    const now = new Date();
+    const ts = now.getFullYear().toString() + (now.getMonth()+1).toString().padStart(2,'0') + now.getDate().toString().padStart(2,'0');
+    link.download = `raghava_ad_${ts}.png`;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+  }
+
+  // Attach events
+  renderBtn.addEventListener('click', renderFromInputs);
+  downloadBtn.addEventListener('click', ()=> {
+    // ensure the latest render
+    renderFromInputs();
+    // small delay to ensure drawing done
+    setTimeout(downloadPNG, 120);
+  });
+
+  // initial call
+  window.addEventListener('load', ()=> {
+    // a little delay to let fonts load
+    setTimeout(renderFromInputs, 220);
+  });
+</script>
+
 </body>
 </html>
