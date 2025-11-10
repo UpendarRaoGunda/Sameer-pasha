@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Raghava Consultency — Ad Generator (Fixed Layout)</title>
+  <title>Raghava Consultency — Ad Generator (Enhanced)</title>
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Telugu:wght@400;700&family=Poppins:wght@300;500;700;900&display=swap" rel="stylesheet">
@@ -57,7 +57,7 @@
 <body>
 
   <aside class="sidebar" aria-label="controls">
-    <h1>Raghava Consultency — Ad Maker (fixed)</h1>
+    <h1>Raghava Consultency — Ad Maker (Enhanced)</h1>
 
     <label>Template</label>
     <div class="templateList" role="tablist">
@@ -107,15 +107,11 @@
 
   <main class="previewWrap" aria-live="polite">
     <canvas id="adCanvas" width="1080" height="1920" role="img" aria-label="Ad preview"></canvas>
-    <div class="meta">Preview (scaled). Click Render then Download. Templates: Classic / Modern / Luxe</div>
+    <div class="meta">Preview (scaled). Click Render then Download. Enhanced Design!</div>
   </main>
 
 <script>
-/* Complete fixed ad generator:
-   - Dynamic measurement to avoid overlapping bullets and portrait
-   - Photo & logo upload
-   - Multiple templates and downloads
-*/
+/* Complete enhanced ad generator with premium design */
 
 // DOM elements
 const canvas = document.getElementById('adCanvas');
@@ -229,74 +225,206 @@ async function draw(data, width=1080, height=1920){
   canvas.width = width;
   canvas.height = height;
 
-  // background per template
+  // background per template - ENHANCED
   if(activeTemplate === 'classic'){
+    // Rich gradient with depth
     const g = ctx.createLinearGradient(0,0,0,height);
-    g.addColorStop(0,'#07243a'); g.addColorStop(0.45,'#06334f'); g.addColorStop(1,'#041226');
+    g.addColorStop(0,'#0a1929'); g.addColorStop(0.3,'#0d2d4a'); 
+    g.addColorStop(0.7,'#081f3b'); g.addColorStop(1,'#030d1a');
     ctx.fillStyle = g; ctx.fillRect(0,0,width,height);
+    
+    // Radial accent glow
+    const accent = ctx.createRadialGradient(width*0.5, height*0.25, 0, width*0.5, height*0.25, width*0.8);
+    accent.addColorStop(0,'rgba(245,180,66,0.15)');
+    accent.addColorStop(0.4,'rgba(245,180,66,0.04)');
+    accent.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle = accent; ctx.fillRect(0,0,width,height);
   } else if(activeTemplate === 'modern'){
-    const g = ctx.createLinearGradient(0,0,width,height);
-    g.addColorStop(0,'#06293a'); g.addColorStop(1,'#0b4b6b');
+    // Bold modern gradient
+    const g = ctx.createLinearGradient(width*0.2,0,width*0.8,height);
+    g.addColorStop(0,'#0a2540'); g.addColorStop(0.5,'#0e3d5f'); g.addColorStop(1,'#071825');
     ctx.fillStyle = g; ctx.fillRect(0,0,width,height);
+    
+    // Corner accents
+    const corner1 = ctx.createRadialGradient(0, 0, 0, 0, 0, width*0.6);
+    corner1.addColorStop(0,'rgba(34,150,214,0.12)');
+    corner1.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle = corner1; ctx.fillRect(0,0,width,height);
   } else {
+    // Luxe premium gradient
     const g = ctx.createLinearGradient(0,0,0,height);
-    g.addColorStop(0,'#081224'); g.addColorStop(0.6,'#0d2540'); g.addColorStop(1,'#0b1220');
+    g.addColorStop(0,'#0b1520'); g.addColorStop(0.4,'#162843'); 
+    g.addColorStop(0.75,'#0d1f38'); g.addColorStop(1,'#08111d');
     ctx.fillStyle = g; ctx.fillRect(0,0,width,height);
-    const vign = ctx.createRadialGradient(width*0.5, height*0.36, 200, width*0.5, height*0.36, Math.max(width,height));
-    vign.addColorStop(0,'rgba(245,180,66,0.08)'); vign.addColorStop(1,'rgba(0,0,0,0)');
+    
+    // Premium gold vignette
+    const vign = ctx.createRadialGradient(width*0.5, height*0.3, 100, width*0.5, height*0.3, Math.max(width,height)*0.7);
+    vign.addColorStop(0,'rgba(245,180,66,0.18)'); 
+    vign.addColorStop(0.5,'rgba(245,180,66,0.06)');
+    vign.addColorStop(1,'rgba(0,0,0,0.1)');
     ctx.fillStyle = vign; ctx.fillRect(0,0,width,height);
   }
 
-  // central warm glow
-  const glow = ctx.createRadialGradient(width/2, height*0.36, 10, width/2, height*0.36, 900);
-  glow.addColorStop(0,'rgba(245,180,66,0.95)');
-  glow.addColorStop(0.15,'rgba(245,180,66,0.28)');
-  glow.addColorStop(0.35,'rgba(0,0,0,0.02)');
-  glow.addColorStop(1,'rgba(0,0,0,0)');
-  ctx.fillStyle = glow; ctx.fillRect(0,0,width,height);
+  // Enhanced atmospheric glow with multiple layers
+  const glow1 = ctx.createRadialGradient(width/2, height*0.38, 50, width/2, height*0.38, width*0.7);
+  glow1.addColorStop(0,'rgba(245,180,66,0.25)');
+  glow1.addColorStop(0.3,'rgba(245,180,66,0.08)');
+  glow1.addColorStop(0.6,'rgba(34,150,214,0.04)');
+  glow1.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle = glow1; ctx.fillRect(0,0,width,height);
 
-  // subtle skyline
+  // Sophisticated skyline with varied buildings
   ctx.save();
-  ctx.globalAlpha = 0.06; ctx.fillStyle = '#000';
-  for(let i=0;i<12;i++){ const wRect = 80 + (i%4)*30; const hRect = 140 + (i%5)*60; const x = i * 90; const y = height*0.58 - hRect; ctx.fillRect(x,y,wRect,hRect); }
+  ctx.globalAlpha = 0.08; 
+  const buildingData = [
+    {x:0, w:110, h:180}, {x:120, w:90, h:240}, {x:220, w:130, h:160},
+    {x:360, w:95, h:280}, {x:465, w:115, h:200}, {x:590, w:100, h:320},
+    {x:700, w:130, h:190}, {x:840, w:90, h:260}, {x:940, w:110, h:150}
+  ];
+  buildingData.forEach(b => {
+    const by = height*0.56 - b.h;
+    const grad = ctx.createLinearGradient(b.x, by, b.x, by + b.h);
+    grad.addColorStop(0,'rgba(0,0,0,0.8)');
+    grad.addColorStop(1,'rgba(0,0,0,0.3)');
+    ctx.fillStyle = grad;
+    ctx.fillRect(b.x, by, b.w, b.h);
+    // Windows
+    for(let wy = by + 30; wy < by + b.h - 20; wy += 45){
+      for(let wx = b.x + 20; wx < b.x + b.w - 20; wx += 35){
+        ctx.fillStyle = Math.random() > 0.4 ? 'rgba(255,220,162,0.6)' : 'rgba(255,220,162,0.15)';
+        ctx.fillRect(wx, wy, 18, 28);
+      }
+    }
+  });
   ctx.restore();
 
-  // house area
-  const houseW = Math.round(width*0.5);
-  const houseH = Math.round(height*0.21);
-  const houseX = Math.round(width*0.06);
-  const houseY = Math.round(height*0.48);
-  roundRectPath(ctx, houseX, houseY, houseW, houseH, 24);
-  ctx.fillStyle = 'rgba(255,255,255,0.04)'; ctx.fill();
+  // Premium house illustration with depth
+  const houseW = Math.round(width*0.52);
+  const houseH = Math.round(height*0.24);
+  const houseX = Math.round(width*0.05);
+  const houseY = Math.round(height*0.47);
+  
+  // House shadow
+  ctx.save();
+  ctx.globalAlpha = 0.3;
+  roundRectPath(ctx, houseX + 8, houseY + 8, houseW, houseH, 28);
+  ctx.fillStyle = 'rgba(0,0,0,0.5)'; ctx.fill();
+  ctx.restore();
+  
+  // House body with gradient
+  roundRectPath(ctx, houseX, houseY, houseW, houseH, 28);
+  const houseGrad = ctx.createLinearGradient(houseX, houseY, houseX, houseY + houseH);
+  houseGrad.addColorStop(0,'rgba(255,255,255,0.08)');
+  houseGrad.addColorStop(1,'rgba(255,255,255,0.02)');
+  ctx.fillStyle = houseGrad; ctx.fill();
+  
+  // House border glow
+  ctx.strokeStyle = 'rgba(245,180,66,0.25)';
+  ctx.lineWidth = 2;
+  ctx.stroke();
 
-  // windows
-  ctx.fillStyle = '#ffdca2'; ctx.fillRect(houseX+60, houseY+40, 140, 90); ctx.fillRect(houseX+240, houseY+40, 120,90); ctx.fillRect(houseX+420, houseY+40, 80,90);
-  // roof
-  ctx.beginPath(); ctx.moveTo(houseX-20, houseY+10); ctx.lineTo(houseX+houseW/2, houseY-110); ctx.lineTo(houseX+houseW+20, houseY+10); ctx.closePath(); ctx.fillStyle='rgba(0,0,0,0.12)'; ctx.fill();
-  ctx.strokeStyle='rgba(245,180,66,0.08)'; ctx.lineWidth=4; ctx.stroke();
+  // Windows with glow effect
+  const windowData = [
+    {x: houseX+50, y: houseY+50, w: 155, h: 100},
+    {x: houseX+230, y: houseY+50, w: 135, h: 100},
+    {x: houseX+390, y: houseY+50, w: 110, h: 100}
+  ];
+  windowData.forEach(win => {
+    // Window glow
+    ctx.save();
+    ctx.shadowColor = 'rgba(255,220,162,0.6)';
+    ctx.shadowBlur = 25;
+    ctx.fillStyle = '#ffdca2'; 
+    roundRectPath(ctx, win.x, win.y, win.w, win.h, 8);
+    ctx.fill();
+    ctx.restore();
+    
+    // Window frame
+    ctx.strokeStyle = 'rgba(0,0,0,0.2)';
+    ctx.lineWidth = 3;
+    roundRectPath(ctx, win.x, win.y, win.w, win.h, 8);
+    ctx.stroke();
+    
+    // Window panes
+    ctx.strokeStyle = 'rgba(0,0,0,0.15)';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(win.x + win.w/2, win.y);
+    ctx.lineTo(win.x + win.w/2, win.y + win.h);
+    ctx.moveTo(win.x, win.y + win.h/2);
+    ctx.lineTo(win.x + win.w, win.y + win.h/2);
+    ctx.stroke();
+  });
+  
+  // Roof with enhanced styling
+  ctx.save();
+  ctx.beginPath(); 
+  ctx.moveTo(houseX-25, houseY+15); 
+  ctx.lineTo(houseX+houseW/2, houseY-130); 
+  ctx.lineTo(houseX+houseW+25, houseY+15); 
+  ctx.closePath();
+  
+  const roofGrad = ctx.createLinearGradient(houseX, houseY-130, houseX, houseY+15);
+  roofGrad.addColorStop(0,'rgba(0,0,0,0.25)');
+  roofGrad.addColorStop(1,'rgba(0,0,0,0.1)');
+  ctx.fillStyle = roofGrad;
+  ctx.fill();
+  
+  ctx.strokeStyle='rgba(245,180,66,0.3)'; 
+  ctx.lineWidth=5; 
+  ctx.stroke();
+  ctx.restore();
 
-  // draw logo or text top-left
+  // draw logo or text top-left with modern styling
   if(uploadedLogo){
-    const lW = Math.round(width*0.18), lH = Math.round(width*0.06), lx = Math.round(width*0.06), ly = Math.round(height*0.06);
-    roundRectPath(ctx, lx-8, ly-8, lW+16, lH+16, 12); ctx.fillStyle='rgba(0,0,0,0.16)'; ctx.fill();
+    const lW = Math.round(width*0.2), lH = Math.round(width*0.065), lx = Math.round(width*0.05), ly = Math.round(height*0.055);
+    
+    // Logo background with depth
+    ctx.save();
+    ctx.shadowColor = 'rgba(0,0,0,0.4)';
+    ctx.shadowBlur = 20;
+    roundRectPath(ctx, lx-10, ly-10, lW+20, lH+20, 14); 
+    const logoBg = ctx.createLinearGradient(lx, ly, lx, ly + lH);
+    logoBg.addColorStop(0,'rgba(255,255,255,0.1)');
+    logoBg.addColorStop(1,'rgba(255,255,255,0.03)');
+    ctx.fillStyle = logoBg; 
+    ctx.fill();
+    ctx.restore();
+    
     const img = uploadedLogo;
     const ratio = Math.min(lW/img.width, lH/img.height);
     const drawW = img.width * ratio; const drawH = img.height * ratio;
     const drawX = lx + (lW - drawW)/2; const drawY = ly + (lH - drawH)/2;
     ctx.drawImage(img, drawX, drawY, drawW, drawH);
   } else {
-    ctx.font = '700 32px Poppins, sans-serif'; ctx.fillStyle = '#ffdca2'; ctx.textAlign = 'left'; ctx.fillText('RaghavaConsultency', width*0.06, height*0.09);
+    ctx.save();
+    ctx.font = '800 36px Poppins, sans-serif'; 
+    ctx.fillStyle = '#ffdca2';
+    ctx.shadowColor = 'rgba(245,180,66,0.5)';
+    ctx.shadowBlur = 15;
+    ctx.textAlign = 'left'; 
+    ctx.fillText('RaghavaConsultency', width*0.055, height*0.09);
+    ctx.restore();
   }
 
-  // headline (Telugu)
-  ctx.font = `700 ${Math.round(width*0.055)}px "Noto Sans Telugu", Poppins, sans-serif`;
-  ctx.fillStyle = '#fffaf0'; ctx.textAlign = 'center';
-  wrapAndDraw(ctx, data.headlineTel, width/2, height*0.14, width - 120, Math.round(width*0.07));
+  // headline (Telugu) with enhanced styling
+  ctx.save();
+  ctx.font = `900 ${Math.round(width*0.058)}px "Noto Sans Telugu", Poppins, sans-serif`;
+  ctx.fillStyle = '#ffffff';
+  ctx.shadowColor = 'rgba(245,180,66,0.4)';
+  ctx.shadowBlur = 20;
+  ctx.textAlign = 'center';
+  wrapAndDraw(ctx, data.headlineTel, width/2, height*0.135, width - 100, Math.round(width*0.072));
+  ctx.restore();
 
-  // subheading
-  ctx.font = `600 ${Math.round(width*0.035)}px "Noto Sans Telugu", Poppins, sans-serif`;
-  ctx.fillStyle = 'rgba(255,255,255,0.92)';
-  wrapAndDraw(ctx, data.subTel, width/2, height*0.205, width - 160, Math.round(width*0.044));
+  // subheading with accent
+  ctx.save();
+  ctx.font = `600 ${Math.round(width*0.037)}px "Noto Sans Telugu", Poppins, sans-serif`;
+  ctx.fillStyle = 'rgba(255,255,255,0.95)';
+  ctx.shadowColor = 'rgba(0,0,0,0.3)';
+  ctx.shadowBlur = 10;
+  wrapAndDraw(ctx, data.subTel, width/2, height*0.2, width - 140, Math.round(width*0.046));
+  ctx.restore();
 
   // BULLETS & PORTRAIT (DYNAMIC)
   // constants
@@ -333,31 +461,83 @@ async function draw(data, width=1080, height=1920){
     portraitY = bulletsBottom + portraitSize/2 + Math.round(width*0.04);
   }
 
-  // draw bullets now (icons + wrapped lines)
+  // draw bullets now with modern icons
   ctx.fillStyle = 'rgba(255,255,255,0.96)';
   let currentY = bulletsY;
   measured.forEach((m, idx) => {
-    // bullet circle
+    // Modern bullet circle with gradient
+    ctx.save();
+    const bulletGrad = ctx.createRadialGradient(bulletsX - 70, currentY + 6, 0, bulletsX - 70, currentY + 6, 28);
+    bulletGrad.addColorStop(0,'#ffdca2');
+    bulletGrad.addColorStop(1,'#f5b041');
+    ctx.fillStyle = bulletGrad;
+    
+    ctx.shadowColor = 'rgba(245,180,66,0.5)';
+    ctx.shadowBlur = 15;
     ctx.beginPath();
-    ctx.arc(bulletsX - 70, currentY + 6, 22, 0, Math.PI*2);
-    ctx.fillStyle = '#ffdca2'; ctx.fill();
-    // small house icon inside circle
-    ctx.save(); ctx.fillStyle = '#0b2740'; drawHouseIcon(ctx, bulletsX - 77, currentY - 6, 26, '#0b2740'); ctx.restore();
-    // draw wrapped lines
+    ctx.arc(bulletsX - 70, currentY + 6, 26, 0, Math.PI*2);
+    ctx.fill();
+    ctx.restore();
+    
+    // Inner circle for depth
+    ctx.beginPath();
+    ctx.arc(bulletsX - 70, currentY + 6, 20, 0, Math.PI*2);
+    ctx.fillStyle = 'rgba(11, 39, 64, 0.3)';
+    ctx.fill();
+    
+    // Enhanced house icon
+    ctx.save(); 
+    ctx.fillStyle = '#0b2740'; 
+    ctx.shadowColor = 'rgba(0,0,0,0.3)';
+    ctx.shadowBlur = 4;
+    drawHouseIcon(ctx, bulletsX - 77, currentY - 6, 28, '#0b2740'); 
+    ctx.restore();
+    
+    // draw wrapped lines with shadow
+    ctx.save();
+    ctx.shadowColor = 'rgba(0,0,0,0.3)';
+    ctx.shadowBlur = 8;
     ctx.fillStyle = '#fff';
     drawWrappedText(ctx, m.lines, bulletsX - 20, currentY + 6, bulletLineHeight, 'left');
+    ctx.restore();
+    
     currentY += m.height + Math.round(width*0.015);
   });
 
-  // Draw portrait (clipped) at portraitX, portraitY
+  // Draw portrait with premium styling
   if(uploadedPhoto){
     const px = portraitX, py = portraitY, pSize = portraitSize;
     ctx.save();
-    // soft shadow behind circle
+    
+    // Outer glow ring
     ctx.beginPath();
-    ctx.arc(px, py - 20, pSize/2 + 8, 0, Math.PI*2);
-    ctx.fillStyle = 'rgba(0,0,0,0.18)'; ctx.fill();
-    // clip circle and draw photo as cover
+    ctx.arc(px, py - 20, pSize/2 + 15, 0, Math.PI*2);
+    const glowGrad = ctx.createRadialGradient(px, py - 20, pSize/2, px, py - 20, pSize/2 + 15);
+    glowGrad.addColorStop(0,'rgba(245,180,66,0.6)');
+    glowGrad.addColorStop(1,'rgba(245,180,66,0)');
+    ctx.fillStyle = glowGrad;
+    ctx.fill();
+    
+    // Border ring
+    ctx.beginPath();
+    ctx.arc(px, py - 20, pSize/2 + 6, 0, Math.PI*2);
+    ctx.strokeStyle = 'rgba(245,180,66,0.8)';
+    ctx.lineWidth = 8;
+    ctx.stroke();
+    
+    // Inner border
+    ctx.beginPath();
+    ctx.arc(px, py - 20, pSize/2 + 3, 0, Math.PI*2);
+    ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    
+    // Shadow
+    ctx.shadowColor = 'rgba(0,0,0,0.4)';
+    ctx.shadowBlur = 30;
+    ctx.shadowOffsetY = 10;
+    
+    // clip circle and draw photo
     ctx.beginPath(); ctx.arc(px, py - 20, pSize/2, 0, Math.PI*2); ctx.closePath(); ctx.clip();
     const img = uploadedPhoto;
     let sx=0, sy=0, sw=img.width, sh=img.height;
@@ -366,34 +546,130 @@ async function draw(data, width=1080, height=1920){
     ctx.drawImage(img, sx, sy, sw, sh, px - pSize/2, py - 20 - pSize/2, pSize, pSize);
     ctx.restore();
   } else {
-    // placeholder
+    // Enhanced placeholder
     const px = portraitX, py = portraitY, pSize = portraitSize;
-    ctx.beginPath(); ctx.arc(px, py - 20, pSize/2, 0, Math.PI*2); ctx.fillStyle = 'rgba(255,255,255,0.06)'; ctx.fill();
-    ctx.font = `700 ${Math.round(pSize*0.28)}px Poppins, sans-serif`; ctx.fillStyle = '#ffdca2'; ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.save();
+    
+    // Outer glow
+    ctx.beginPath();
+    ctx.arc(px, py - 20, pSize/2 + 12, 0, Math.PI*2);
+    const placeholderGlow = ctx.createRadialGradient(px, py - 20, pSize/2, px, py - 20, pSize/2 + 12);
+    placeholderGlow.addColorStop(0,'rgba(245,180,66,0.3)');
+    placeholderGlow.addColorStop(1,'rgba(245,180,66,0)');
+    ctx.fillStyle = placeholderGlow;
+    ctx.fill();
+    
+    // Main circle
+    ctx.beginPath(); 
+    ctx.arc(px, py - 20, pSize/2, 0, Math.PI*2); 
+    const circleGrad = ctx.createLinearGradient(px, py - 20 - pSize/2, px, py - 20 + pSize/2);
+    circleGrad.addColorStop(0,'rgba(255,255,255,0.12)');
+    circleGrad.addColorStop(1,'rgba(255,255,255,0.04)');
+    ctx.fillStyle = circleGrad;
+    ctx.fill();
+    
+    // Border
+    ctx.strokeStyle = 'rgba(245,180,66,0.6)';
+    ctx.lineWidth = 5;
+    ctx.stroke();
+    
+    // Text with glow
+    ctx.shadowColor = 'rgba(245,180,66,0.6)';
+    ctx.shadowBlur = 15;
+    ctx.font = `800 ${Math.round(pSize*0.32)}px Poppins, sans-serif`; 
+    ctx.fillStyle = '#ffdca2'; 
+    ctx.textAlign='center'; 
+    ctx.textBaseline='middle';
     ctx.fillText('HP', px, py - 20);
+    ctx.restore();
   }
 
-  // CONTACT BLOCK bottom center
-  const cH = Math.round(height*0.14);
-  const cW = Math.round(width*0.86);
+  // PREMIUM CONTACT BLOCK with modern design
+  const cH = Math.round(height*0.16);
+  const cW = Math.round(width*0.88);
   const cX = Math.round((width - cW)/2);
-  const cY = Math.round(height*0.74);
-  roundRectPath(ctx, cX, cY, cW, cH, 18); ctx.fillStyle = 'rgba(0,0,0,0.22)'; ctx.fill();
+  const cY = Math.round(height*0.73);
+  
+  ctx.save();
+  
+  // Shadow layer
+  ctx.shadowColor = 'rgba(0,0,0,0.5)';
+  ctx.shadowBlur = 30;
+  ctx.shadowOffsetY = 10;
+  
+  roundRectPath(ctx, cX, cY, cW, cH, 24); 
+  
+  // Gradient background
+  const contactGrad = ctx.createLinearGradient(cX, cY, cX, cY + cH);
+  contactGrad.addColorStop(0,'rgba(20,40,60,0.85)');
+  contactGrad.addColorStop(1,'rgba(10,25,45,0.92)');
+  ctx.fillStyle = contactGrad;
+  ctx.fill();
+  
+  // Border glow
+  ctx.strokeStyle = 'rgba(245,180,66,0.4)';
+  ctx.lineWidth = 3;
+  ctx.stroke();
+  ctx.restore();
+  
+  // Accent line
+  ctx.save();
+  const accentGrad = ctx.createLinearGradient(cX + 40, cY + 20, cX + cW - 40, cY + 20);
+  accentGrad.addColorStop(0,'rgba(245,180,66,0)');
+  accentGrad.addColorStop(0.5,'rgba(245,180,66,0.6)');
+  accentGrad.addColorStop(1,'rgba(245,180,66,0)');
+  ctx.strokeStyle = accentGrad;
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(cX + 40, cY + 20);
+  ctx.lineTo(cX + cW - 40, cY + 20);
+  ctx.stroke();
+  ctx.restore();
 
-  ctx.font = `800 ${Math.round(width*0.055)}px Poppins, sans-serif`; ctx.fillStyle='#fff'; ctx.textAlign='center';
-  ctx.fillText(data.phone, width/2, cY + (cH*0.45));
+  // Phone number with enhanced styling
+  ctx.save();
+  ctx.font = `900 ${Math.round(width*0.06)}px Poppins, sans-serif`; 
+  ctx.fillStyle='#ffffff'; 
+  ctx.shadowColor = 'rgba(245,180,66,0.6)';
+  ctx.shadowBlur = 20;
+  ctx.textAlign='center';
+  ctx.fillText('📞 ' + data.phone, width/2, cY + (cH*0.42));
+  ctx.restore();
 
-  ctx.font = `500 ${Math.round(width*0.032)}px Poppins, sans-serif`; ctx.fillStyle = 'rgba(255,255,255,0.84)';
-  ctx.fillText(data.site, width/2, cY + (cH*0.75));
+  // Website with icon
+  ctx.save();
+  ctx.font = `600 ${Math.round(width*0.034)}px Poppins, sans-serif`; 
+  ctx.fillStyle = 'rgba(255,255,255,0.88)';
+  ctx.shadowColor = 'rgba(0,0,0,0.4)';
+  ctx.shadowBlur = 8;
+  ctx.fillText('🌐 ' + data.site, width/2, cY + (cH*0.74));
+  ctx.restore();
 
-  // brand name
-  ctx.font = `900 ${Math.round(width*0.05)}px Poppins, sans-serif`; ctx.fillStyle='#ffdca2'; ctx.fillText('RAGHAVA Consultency', width/2, height*0.925);
+  // Brand name with premium styling
+  ctx.save();
+  ctx.font = `900 ${Math.round(width*0.053)}px Poppins, sans-serif`; 
+  ctx.fillStyle='#ffdca2';
+  ctx.shadowColor = 'rgba(245,180,66,0.7)';
+  ctx.shadowBlur = 25;
+  ctx.textAlign='center';
+  ctx.fillText('RAGHAVA Consultency', width/2, height*0.92);
+  ctx.restore();
 
-  // tagline
-  ctx.font = `500 ${Math.round(width*0.03)}px Poppins, sans-serif`; ctx.fillStyle='rgba(255,255,255,0.9)'; ctx.fillText('Transforming Dreams into Homes.', width/2, height*0.96);
+  // Tagline with accent
+  ctx.save();
+  ctx.font = `600 ${Math.round(width*0.032)}px Poppins, sans-serif`; 
+  ctx.fillStyle='rgba(255,255,255,0.92)';
+  ctx.shadowColor = 'rgba(0,0,0,0.5)';
+  ctx.shadowBlur = 10;
+  ctx.fillText('✨ Transforming Dreams into Homes ✨', width/2, height*0.958);
+  ctx.restore();
 
-  // footer small
-  ctx.font = `400 ${Math.round(width*0.02)}px Poppins, sans-serif`; ctx.fillStyle='rgba(255,255,255,0.12)'; ctx.fillText('Associated with major Banks & NBFCs', width/2, height*0.986);
+  // Footer with subtle styling
+  ctx.save();
+  ctx.font = `400 ${Math.round(width*0.022)}px Poppins, sans-serif`; 
+  ctx.fillStyle='rgba(255,255,255,0.4)';
+  ctx.fillText('Associated with major Banks & NBFCs', width/2, height*0.986);
+  ctx.restore();
 }
 
 // small helper: wrap and draw (used for headline/sub)
